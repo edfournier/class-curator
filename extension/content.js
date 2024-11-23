@@ -1,8 +1,26 @@
-/*
- * TODO
- *  - display like/dislikes
- *  - "open in extension" button that opens extension and populates it with data
- */
+function createExtensionButton(course) {
+    const button = document.createElement("button");
+    button.textContent = "🧩";
+    button.style.marginLeft = "10px";
+    button.addEventListener("click", (event) => {
+        event.stopPropagation();
+        event.preventDefault();
+        // TODO: open chrome extension popup with course data
+        console.log("clicked!");
+    });
+    return button;
+}
+
+function createRatingsDisplay(course) {
+    // TODO: hit API to get course likes/dislikes
+    const likes = 0;
+    const dislikes = 0;
+
+    const display = document.createElement("span");
+    display.textContent = `(${likes} 👍 ${dislikes} 👎)`;
+    display.style.marginLeft = "10px";
+    return display;
+}
 
 function embed() {
     console.log("Parsing course search results...");
@@ -20,26 +38,8 @@ function embed() {
 
     console.log(`Embedding content into ${courses.length} listings...`);
     for (const course of courses) {
-        // TODO: hit API to get course likes/dislikes
-        const likes = 0;
-        const dislikes = 0;
-    
-        // Embed ratings
-        const display = document.createElement("span");
-        display.textContent = `(${likes} 👍 ${dislikes} 👎)`;
-        display.style.marginLeft = "10px";
-        course.element.appendChild(display);
-        
-        // Embed "open in extension" button
-        const button = document.createElement("button");
-        button.textContent = "🧩";
-        button.style.marginLeft = "10px";
-        button.addEventListener("click", (event) => {
-            event.stopPropagation();
-            event.preventDefault();
-            console.log("clicked!");
-        });
-        course.element.appendChild(button);
+        course.element.appendChild(createRatingsDisplay(course));
+        course.element.appendChild(createExtensionButton(course));
     }
 }
 
