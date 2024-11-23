@@ -13,7 +13,14 @@
         ]
     },
     "permissions": [
-        "identity"
+        "identity", 
+        "storage"
+    ],
+    "content_scripts": [
+        {
+            "js": ["content.js"],
+            "matches": ["https://www.spire.umass.edu/*"]
+        }
     ],
     "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvUB8fzd9bwfkFhATzYHH0hcLtvkFUn0XZPmy2go9JEu9bZU49thAVUK2oPjuswMdCtPYfBe+DUAJxYsLJc9BFaKstyQjjj6GCNiouKTU0mn7Ki/QL9k/jRzZSG+GdnPB50kdkcSSswby04tt6jAt8w1WuvdASF7IE6DjaJPV+QfuKTrYDltm9cZBBlrYk9Shteqk8uxYYCTuvYY2HV8PUvKjWxFuziid2ca7CP0fOBhaznZmlUIUc83XQJUkJKgXdyU/tBPCk0tmSiKvKXLhE1mzJ1l5Tpl+iAoTz8aEECJ6Csvr6ylHWD2w2ywD/He9Y1P2PM9A7BEHXk6Ht4ZbLwIDAQAB"
   }
