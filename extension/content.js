@@ -20,13 +20,26 @@ function embed() {
 
     console.log(`Embedding content into ${courses.length} listings...`);
     for (const course of courses) {
+        // TODO: hit API to get course likes/dislikes
         const likes = 0;
         const dislikes = 0;
     
+        // Embed ratings
         const display = document.createElement("span");
         display.textContent = `(${likes} 👍 ${dislikes} 👎)`;
-        display.style.marginLeft = '10px';
+        display.style.marginLeft = "10px";
         course.element.appendChild(display);
+        
+        // Embed "open in extension" button
+        const button = document.createElement("button");
+        button.textContent = "🧩";
+        button.style.marginLeft = "10px";
+        button.addEventListener("click", (event) => {
+            event.stopPropagation();
+            event.preventDefault();
+            console.log("clicked!");
+        });
+        course.element.appendChild(button);
     }
 }
 
@@ -39,6 +52,7 @@ if (title && title.textContent === "Class Search Results") {
     const observer = new MutationObserver(embed);
 
     // Monitor the ancestor because SPIRE deletes the filters element
+    // Unholy chaining is required because element IDs change per session
     observer.observe(filters.parentElement.parentElement.parentElement.parentElement, {
         childList: true,   
         subtree: true,     
