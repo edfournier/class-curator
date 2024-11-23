@@ -234,7 +234,7 @@ ratings = """
     }
 """
 
-professors = """
+profs = """
     query TeacherSearchPaginationQuery(
     $count: Int!
     $cursor: String
