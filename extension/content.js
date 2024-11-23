@@ -1,4 +1,10 @@
-function parseCourses() {
+/*
+ * TODO
+ *  - display like/dislikes
+ *  - "open in extension" button that opens extension and populates it with data
+ */
+
+function embed() {
     console.log("Parsing course search results...");
     const courses = []
     const first = document.getElementById("PTS_RSLTS_LIST$0_row_0"); // First search result
@@ -11,17 +17,29 @@ function parseCourses() {
             })
         );
     }
-    console.log(courses);
+
+    console.log(`Embedding content into ${courses.length} listings...`);
+    for (const course of courses) {
+        const likes = 0;
+        const dislikes = 0;
+    
+        const display = document.createElement("span");
+        display.textContent = `(${likes} 👍 ${dislikes} 👎)`;
+        display.style.marginLeft = '10px';
+        course.element.appendChild(display);
+    }
 }
 
 const title = document.getElementById("PT_PAGETITLE1lbl");
 if (title && title.textContent === "Class Search Results") {
-    parseCourses();
+    embed();
     
-    // Re-parse whenever filters change
-    const filtersContainer = document.querySelector("#win48divPTS_BREADCRUMB_\\$0")
-    const observer = new MutationObserver(() => parseCourses());
-    observer.observe(filtersContainer, {
+    // Re-parse whenever user changes filters
+    const filters = document.querySelector("table.ps_grid-flex[title=\"Selected Filters\"]");
+    const observer = new MutationObserver(embed);
+
+    // Monitor the ancestor because SPIRE deletes the filters element
+    observer.observe(filters.parentElement.parentElement.parentElement.parentElement, {
         childList: true,   
         subtree: true,     
         characterData: true, 
