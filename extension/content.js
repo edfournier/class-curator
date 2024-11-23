@@ -6,6 +6,9 @@ function createExtensionButton(course) {
         event.stopPropagation();
         event.preventDefault();
         // TODO: open chrome extension popup with course data
+        // content script can't do this, need to send a message to background script to do it
+        // chrome.action.openPopup();
+
         console.log("clicked!");
     });
     return button;

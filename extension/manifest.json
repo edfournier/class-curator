@@ -12,10 +12,7 @@
             "https://www.googleapis.com/auth/userinfo.profile"
         ]
     },
-    "permissions": [
-        "identity", 
-        "storage"
-    ],
+    "permissions": ["identity", "storage", "action"],
     "content_scripts": [
         {
             "js": ["content.js"],
