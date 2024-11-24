@@ -1,6 +1,6 @@
 const tokenButton = document.getElementById("token-button");
 const userButton = document.getElementById("user-button");
-const dataContainer = document.getElementById("data-container")
+const dataContainer = document.getElementById("data-container");
 
 // TODO: cache token, check if token is valid when starting, need seperate login view?
 // on the server, use `https://www.googleapis.com/oauth2/v3/tokeninfo?access_token=${token}` to get token info
