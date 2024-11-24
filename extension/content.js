@@ -5,7 +5,7 @@ function createExtensionButton(course) {
     button.addEventListener("click", (event) => {
         event.stopPropagation();
         event.preventDefault();
-        // Send message to background script to open popup
+        // Direct background script to open popup with this course course
         chrome.runtime.sendMessage({ type: "popup", course: course.title });
     });
     return button;
@@ -30,7 +30,8 @@ function embed() {
         const results = first.parentElement;
         results.childNodes.forEach((result) => 
             courses.push({ 
-                title: result.querySelector("p[hidden]").textContent.trim().replace(/\s+/g, ' '), // Removes excess whitespace
+                // Parse course title, removing excess whitespace
+                title: result.querySelector("p[hidden]").textContent.trim().replace(/\s+/g, ' '), 
                 element: result.querySelector(".ps-link")
             })
         );
@@ -45,9 +46,8 @@ function embed() {
 
 const title = document.getElementById("PT_PAGETITLE1lbl");
 if (title && title.textContent === "Class Search Results") {
+    // Embed and re-embed whenever user changes filters
     embed();
-    
-    // Re-parse whenever user changes filters
     const filters = document.querySelector("table.ps_grid-flex[title=\"Selected Filters\"]");
     const observer = new MutationObserver(embed);
 
