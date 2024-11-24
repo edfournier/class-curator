@@ -1,7 +1,11 @@
+import { Navigate } from "react-router";
+import useAuth from "../auth/useAuth.js";
+
 function Login() {
-    return (
+    const auth = useAuth();
+    return auth.user ? <Navigate to={"/home"}/> : (
         <>
-            <div>Login</div>
+            <button onClick={auth.login}>Login</button>
         </>
     );
 }
