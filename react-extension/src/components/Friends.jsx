@@ -1,9 +1,9 @@
-import Nav from "./Nav";
+import Navbar from "./Navbar";
 
 function Friends() {
     return (
         <>
-            <Nav />
+            <Navbar />
             <div>Friends</div>
         </>
     );

@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-function Nav() {
+function Navbar() {
     return (
         <div>
             <Link to="/home">Home</Link>
@@ -9,4 +9,4 @@ function Nav() {
     );
 }
 
-export default Nav;
+export default Navbar;
