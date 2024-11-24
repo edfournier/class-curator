@@ -3,7 +3,7 @@
     "version": "1.0",
     "manifest_version": 3,
     "action": {
-        "default_popup": "src/popup.html"
+        "default_popup": "public/index.html"
     },
     "oauth2": {
         "client_id": "1098071512272-dgetmpv0576s8g64neltjqrbnhkjdgec.apps.googleusercontent.com",
