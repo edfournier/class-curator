@@ -1,8 +1,18 @@
+import { MemoryRouter, Routes, Route } from "react-router-dom";
+import Login from "./components/Login";
+import Home from "./components/Home";
+import Friends from "./components/Friends";
+
 function App() {
-    return <>
-        <button id="token-button">Token</button>
-        <button id="user-button">User</button>
-    </>;
+    return (
+        <MemoryRouter>
+            <Routes>
+                <Route path="/" element={<Login />} />
+                <Route path="/home" element={<Home />} />
+                <Route path="/friends" element={<Friends />} />
+            </Routes>
+        </MemoryRouter>
+    );
 }
 
 export default App;
