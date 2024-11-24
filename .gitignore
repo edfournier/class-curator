@@ -95,7 +95,7 @@ $RECYCLE.BIN/
 *~
 
 # dependencies
-/node_modules
+node_modules
 /.pnp
 .pnp.js
 
@@ -103,6 +103,7 @@ $RECYCLE.BIN/
 /coverage
 
 # production
+dist
 /build
 
 # misc
