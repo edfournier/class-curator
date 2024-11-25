@@ -3,9 +3,9 @@ import useAuth from "../auth/useAuth.js";
 
 function Login() {
     const auth = useAuth();
-    return auth.user && auth.token ? <Navigate to={"/home"}/> : (
+    return auth.token ? <Navigate to={"/home"}/> : (
         <>
-            <button onClick={auth.login}>Login</button>
+            <button onClick={() => auth.login({ interactive: true })}>Login</button>
         </>
     );
 }
