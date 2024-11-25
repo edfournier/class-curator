@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    html {
+        width: 300px;
+        height: 400px;
+    }
+
+    body {
+        background: linear-gradient(to bottom, #283142, #0f1b24);
+        margin-top: 10px;
+    }
+}
