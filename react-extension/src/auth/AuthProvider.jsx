@@ -33,7 +33,7 @@ function AuthProvider({ children }) {
         // Nuke caches and redirect to login
         setUser(null);
         setToken(null);
-        locaLStorage.clear();
+        localStorage.clear();
         return navigate("/");
     }
 
