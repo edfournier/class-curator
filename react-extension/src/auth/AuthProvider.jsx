@@ -28,7 +28,7 @@ function AuthProvider({ children }) {
     useEffect(() => {
         // Attempt to automatically login
         login({ interactive: false });
-    });
+    }, []);
 
     return (
         <AuthContext.Provider value={{ token, setToken, login, logout }}>
