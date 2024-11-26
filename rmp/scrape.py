@@ -29,7 +29,7 @@ def fetch_profs():
         for edge in json["data"]["search"]["teachers"]["edges"]:
             node = edge["node"]
             if node["numRatings"] > 0:  # Filter profs without ratings
-                profs.append({"id": node["id"]})
+                profs.append({"id": node["id"], "name": f"{node["firstName"]} {node["lastName"]}"})
 
         # Check if there's another page
         page_info = json["data"]["search"]["teachers"]["pageInfo"]
@@ -48,19 +48,19 @@ async def fetch_prof_ratings(session, prof):
     ratings = []
     for edge in json["data"]["node"]["ratings"]["edges"]:
         node = edge["node"]
-        ratings.append(f"{node["class"]} {node["difficultyRating"]} {node["helpfulRating"]}\n") 
+        ratings.append(f"{node["class"]}, {node["difficultyRating"]}, {node["helpfulRating"]}, {prof["name"]}, {node["date"].split()[0]}\n") 
     return ratings
 
-async def fetch_ratings(profs):
+async def fetch_batch_ratings(profs):
     print("Fetching ratings...")
     # Reuse session for batch requests
     async with aiohttp.ClientSession() as session: 
         return await asyncio.gather(*[fetch_prof_ratings(session, prof) for prof in profs])
 
 if __name__ == "__main__":
-    ratings = asyncio.run(fetch_ratings(fetch_profs()))
+    ratings = asyncio.run(fetch_batch_ratings(fetch_profs()))
     with open("ratings.txt", "w", encoding="utf-8") as file:
-        file.write("class, difficulty, helpfulness\n")
+        file.write("class, difficulty, helpfulness, professor, date\n")
         for rating in ratings:
             file.writelines(rating)
     print("Done!")
