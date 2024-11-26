@@ -5,7 +5,11 @@ export default {
         "./src/**/*.{js,ts,jsx,tsx,svelte}",
     ],
     theme: {
-        extend: {},
+        extend: {
+            fontFamily: {
+                sans: ["Roboto", "sans-serif"], 
+            },
+        },
     },
     plugins: [],
 };

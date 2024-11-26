@@ -9,6 +9,7 @@
     }
 
     body {
+        @apply font-sans;
         background: linear-gradient(to bottom, #283142, #0f1b24);
     }
 }
