@@ -31,7 +31,7 @@ function Home() {
                         className="px-4 py-2 rounded-lg border-2 border-gray-300"
                         placeholder="Some cool topic..."
                     />
-                    <button onClick={addTag} className="ml-2 px-4 py-2 bg-blue-500 text-white rounded-lg">
+                    <button onClick={addTag} className="ml-2 px-4 py-2 bg-indigo-500 text-white rounded-lg">
                         Add
                     </button>
                 </div>
