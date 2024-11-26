@@ -11,6 +11,9 @@ function Navbar() {
                     <Link to="/friends" className="text-lg hover:text-indigo-500 transition-colors">
                         Friends
                     </Link>
+                    <Link to="/courses" className="text-lg hover:text-indigo-500 transition-colors">
+                        Courses
+                    </Link>
                 </div>
             </div>
         </div>

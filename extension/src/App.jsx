@@ -3,6 +3,7 @@ import Login from "./components/Login";
 import Home from "./components/Home";
 import Friends from "./components/Friends";
 import AuthProvider from "./auth/AuthProvider";
+import Courses from "./components/Courses";
 
 function App() {
     return (
@@ -12,6 +13,7 @@ function App() {
                     <Route path="/" element={<Login />} />
                     <Route path="/home" element={<Home />} />
                     <Route path="/friends" element={<Friends />} />
+                    <Route path="/courses" element={<Courses />} />
                 </Routes>
             </AuthProvider>
         </MemoryRouter>
