@@ -2,9 +2,17 @@ import { Link } from "react-router-dom";
 
 function Navbar() {
     return (
-        <div>
-            <Link to="/home">Home</Link>
-            <Link to="/friends">Friends</Link>
+        <div className="bg-gray-900 text-white py-2 px-4 shadow-md w-full">
+            <div className="flex justify-between items-center">
+                <div className="space-x-6">
+                    <Link to="/home" className="text-lg hover:text-indigo-500 transition-colors">
+                        Home
+                    </Link>
+                    <Link to="/friends" className="text-lg hover:text-indigo-500 transition-colors">
+                        Friends
+                    </Link>
+                </div>
+            </div>
         </div>
     );
 }

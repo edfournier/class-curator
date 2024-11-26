@@ -4,12 +4,11 @@
 
 @layer base {
     html {
-        width: 300px;
-        height: 400px;
+        width: 350px;
+        height: 450px;
     }
 
     body {
         background: linear-gradient(to bottom, #283142, #0f1b24);
-        margin-top: 10px;
     }
 }
