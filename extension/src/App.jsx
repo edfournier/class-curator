@@ -1,4 +1,4 @@
-import { MemoryRouter, Routes, Route } from "react-router-dom";
+import { MemoryRouter, Routes, Route } from "react-router-dom"; // Memory router since extensions don't have browser history
 import Login from "./components/Login";
 import Home from "./components/Home";
 import Friends from "./components/Friends";

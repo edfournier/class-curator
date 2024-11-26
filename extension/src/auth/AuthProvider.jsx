@@ -11,7 +11,7 @@ function AuthProvider({ children }) {
 
     async function login(details) {
         try {
-            // Get token from Chrome's cache
+            // Get token from Chrome's built-in cache
             const { token } = await chrome.identity.getAuthToken(details);
             setToken(token);
             navigate("/home");
@@ -28,10 +28,11 @@ function AuthProvider({ children }) {
     }
 
     useEffect(() => {
-        // Attempt to automatically login
+        // Attempts to automatically login
         login({ interactive: false }).then(() => setLoading(false));
-    }, [loading]);
+    }, []);
 
+    // Load the spinner while attempting to auto-login
     return loading ? <Spinner /> : (
         <AuthContext.Provider value={{ token, setToken, login, logout }}>
             {children}

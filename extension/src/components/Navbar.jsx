@@ -1,5 +1,8 @@
 import { Link } from "react-router-dom";
 
+/**
+ * Renders the application's navigation bar, with switching managed by React Router
+ */
 function Navbar() {
     return (
         <div className="bg-gray-900 text-white py-2 px-4 shadow-md w-full">
