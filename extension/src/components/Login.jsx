@@ -3,10 +3,8 @@ import useAuth from "../auth/useAuth.js";
 
 function Login() {
     const { token, login } = useAuth();
-
-    if (token) return <Navigate to="/home" />;
-
-    return (
+    
+    return token ? <Navigate to="/home" /> : (
         <div className="flex items-center justify-center min-h-screen">
             <button
                 onClick={() => login({ interactive: true })}
