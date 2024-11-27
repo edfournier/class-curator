@@ -39,7 +39,7 @@ function Courses() {
                         type="text"
                         value={query}
                         onChange={(e) => setQuery(e.target.value)}
-                        className="px-4 py-2 rounded-lg border-1 border-gray-300 focus:outline-none focus:ring-1 focus:ring-indigo-500 w-72"
+                        className="px-4 py-2 rounded-lg border-gray-300 focus:outline-none focus:ring-1 focus:ring-indigo-500 w-72"
                         placeholder="Search a course by name or code..."
                     />
                 </div>

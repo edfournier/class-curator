@@ -28,7 +28,7 @@ function Home() {
                         type="text"
                         value={tag}
                         onChange={(e) => setTag(e.target.value)}
-                        className="px-2 py-2 rounded-lg border-1 border-gray-300 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                        className="px-2 py-2 rounded-lg border-gray-300 focus:outline-none focus:ring-1 focus:ring-indigo-500"
                         placeholder="Some cool topic..."
                     />
                     <button 
@@ -42,7 +42,7 @@ function Home() {
                     {tags.map((tag) => (
                         <div
                             key={tag} 
-                            className="px-4 py-2 rounded-full border-1 border-gray-300 bg-gray-200 font-medium flex items-center gap-2"
+                            className="px-4 py-2 rounded-full border-gray-300 bg-gray-200 font-medium flex items-center gap-2"
                         >
                             <FaTimes onClick={() => removeTag(tag)} className="cursor-pointer" /> {tag}
                         </div>
