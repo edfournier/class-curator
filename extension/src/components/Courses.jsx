@@ -22,10 +22,10 @@ function Courses() {
     const results = filtered.map((course) => (
         <li
             key={course.id}
-            className="flex justify-between items-center border-b border-gray-300 py-4 cursor-pointer"
+            className="flex justify-between items-center border-b border-gray-600 py-3 cursor-pointer"
             onClick={() => setCourse(course)}
         >
-            <span className="text-white font-medium">{course.name}</span>
+            <span className="text-sm text-white">{course.name}</span>
             <span className="text-sm text-gray-400">{course.code}</span>
         </li>
     ));

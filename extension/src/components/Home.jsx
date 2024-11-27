@@ -22,7 +22,7 @@ function Home() {
         <>
             <Navbar />
             <div className="max-w-4xl mx-auto px-2 py-2">
-                <h2 className="text-base text-white">What kinds of courses are you looking for?</h2>
+                <h2 className="text-base text-white">What interests you?</h2>
                 <div className="mt-4 flex items-center">
                     <input
                         type="text"
