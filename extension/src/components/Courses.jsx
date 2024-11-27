@@ -34,14 +34,14 @@ function Courses() {
         <>
             <Navbar />
             <div className="max-w-4xl mx-auto px-2 py-3">
-                <div className="flex justify-center">
-                    <input
-                        type="text"
-                        value={query}
-                        onChange={(e) => setQuery(e.target.value)}
-                        className="px-4 py-2 rounded-lg border-gray-300 focus:outline-none focus:ring-1 focus:ring-indigo-500 w-72"
-                        placeholder="Search a course by name or code..."
-                    />
+            <div className="flex justify-center">
+                <input
+                    type="text"
+                    value={query}
+                    onChange={(e) => setQuery(e.target.value)}
+                    className="px-4 py-2 rounded-lg border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 w-72 placeholder-gray-600"
+                    placeholder="Search a course by name or code..."
+                />
                 </div>
                 {filtered.length > 0 && query != "" && <ul className="mt-2">{results}</ul>}
             </div>
