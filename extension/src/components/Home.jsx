@@ -27,7 +27,7 @@ function Home() {
                         type="text"
                         value={tag}
                         onChange={(e) => setTag(e.target.value)}
-                        className="px-2 py-2 rounded-lg border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 placeholder-gray-600 w-60"
+                        className="px-2 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 w-60"
                         placeholder="Add a tag describing your interests..."
                     />
                     <button 
