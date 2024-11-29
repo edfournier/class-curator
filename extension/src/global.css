@@ -12,4 +12,12 @@
         @apply font-sans;
         background: linear-gradient(to bottom, #283142, #0f1b24);
     }
+
+    button {
+        @apply px-4 py-2 bg-indigo-500 text-white rounded-lg hover:bg-indigo-600 active:scale-95;
+    }
+
+    input {
+        @apply px-2 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500;
+    }
 }

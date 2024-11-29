@@ -27,13 +27,10 @@ function Home() {
                         type="text"
                         value={tag}
                         onChange={(e) => setTag(e.target.value)}
-                        className="px-2 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 w-60"
+                        className="w-60"
                         placeholder="Add a tag describing your interests..."
                     />
-                    <button 
-                        onClick={addTag} 
-                        className="ml-2 px-4 py-2 bg-indigo-500 text-white rounded-lg hover:bg-indigo-600 active:scale-95"
-                    >
+                    <button onClick={addTag} className="ml-1">
                         <FaPlus />
                     </button>
                 </div>

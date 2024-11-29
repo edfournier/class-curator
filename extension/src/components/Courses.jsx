@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Navbar from "./Navbar";
+import { FaTimes } from "react-icons/fa"; 
 
 const courses = [
     {
@@ -7,6 +8,7 @@ const courses = [
         name: "Data Structures",
         code: "CS121",
         likes: 10,
+        dislikes: 0,
         description: "Learn about data organization, algorithms, and efficiency.",
     },
     {
@@ -30,19 +32,13 @@ const courses = [
 function Course({ course, setCourse }) {
     return (
         <div className="bg-gray-900 text-white p-3 rounded-lg shadow-lg border border-gray-700 flex flex-col">
-            <button
-                className="text-gray-400 hover:text-gray-200 text-xl self-end"
-                onClick={() => setCourse(null)}
-            >
-                ×
-            </button>
-            <h1 className="text-2xl font-bold">{course.name}</h1>
-            <p className="text-sm text-gray-400 mb-2">{course.code}</p>
-            <p className="flex-grow">{course.description}</p>
-            <div className="mt-6 flex justify-between text-lg">
-                <span>👍 {course.likes}</span>
-                <span>👎 {course.dislikes}</span>
+            <div className="flex justify-between">
+                <h1 className="text-xl font-bold">{course.name}</h1>
+                <FaTimes onClick={() => setCourse(null)} className="cursor-pointer" />
             </div>
+            <p className="text-sm text-gray-400 mb-2">{course.code}</p>
+            <div className="mb-2">👍 {course.likes} | 👎 {course.dislikes}</div>
+            <p className="flex-grow">{course.description}</p>
         </div>
     );
 }
@@ -79,7 +75,7 @@ function Courses() {
                         type="text"
                         value={query}
                         onChange={(e) => setQuery(e.target.value)}
-                        className="px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 w-72"
+                        className="w-72"
                         placeholder="Search a course by name or code..."
                     />
                 </div>

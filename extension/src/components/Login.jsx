@@ -1,18 +1,14 @@
-import { Navigate } from "react-router";
 import useAuth from "../auth/useAuth.js";
 
 /**
  * Login screen that redirects once the user's credentials are loaded
  */
 function Login() {
-    const { token, login } = useAuth();
+    const { login } = useAuth();
     
-    return token ? <Navigate to="/home" /> : (
+    return (
         <div className="flex items-center justify-center min-h-screen">
-            <button
-                onClick={() => login({ interactive: true })}
-                className="px-6 py-3 bg-indigo-500 text-white text-lg font-semibold rounded-lg hover:bg-indigo-600 active:scale-95"
-            >
+            <button onClick={() => login({ interactive: true })} className="px-6">
                 Login
             </button>
         </div>
