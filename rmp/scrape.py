@@ -13,8 +13,6 @@ headers = {
 }
 
 def fetch_profs():
-    print("Fetching professors...")
-
     profs = []
     variables = {
         "count": 1000,  # Page max
@@ -52,15 +50,17 @@ async def fetch_prof_ratings(session, prof):
     return ratings
 
 async def fetch_batch_ratings(profs):
-    print("Fetching ratings...")
     # Reuse session for batch requests
     async with aiohttp.ClientSession() as session: 
         return await asyncio.gather(*[fetch_prof_ratings(session, prof) for prof in profs])
-
-if __name__ == "__main__":
-    ratings = asyncio.run(fetch_batch_ratings(fetch_profs()))
+    
+def main():
+    profs = fetch_profs()
+    ratings = asyncio.run(fetch_batch_ratings(profs))
     with open("ratings.csv", "w", encoding="utf-8") as file:
         file.write("class,difficulty,helpfulness,professor,date\n")
         for rating in ratings:
             file.writelines(rating)
-    print("Done!")
+
+if __name__ == "__main__":
+    main()
