@@ -1,12 +1,10 @@
-import { useState, createContext, useEffect } from "react";
+import { useState, createContext } from "react";
 import { useNavigate } from "react-router-dom";
-import Spinner from "../components/Spinner";
 
 export const AuthContext = createContext();
 
 function AuthProvider({ children }) {
     const [token, setToken] = useState(null);  
-    const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
 
     async function login(details) {
@@ -27,13 +25,7 @@ function AuthProvider({ children }) {
         navigate("/");
     }
 
-    useEffect(() => {
-        // Attempts to automatically login
-        login({ interactive: false }).then(() => setLoading(false));
-    }, []);
-
-    // Load the spinner while attempting to auto-login
-    return loading ? <Spinner /> : (
+    return (
         <AuthContext.Provider value={{ token, setToken, login, logout }}>
             {children}
         </AuthContext.Provider>
