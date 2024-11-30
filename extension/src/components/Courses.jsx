@@ -38,7 +38,7 @@ function Course({ course, setCourse }) {
 
 function Courses() {
     const location = useLocation();
-    const [query, setQuery] = useState(location.state.course || "");
+    const [query, setQuery] = useState(location?.state?.course || "");
     const [course, setCourse] = useState(null); // The selected course
 
     // Finds courses that contain the search query
