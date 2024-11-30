@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Navbar from "./Navbar";
 import { FaTimes } from "react-icons/fa"; 
+import { useLocation } from 'react-router-dom';
 
 const courses = [
     {
@@ -18,15 +19,7 @@ const courses = [
         likes: 5,
         dislikes: 1,
         description: "A fundamental course covering arithmetic and basic algebra.",
-    },
-    {
-        id: 3,
-        name: "Modern History",
-        code: "HIST202",
-        likes: 7,
-        dislikes: 3,
-        description: "An overview of the modern world's history, significant events, and trends.",
-    },
+    }
 ];
 
 function Course({ course, setCourse }) {
@@ -44,7 +37,8 @@ function Course({ course, setCourse }) {
 }
 
 function Courses() {
-    const [query, setQuery] = useState("");
+    const location = useLocation();
+    const [query, setQuery] = useState(location.state.course || "");
     const [course, setCourse] = useState(null); // The selected course
 
     // Finds courses that contain the search query

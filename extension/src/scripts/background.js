@@ -1,10 +1,7 @@
-chrome.runtime.onMessage.addListener((message) => {
-    if (message.type === "popup") {
-        // Only background script can access action API
-        chrome.action.openPopup();
-
-        // TODO: send course to popup script
-        // use either local storage or send another message
-        console.log(message.course.title); 
+chrome.runtime.onMessage.addListener(async (message) => {
+    if (message.type === "open-popup") {
+        // Open popup and show the selected course
+        await chrome.action.openPopup(); 
+        chrome.runtime.sendMessage({ type: "show-course", course: message.course });
     }
 });

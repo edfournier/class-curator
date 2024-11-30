@@ -5,8 +5,9 @@ function createExtensionButton(course) {
     button.addEventListener("click", (event) => {
         event.stopPropagation();
         event.preventDefault();
-        // Direct background script to open popup with this course course
-        chrome.runtime.sendMessage({ type: "popup", course: course.title });
+
+        // Tell background script to open popup with this course course
+        chrome.runtime.sendMessage({ type: "open-popup", course: course.title });
     });
     return button;
 }
