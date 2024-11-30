@@ -48,7 +48,7 @@ async def fetch_prof_ratings(session, prof):
     ratings = []
     for edge in json["data"]["node"]["ratings"]["edges"]:
         node = edge["node"]
-        ratings.append(f"{node["class"]}, {node["difficultyRating"]}, {node["helpfulRating"]}, {prof["name"]}, {node["date"].split()[0]}\n") 
+        ratings.append(f"{node["class"]},{node["difficultyRating"]},{node["helpfulRating"]},{prof["name"]},{node["date"].split()[0]}\n") 
     return ratings
 
 async def fetch_batch_ratings(profs):
@@ -59,8 +59,8 @@ async def fetch_batch_ratings(profs):
 
 if __name__ == "__main__":
     ratings = asyncio.run(fetch_batch_ratings(fetch_profs()))
-    with open("ratings.txt", "w", encoding="utf-8") as file:
-        file.write("class, difficulty, helpfulness, professor, date\n")
+    with open("ratings.csv", "w", encoding="utf-8") as file:
+        file.write("class,difficulty,helpfulness,professor,date\n")
         for rating in ratings:
             file.writelines(rating)
     print("Done!")
