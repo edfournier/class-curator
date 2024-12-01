@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Navbar from "./Navbar";
-import { FaTimes } from "react-icons/fa"; 
+import { FaTimes, FaSearch } from "react-icons/fa"; 
 import { useLocation } from 'react-router-dom';
 
 const courses = [
@@ -39,26 +39,28 @@ function Course({ course, setCourse }) {
 function Courses() {
     const location = useLocation();
     const [query, setQuery] = useState(location?.state?.course || "");
-    const [course, setCourse] = useState(null); // The selected course
+    const [course, setCourse] = useState(null); 
+    const [results, setResults] = useState([]); 
 
-    // Finds courses that contain the search query
-    const filtered = courses.filter((course) => {
+    function search() {
+        // TODO: Gets top 5 results, replace with API call 
         const lowered = query.toLowerCase();
-        return course.name.toLowerCase().includes(lowered) 
-            || course.code.toLowerCase().includes(lowered);
-    });
+        const filtered = courses.filter(course => 
+            course.name.toLowerCase().includes(lowered) || course.code.toLowerCase().includes(lowered)
+        );
 
-    // Map each matched course to a search result tile
-    const results = filtered.map((course) => (
-        <li
-            key={course.id}
-            className="flex justify-between border border-gray-700 hover:bg-gray-700 rounded-lg py-2 px-2 cursor-pointer"
-            onClick={() => setCourse(course)}
-        >
-            <span className="text-sm text-white">{course.name}</span>
-            <span className="text-sm text-gray-400">{course.code}</span>
-        </li>
-    ));
+        // Map each matched course to a search result tile
+        setResults(filtered.slice(0, 5).map((course) => (
+            <li
+                key={course.id}
+                className="flex justify-between border border-gray-700 hover:bg-gray-700 rounded-lg py-2 px-2 cursor-pointer"
+                onClick={() => setCourse(course)}
+            >
+                <span className="text-sm text-white">{course.name}</span>
+                <span className="text-sm text-gray-400">{course.code}</span>
+            </li>
+        )));
+    }
 
     return (
         <>
@@ -69,14 +71,17 @@ function Courses() {
                         type="text"
                         value={query}
                         onChange={(e) => setQuery(e.target.value)}
-                        className="w-72"
-                        placeholder="Search a course by name or code..."
+                        className="w-60"
+                        placeholder="Search a course by code or name..."
                     />
+                    <button onClick={search} className="ml-1">
+                        <FaSearch />
+                    </button>
                 </div>
                 {course 
                     // Either render the search results or the selected course
                     ? <Course course={course} setCourse={setCourse} />
-                    : query !== "" && filtered.length > 0 && <ul className="space-y-1">{results}</ul>
+                    : results.length > 0 && <ul className="space-y-1">{results}</ul>
                 }
             </div>
         </>
