@@ -24,7 +24,7 @@ def preprocess_class_data(raw_data_ratings: List[List[str]]) -> Tuple[
         code = standardize_course_code(record[0])
         difficulty = int(record[1])
         helpfulness = int(record[2])
-        prof = '/'.join(sorted(record[3:-1])) # Needed since some classes may have more than one prof, so recording all in alpha order
+        prof = '/'.join(sorted(record[3:-1])).replace('"', "'") # Needed since some classes may have more than one prof, so recording all in alpha order
         rating_datestr = record[-1] # Last item will always be the rating datestring, even if some classes may have more than one prof
         
         # Need to ignore records from which information cannot be recovered
