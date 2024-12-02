@@ -63,3 +63,10 @@ with open(MANAGE_CLASSES_QUERIES_PATH) as class_queries:
     cursor.execute(query_insert_classes)
 
     db_connection.commit()
+
+# Data Population - RMP Ratings
+with open(MANAGE_RATINGS_QUERIES_PATH) as rating_queries:
+    rating_queries = json.load(rating_queries)
+    query_insert_rating_aggr = construct_query_with_values(rating_queries["insert_aggregate_rating_initial_load"], data_classes)
+    cursor.execute(query_insert_rating_aggr)
+    db_connection.commit()

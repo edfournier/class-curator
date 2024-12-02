@@ -21,7 +21,7 @@ def preprocess_class_data(raw_data_ratings: List[List[str]]) -> Tuple[
     class_details = {}
     for record in raw_data_ratings:
         # standardizing inputs
-        code = standardize_course_code(record[0])
+        code = standardize_course_code(record[0]) # Good to have: Convert 'CS' into 'COMPSCI' and similar coercions
         difficulty = int(record[1])
         helpfulness = int(record[2])
         prof = '/'.join(sorted(record[3:-1])).replace('"', "'") # Needed since some classes may have more than one prof, so recording all in alpha order
@@ -50,8 +50,8 @@ def preprocess_class_data(raw_data_ratings: List[List[str]]) -> Tuple[
     for class_identifier in class_details:
         # generating aggregates
         count = class_details[class_identifier]["count"]
-        class_details[class_identifier]["rate_difficulty"] /= count
-        class_details[class_identifier]["rate_helpfulness"] /= count
+        class_details[class_identifier]["rate_difficulty"] = round(class_details[class_identifier]["rate_difficulty"]/count, 3)
+        class_details[class_identifier]["rate_helpfulness"] = round(class_details[class_identifier]["rate_helpfulness"]/count, 3)
 
         # NOTE: assuming most frequently named prof will be correct
         found_profs_list = class_details[class_identifier]["profs"]
