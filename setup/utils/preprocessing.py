@@ -47,7 +47,11 @@ def preprocess_data(
         class_details[class_identifier]["prof"] = max(set(found_profs_list), key=found_profs_list.count) # assuming most frequently named prof will be correct
 
     data_courses = []
-    for code, name, subject, description in raw_data_courses:
+    for record in raw_data_courses:
+        code = record['code']
+        name = record['name']
+        subject = record['subject']
+        description = record['description']
         code = standardize_course_code(code)
         data_courses.append((code, name, subject, description))
 
