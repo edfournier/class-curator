@@ -8,3 +8,9 @@ def purge_db(db_path: str) -> None:
 
 def open_db_connection(db_path: str) -> object:
     return sqlite3.connect(db_path)
+
+def construct_query_with_values(query_parts, records):
+    values = []
+    for record in records:
+        values.append(query_parts['template'].format(*record))
+    return query_parts['prefix'] + ', '.join(values) + query_parts['postfix']

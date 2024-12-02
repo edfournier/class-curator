@@ -1,0 +1,12 @@
+{
+    "insert_course": {
+        "prefix": "INSERT INTO COURSE (CODE, NAME, SUBJECT, DESCRIPTION) VALUES ",
+        "template": "(\"{}\", \"{}\", \"{}\", \"{}\")",
+        "postfix": ";"
+    },
+    "insert_class": {
+        "prefix": "WITH ins (course_code, year, semester, prof) AS ( VALUES ",
+        "template": "(\"{}\", {}, \"{}\", \"{}\")",
+        "postfix": ") INSERT INTO CLASS (COURSE_ID, YEAR, SEMESTER, PROF) SELECT COURSE.id, ins.year, ins.semester, ins.prof FROM COURSE join ins ON ins.course_code = COURSE.code;"
+    }
+}
