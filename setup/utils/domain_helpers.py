@@ -11,7 +11,7 @@ def standardize_course_code(code: str) -> str:
 
 # TODO: Revisit this function to ensure that we aren't missing any valid courses
 def is_valid_course_code(code: str) -> bool:
-    return re.match("^[A-Z]+[0-9][0-9][0-9][A-Z]*$", code) is not None
+    return re.match("^[A-Z]+ [0-9][0-9][0-9][A-Z]*$", code) is not None
 
 # TODO: Revisit this function to tighten assumptions
 def determine_session(date: str) -> Tuple[int, str]:
