@@ -1,13 +1,23 @@
 from typing import List, Tuple
 from utils.domain_helpers import determine_session, is_valid_course_code, standardize_course_code
 
-def preprocess_data(
-        raw_data_courses: List[object], 
-        raw_data_ratings: List[List[str]]
-    ) -> Tuple[
-        List[Tuple[str, str, str, str]], 
+def preprocess_course_data(raw_data_courses: List[object]) -> List[Tuple[str, str, str, str]]:
+    data_courses = []
+    for record in raw_data_courses:
+        # standardizing inputs
+        code = standardize_course_code(record['code'])
+        name = record['name'].replace('"', "'")
+        subject = record['subject'].replace('"', "'")
+        description = record['description'].replace('"', "'") if record['description'] else "" # coercing empty descriptions into ""
+
+        data_courses.append((code, name, subject, description))
+    return data_courses
+
+def preprocess_class_data(raw_data_ratings: List[List[str]]) -> Tuple[
         List[Tuple[str, int, str, str, float, float]]
     ]:
+    data_classes = []
+    # Cleaning and Grouping raw data
     class_details = {}
     for record in raw_data_ratings:
         # standardizing inputs
@@ -37,26 +47,16 @@ def preprocess_data(
             class_details[class_identifier]["count"] += 1
             class_details[class_identifier]["profs"].append(prof) # Good to have: Handle misspelled profs, which results in false entries
 
-
     for class_identifier in class_details:
-        # Getting mean RMP ratings 
+        # generating aggregates
         count = class_details[class_identifier]["count"]
         class_details[class_identifier]["rate_difficulty"] /= count
         class_details[class_identifier]["rate_helpfulness"] /= count
+
+        # NOTE: assuming most frequently named prof will be correct
         found_profs_list = class_details[class_identifier]["profs"]
-        class_details[class_identifier]["prof"] = max(set(found_profs_list), key=found_profs_list.count) # assuming most frequently named prof will be correct
+        class_details[class_identifier]["prof"] = max(set(found_profs_list), key=found_profs_list.count)
 
-    data_courses = []
-    for record in raw_data_courses:
-        code = record['code']
-        name = record['name']
-        subject = record['subject']
-        description = record['description']
-        code = standardize_course_code(code)
-        data_courses.append((code, name, subject, description))
-
-    data_classes = []
-    for class_identifier in class_details:
         data_classes.append((
             *class_identifier, 
             class_details[class_identifier]["prof"], 
@@ -64,4 +64,4 @@ def preprocess_data(
             class_details[class_identifier]["rate_helpfulness"]
         ))
     
-    return data_courses, data_classes
+    return data_classes

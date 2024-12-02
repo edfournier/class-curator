@@ -1,5 +1,5 @@
 import json
-from utils.preprocessing import preprocess_data
+from utils.preprocessing import preprocess_class_data, preprocess_course_data
 from utils.sqlite3_ops import open_db_connection, purge_db
 
 ## file paths
@@ -24,7 +24,8 @@ with open(RATINGS_PATH, 'r') as ratings_file:
 
 
 ## --- Prepare Data --- ##
-data_courses, data_classes = preprocess_data(raw_data_courses, raw_data_ratings)
+data_courses = preprocess_course_data(raw_data_courses)
+data_classes = preprocess_class_data(raw_data_ratings)
 
 
 ## --- Reset, Create and Populate Database --- ##
@@ -35,10 +36,9 @@ purge_db(DB_PATH)
 db_connection = open_db_connection(DB_PATH)
 cursor = db_connection.cursor()
 
+# Table Creation
 with open(SETUP_QUERIES_PATH) as queries:
     queries = json.load(queries)
-
-    # Table Creation
     cursor.execute(queries['create_table_user'])
     cursor.execute(queries['create_table_course'])
     cursor.execute(queries['create_table_class'])
