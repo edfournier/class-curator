@@ -6,7 +6,7 @@
         "default_popup": "index.html"
     },
     "oauth2": {
-        "client_id": "1098071512272-dgetmpv0576s8g64neltjqrbnhkjdgec.apps.googleusercontent.com",
+        "client_id": "479457844079-lgvjuhf49sbhbpfrtohvk8drgadgcutl.apps.googleusercontent.com",
         "scopes":["email", "profile"]
     },
     "permissions": ["identity", "storage"],

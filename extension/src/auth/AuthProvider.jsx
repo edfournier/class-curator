@@ -1,5 +1,6 @@
 import { useState, createContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { getAuthCode } from "./auth.js";
 
 export const AuthContext = createContext();
 
@@ -7,10 +8,11 @@ function AuthProvider({ children }) {
     const [token, setToken] = useState(null);  
     const navigate = useNavigate();
 
-    async function login(details) {
+    async function login() {
         try {
-            // Get token from Chrome's built-in cache
-            const { token } = await chrome.identity.getAuthToken(details);
+            // TODO: attempt to login automatically by looking for token in cache
+            const code = await getAuthCode();
+            const token = ""; // TODO: exhange auth code for token
             setToken(token);
             navigate("/home");
         }

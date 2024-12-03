@@ -1,4 +1,4 @@
-import useAuth from "../auth/useAuth.js";
+import { useAuth } from "../auth/auth.js";
 import Spinner from "../components/Spinner";
 import { useState, useEffect } from "react";
 
@@ -8,10 +8,10 @@ import { useState, useEffect } from "react";
 function Login() {
     const { login } = useAuth();
     const [loading, setLoading] = useState(true);
-
+    
     useEffect(() => {
         // Attempts to automatically login
-        login({ interactive: false }).then(() => setLoading(false));
+        login().then(() => setLoading(false));
     }, []);
     
     return loading ? <Spinner /> : (
