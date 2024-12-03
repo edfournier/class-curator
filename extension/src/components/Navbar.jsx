@@ -8,10 +8,11 @@ function Link({ name, path }) {
         <NavLink
             to={path}
             className={({ isActive }) =>
-                "text-lg transition-colors pb-2 " + 
+                `text-lg transition-colors pb-2 ${
                     isActive
                         ? "text-indigo-500 border-b-4 border-indigo-500"
                         : "hover:text-indigo-500 hover:border-b-4 hover:border-indigo-500"
+                }`
             }
         >
             {name}
