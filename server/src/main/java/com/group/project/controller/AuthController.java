@@ -32,7 +32,7 @@ public class AuthController {
      * @param code - the authorization code 
      * @return a JSON object containing the access, refresh, and ID tokens
      */
-    @PostMapping("/google")
+    @PostMapping(value = "/google", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public ResponseEntity<String> exchangeGoogleAuthCode(@RequestParam String code) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);

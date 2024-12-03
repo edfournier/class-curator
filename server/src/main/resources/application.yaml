@@ -1,6 +1,6 @@
 oauth:
   google:
-    client_id: 1098071512272-t5s8fh6mlcn8dut8to6s2aq39cfed4k4.apps.googleusercontent.com
+    client_id: 479457844079-lgvjuhf49sbhbpfrtohvk8drgadgcutl.apps.googleusercontent.com
     client_secret: 
     redirect_uri: https://elkmicmjdcelmkdgjahgbbibkbgolalg.chromiumapp.org/
     token_endpoint: https://oauth2.googleapis.com/token
