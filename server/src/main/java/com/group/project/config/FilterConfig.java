@@ -18,7 +18,7 @@ public class FilterConfig {
         // Register the auth filter on private routes
         FilterRegistrationBean<AuthFilter> registration = new FilterRegistrationBean<>();
         registration.setFilter(authFilter);
-        registration.addUrlPatterns("/*"); 
+        registration.addUrlPatterns("/private/*"); 
         registration.setOrder(1); 
         return registration;
     }

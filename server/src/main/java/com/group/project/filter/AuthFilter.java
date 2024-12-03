@@ -40,7 +40,7 @@ public class AuthFilter extends OncePerRequestFilter {
         }
 
         try {      
-            // Decrypt JWT
+            // Decrypt and verify JWT
             String token = authHeader.substring(7); 
             SignedJWT jwt = SignedJWT.parse(token);
             RSAKey key = getPublicKey(jwt); 
@@ -49,8 +49,7 @@ public class AuthFilter extends OncePerRequestFilter {
 
             // Extract claims and pass to controller
             JWTClaimsSet claims = jwt.getJWTClaimsSet();            
-            String username = (String)claims.getClaim("email");; 
-            System.out.println("Authenticated user: " + username);
+            request.setAttribute("username", claims.getClaim("email"));
             filterChain.doFilter(request, response);
         } 
         catch (Exception e) {
@@ -60,6 +59,7 @@ public class AuthFilter extends OncePerRequestFilter {
 
     private RSAKey getPublicKey(SignedJWT jwt) throws IOException, ParseException {
         // Fetch certs from auth provider
+        // TODO: use caching, these keys change infrequently
         String jwks = rest.getForObject(certsEndpoint, String.class); 
 
         // Find the JWK with matching KID
