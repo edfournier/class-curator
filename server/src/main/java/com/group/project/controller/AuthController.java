@@ -1,5 +1,6 @@
 package com.group.project.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.util.LinkedMultiValueMap;
@@ -23,13 +24,16 @@ public class AuthController {
     @Value("${oauth.google.token_endpoint}")
     private String tokenEndpoint;
 
+    @Autowired
+    private RestTemplate rest;
+
     /**
      * Retrieves tokens from Google's token endpoint
      * @param code - the authorization code 
      * @return a JSON object containing the access, refresh, and ID tokens
      */
-    @PostMapping("/exchange")
-    public ResponseEntity<String> exchangeAuthCode(@RequestParam String code) {
+    @PostMapping("/google")
+    public ResponseEntity<String> exchangeGoogleAuthCode(@RequestParam String code) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 
@@ -39,8 +43,8 @@ public class AuthController {
         body.add("client_secret", clientSecret);
         body.add("redirect_uri", redirectURI);
         body.add("grant_type", "authorization_code");
+        body.add("access_type", "offline");
 
-        RestTemplate rest = new RestTemplate();
         return rest.exchange(
             tokenEndpoint,
             HttpMethod.POST,
