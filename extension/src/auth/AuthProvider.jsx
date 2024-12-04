@@ -1,6 +1,5 @@
 import { useState, createContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { getAuthCode } from "./auth.js";
 
 export const AuthContext = createContext();
 
@@ -10,16 +9,9 @@ function AuthProvider({ children }) {
 
     async function login() {
         try {
-            // TODO: attempt to login automatically by looking for token in cache
-            const code = await getAuthCode();
-            console.log(code);
-
-            // For some reason on MacOS, if you don't alert, the popup closes
-            if (/Macintosh|Mac OS X/i.test(navigator.userAgent)) {
-                alert("Welcome!");
-            }
-
-            const token = ""; // TODO: exchange auth code for token
+            // Get token from Chrome's built-in cache
+            const token = await chrome.identity.getAuthToken(); 
+            console.log(token);
             setToken(token);
             navigate("/home");
         }
