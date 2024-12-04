@@ -2,25 +2,7 @@ import { useState } from "react";
 import Navbar from "./Navbar";
 import { FaTimes, FaSearch } from "react-icons/fa"; 
 import { useLocation } from 'react-router-dom';
-
-const courses = [
-    {
-        id: 1,
-        name: "Data Structures",
-        code: "CS121",
-        likes: 10,
-        dislikes: 0,
-        description: "Learn about data organization, algorithms, and efficiency.",
-    },
-    {
-        id: 2,
-        name: "Basic Math",
-        code: "MATH101",
-        likes: 5,
-        dislikes: 1,
-        description: "A fundamental course covering arithmetic and basic algebra.",
-    }
-];
+import { fetchCourses } from "../spire-api/fetchCourses";
 
 function Course({ course, setCourse }) {
     return (
@@ -44,10 +26,12 @@ function Courses() {
 
     function search() {
         // TODO: Gets top 5 results, replace with API call 
+        const courses = fetchCourses();
         const lowered = query.toLowerCase();
         const filtered = courses.filter(course => 
-            course.name.toLowerCase().includes(lowered) || course.code.toLowerCase().includes(lowered)
+            course.name.toLowerCase().includes(lowered) || course.code.toLowerCase().includes(lowered) || course.subject.toLowerCase().includes(lowered)
         );
+        console.log(filtered);
 
         // Map each matched course to a search result tile
         setResults(filtered.slice(0, 5).map((course) => (
