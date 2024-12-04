@@ -53,7 +53,7 @@ function Courses() {
         setResults(filtered.slice(0, 5).map((course) => (
             <li
                 key={course.id}
-                className="flex justify-between border border-gray-700 hover:bg-gray-700 rounded-lg py-2 px-2 cursor-pointer"
+                className="flex justify-between border border-gray-700 hover:bg-gray-700 rounded-lg p-3 cursor-pointer"
                 onClick={() => setCourse(course)}
             >
                 <span className="text-sm text-white">{course.name}</span>

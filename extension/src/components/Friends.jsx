@@ -2,18 +2,22 @@ import { useEffect, useState } from "react";
 import Navbar from "./Navbar";
 import { FaTimes } from "react-icons/fa";
 import { BsSendFill } from "react-icons/bs";
+import { IoArrowBackSharp, IoArrowForwardSharp } from "react-icons/io5";
 
 function Friends() {
     const [friends, setFriends] = useState(null);
     const [email, setEmail] = useState("");
     const [page, setPage] = useState(1);
 
-    const maxTiles = 3
+    const maxTiles = 3;
     const last = page * maxTiles;
     const first = last - maxTiles;
     const tiles = friends?.slice(first, last)?.map(({ email, name }) => 
-        <div key={email} className="flex justify-between items-center bg-gray-900 text-white p-2 rounded-lg border border-gray-700" >
-            <span>{name} ({email})</span>
+        <div 
+            key={email} 
+            className="flex justify-between items-center text-white p-3 rounded-lg bg-gray-700 shadow-md"
+        >
+            <span className="font-semibold">{name} ({email})</span>
             <FaTimes onClick={() => removeFriend(email)} className="cursor-pointer" />
         </div>
     );
@@ -43,7 +47,7 @@ function Friends() {
     return (
         <>
             <Navbar />
-            <div className="max-w-4xl mx-auto px-2 py-3">
+            <div className="max-w-4xl mx-auto px-6 py-3">
                 <div className="flex justify-center mb-4">
                     <input
                         type="text"
@@ -57,23 +61,23 @@ function Friends() {
                     </button>
                 </div>
 
-                <div className="space-y-1">{tiles}</div>
-
+                <h2 className="text-white text-lg font-semibold mb-3 border-b-2 border-gray-600">Your Friends</h2>
+                <div className="space-y-2">{tiles}</div>
                 {friends && (
-                    <div className="flex justify-center mt-2">
+                    <div className="flex justify-center mt-4">
                         <button
                             disabled={page === 1}
                             onClick={() => setPage((prev) => prev - 1)}
-                            className="mr-2 disabled:opacity-10"
+                            className="mr-1 disabled:opacity-50"
                         >
-                            Back
+                            <IoArrowBackSharp />
                         </button>
                         <button
                             disabled={last >= friends.length}
                             onClick={() => setPage((prev) => prev + 1)}
-                            className="disabled:opacity-10"
+                            className="ml-1 disabled:opacity-50"
                         >
-                            Next
+                            <IoArrowForwardSharp />
                         </button>
                     </div>
                 )}
