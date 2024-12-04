@@ -7,10 +7,10 @@ function AuthProvider({ children }) {
     const [token, setToken] = useState(null);  
     const navigate = useNavigate();
 
-    async function login() {
+    async function login(details) {
         try {
             // Get token from Chrome's built-in cache
-            const token = await chrome.identity.getAuthToken(); 
+            const token = await chrome.identity.getAuthToken(details); 
             console.log(token);
             setToken(token);
             navigate("/home");
