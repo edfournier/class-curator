@@ -1,10 +1,11 @@
 import { useState } from "react";
 import Navbar from "./Navbar";
 import { FaTimes, FaPlus } from "react-icons/fa"; 
+import UserForm from "./UserForm";
 
 function Home() {
     const [tags, setTags] = useState([]); 
-    const [tag, setTag] = useState(""); // Captures user input
+    const [tag, setTag] = useState("");
 
     function addTag() {
         // Ensure tag isn't duplicate or blank
@@ -28,13 +29,13 @@ function Home() {
                         value={tag}
                         onChange={(e) => setTag(e.target.value)}
                         className="w-60"
-                        placeholder="Add a tag describing your interests..."
+                        placeholder="Enter a tag describing your interests..."
                     />
                     <button onClick={addTag} className="ml-1">
                         <FaPlus />
                     </button>
                 </div>
-                <div className="flex flex-wrap gap-2 mt-4">
+                <div className="flex flex-wrap gap-2 mt-4 mb-2">
                     {tags.map((tag) => (
                         <div
                             key={tag} 
@@ -44,6 +45,7 @@ function Home() {
                         </div>
                     ))}
                 </div>
+                <UserForm />
             </div>
         </>
     );
