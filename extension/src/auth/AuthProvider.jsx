@@ -12,7 +12,14 @@ function AuthProvider({ children }) {
         try {
             // TODO: attempt to login automatically by looking for token in cache
             const code = await getAuthCode();
-            const token = ""; // TODO: exhange auth code for token
+            console.log(code);
+
+            // For some reason on MacOS, if you don't alert, the popup closes
+            if (/Macintosh|Mac OS X/i.test(navigator.userAgent)) {
+                alert("Welcome!");
+            }
+
+            const token = ""; // TODO: exchange auth code for token
             setToken(token);
             navigate("/home");
         }
