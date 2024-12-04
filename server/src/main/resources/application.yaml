@@ -9,4 +9,11 @@ spring:
     port: 6379
     redis:
       time-to-live: 3600
-
+  datasource:
+    url: jdbc:sqlite:temp.db
+    driver-class-name: org.sqlite.JDBC
+  jpa:
+    show-sql: true
+    database-platform: org.hibernate.community.dialect.SQLiteDialect
+    hibernate:
+      ddl-auto: update
