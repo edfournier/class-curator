@@ -11,7 +11,8 @@ function Login() {
     
     useEffect(() => {
         // Attempts to automatically login
-        login().then(() => setLoading(false));
+        login({ interactive: false })
+            .then(() => setLoading(false));
     }, []);
     
     return loading ? <Spinner /> : (

@@ -8,6 +8,9 @@ export function useAuth() {
     return useContext(AuthContext);
 }
 
+/*
+ * Supposed to be used for auth code flow, but launchWebAuthFlow proved too buggy
+ */
 export async function getAuthCode() {
     const params = new URLSearchParams({
         response_type: "code",  
@@ -27,8 +30,4 @@ export async function getAuthCode() {
     // Parse code from redirect URL
     const url = new URL(redirectURL)
     return new URLSearchParams(url.search).get("code");
-}
-
-export async function exchangeAuthCode() {
-    
 }
