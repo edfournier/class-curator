@@ -2,11 +2,6 @@ package com.group.project.filter;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.nimbusds.jose.JWSVerifier;
-import com.nimbusds.jose.crypto.RSASSAVerifier;
-import com.nimbusds.jwt.JWTClaimsSet;
-import com.nimbusds.jwt.SignedJWT;
-import com.nimbusds.jose.jwk.RSAKey;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,8 +17,8 @@ import java.text.ParseException;
 @Component
 public class AuthFilter extends OncePerRequestFilter {
 
-    @Value("${oauth.google.certs_endpoint}")
-    private String certsEndpoint;
+    @Value("${oauth.google.tokeninfo}")
+    private String tokenInfoEndpoint;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -40,16 +35,10 @@ public class AuthFilter extends OncePerRequestFilter {
         }
 
         try {      
-            // Decrypt and verify JWT
             String token = authHeader.substring(7); 
-            SignedJWT jwt = SignedJWT.parse(token);
-            RSAKey key = getPublicKey(jwt); 
-            JWSVerifier verifier = new RSASSAVerifier(key.toRSAPublicKey());
-            jwt.verify(verifier);
-
-            // Extract claims and pass to controller
-            JWTClaimsSet claims = jwt.getJWTClaimsSet();            
-            request.setAttribute("username", claims.getClaim("email"));
+            JsonNode tokenInfo = getTokenInfo(token);     
+            String email = tokenInfo.get("email").asText();
+            request.setAttribute("username", email);
             filterChain.doFilter(request, response);
         } 
         catch (Exception e) {
@@ -57,19 +46,10 @@ public class AuthFilter extends OncePerRequestFilter {
         }
     }
 
-    private RSAKey getPublicKey(SignedJWT jwt) throws IOException, ParseException {
-        // Fetch certs from auth provider
-        // TODO: use caching, these keys change infrequently
-        String jwks = rest.getForObject(certsEndpoint, String.class); 
-
-        // Find the JWK with matching KID
-        String target = jwt.getHeader().getKeyID();
-        JsonNode keys = objectMapper.readTree(jwks).get("keys");
-        for (JsonNode key : keys) {
-            if (key.get("kid").asText().equals(target)) {
-                return RSAKey.parse(key.toString());
-            }
-        }
-        return null;
+    private JsonNode getTokenInfo(String token) throws IOException, ParseException {
+        // TODO: add caching here to avoid hitting tokeninfo every time
+        String res = rest.getForObject(tokenInfoEndpoint + "?access_token=" + token, String.class);
+        JsonNode tokenInfo = objectMapper.readTree(res);
+        return tokenInfo;
     }
 }
