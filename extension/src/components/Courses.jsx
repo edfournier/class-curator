@@ -2,7 +2,7 @@ import { useState } from "react";
 import Navbar from "./Navbar";
 import { FaTimes, FaSearch } from "react-icons/fa"; 
 import { useLocation } from 'react-router-dom';
-import { fetchCourses } from "../spire-api/fetchCourses";
+import { fetchCourseResults } from "../api/courses";
 
 function Course({ course, setCourse }) {
     return (
@@ -24,17 +24,10 @@ function Courses() {
     const [course, setCourse] = useState(null); 
     const [results, setResults] = useState([]); 
 
-    function search() {
-        // TODO: Gets top 5 results, replace with API call 
-        const courses = fetchCourses();
-        const lowered = query.toLowerCase();
-        const filtered = courses.filter(course => 
-            course.name.toLowerCase().includes(lowered) || course.code.toLowerCase().includes(lowered) || course.subject.toLowerCase().includes(lowered)
-        );
-        console.log(filtered);
-
-        // Map each matched course to a search result tile
-        setResults(filtered.slice(0, 5).map((course) => (
+    async function search() {
+        // Fetch results and map each matched course to a search result tile
+        const courses = await fetchCourseResults(query);
+        setResults(courses.map((course) => (
             <li
                 key={course.id}
                 className="flex justify-between border border-gray-700 hover:bg-gray-700 rounded-lg p-3 cursor-pointer"
