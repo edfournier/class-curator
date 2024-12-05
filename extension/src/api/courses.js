@@ -9,7 +9,7 @@ export async function fetchCourseResults(query) {
 }
 
 export async function fetchCourse(id) {
-    return Promise.resolve([
+    return Promise.resolve(
         {
             id: 1,
             name: "Data Structures",
@@ -17,14 +17,6 @@ export async function fetchCourse(id) {
             likes: 10,
             dislikes: 0,
             description: "Learn about data organization, algorithms, and efficiency.",
-        },
-        {
-            id: 2,
-            name: "Basic Math",
-            code: "MATH101",
-            likes: 5,
-            dislikes: 1,
-            description: "A fundamental course covering arithmetic and basic algebra.",
         }
-    ]);
+    );
 }

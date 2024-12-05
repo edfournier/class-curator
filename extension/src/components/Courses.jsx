@@ -2,7 +2,7 @@ import { useState } from "react";
 import Navbar from "./Navbar";
 import { FaTimes, FaSearch } from "react-icons/fa"; 
 import { useLocation } from 'react-router-dom';
-import { fetchCourseResults } from "../api/courses";
+import { fetchCourse, fetchCourseResults } from "../api/courses";
 
 function Course({ course, setCourse }) {
     return (
@@ -20,7 +20,7 @@ function Course({ course, setCourse }) {
 
 function Courses() {
     const location = useLocation();
-    const [query, setQuery] = useState(location?.state?.course || "");
+    const [query, setQuery] = useState(location?.state?.course || ""); // Handles open-popup trigger
     const [course, setCourse] = useState(null); 
     const [results, setResults] = useState([]); 
 
@@ -31,12 +31,17 @@ function Courses() {
             <li
                 key={course.id}
                 className="flex justify-between border border-gray-700 hover:bg-gray-700 rounded-lg p-3 cursor-pointer"
-                onClick={() => setCourse(course)}
+                onClick={() => showCourse(course)}
             >
                 <span className="text-sm text-white">{course.name}</span>
                 <span className="text-sm text-gray-400">{course.code}</span>
             </li>
         )));
+    }
+
+    async function showCourse(course) {
+        const result = await fetchCourse(course.id);
+        setCourse(result);
     }
 
     return (
