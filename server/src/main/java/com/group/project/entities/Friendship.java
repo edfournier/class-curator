@@ -1,20 +1,20 @@
 package com.group.project.entities;
 
+import com.group.common.types.FriendshipId;
+
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.IdClass;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
-@Entity
+@Entity @IdClass(FriendshipId.class)
 public class Friendship {
     @Id
-    @GeneratedValue
-    private long id;
-
     @ManyToOne @JoinColumn(name = "user_1_id", referencedColumnName = "id")
     private User user1;
 
+    @Id
     @ManyToOne @JoinColumn(name = "user_2_id", referencedColumnName = "id")
     private User user2;
 

@@ -10,7 +10,7 @@ spring:
     redis:
       time-to-live: 3600
   datasource:
-    url: jdbc:sqlite:temp.db
+    url: jdbc:sqlite:class_c.db
     driver-class-name: org.sqlite.JDBC
   jpa:
     show-sql: true

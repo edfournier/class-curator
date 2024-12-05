@@ -21,14 +21,14 @@ import com.group.project.repositories.UserRepository;
 
 @RestController
 @RequestMapping("/private/friendship")  
-public class FriendController {
+public class FriendshipController {
 
     @Autowired
     private final FriendshipRepository friendshipRepository;
     @Autowired
     private final UserRepository userRepository;
 
-    public FriendController(FriendshipRepository friendshipRepository, UserRepository userRepository) {
+    public FriendshipController(FriendshipRepository friendshipRepository, UserRepository userRepository) {
         this.friendshipRepository = friendshipRepository;
         this.userRepository = userRepository;
     }

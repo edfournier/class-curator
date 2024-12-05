@@ -1,6 +1,8 @@
 package com.group.common.types;
 
-public class UniversitySession {
+import java.io.Serializable;
+
+public class UniversitySession implements Serializable{
     public int year;
     public String semester;
 
