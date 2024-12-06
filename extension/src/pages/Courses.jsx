@@ -58,7 +58,12 @@ function Courses() {
             {course 
                 // Either render the search results or the selected course
                 ? <Course course={course} setCourse={setCourse} />
-                : results.length > 0 && <ul className="space-y-1">{results}</ul>
+                : results.length > 0 && (
+                    <>
+                        <h1>Search Results</h1> 
+                        <ul className="space-y-1">{results}</ul>
+                    </>
+                )
             }
         </div>
     );

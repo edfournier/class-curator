@@ -35,7 +35,7 @@ function Home() {
                 {tags.map((tag) => (
                     <div
                         key={tag} 
-                        className="px-4 py-2 rounded-full border-gray-300 bg-gray-200 font-medium flex items-center gap-2"
+                        className="px-4 py-2 text-black rounded-full border-gray-300 bg-gray-200 font-medium flex items-center gap-2"
                     >
                         <FaTimes onClick={() => removeTag(tag)} className="cursor-pointer" /> {tag}
                     </div>
