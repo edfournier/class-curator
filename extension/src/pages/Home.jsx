@@ -1,10 +1,20 @@
 import { useState } from "react";
 import { FaTimes, FaPlus } from "react-icons/fa"; 
-import UserForm from "../components/UserForm";
+import FormField from "../components/FormField";
 
 function Home() {
     const [tags, setTags] = useState([]); 
     const [tag, setTag] = useState("");
+
+    const tagTiles = tags.map((tag) => (
+        <div
+            key={tag} 
+            className="px-4 py-2 text-black rounded-full bg-gray-200 font-medium flex items-center"
+        >
+            <FaTimes onClick={() => removeTag(tag)} className="cursor-pointer" /> 
+            {tag}
+        </div>
+    ));
 
     function addTag() {
         // Ensure tag isn't duplicate or blank
@@ -18,32 +28,35 @@ function Home() {
         setTags(tags.filter(tag => tag !== target));
     }
 
+    function save(e) {
+        e.preventDefault();
+        console.log(e.target.elements.major.value);
+        console.log(e.target.elements.minor.value);
+        console.log(e.target.elements.year.value);
+    }
+
     return (
         <div className="max-w-4xl mx-auto px-6 py-3">
-            <div className="flex justify-center mb-4">
-                <input
-                    type="text"
-                    value={tag}
-                    onChange={(e) => setTag(e.target.value)}
-                    className="w-60"
-                    placeholder="Enter a tag describing your interests..."
-                />
-                <button onClick={addTag} className="ml-1"><FaPlus /></button>
-            </div>
-
-            <div className="flex flex-wrap gap-2">
-                {tags.map((tag) => (
-                    <div
-                        key={tag} 
-                        className="px-4 py-2 text-black rounded-full border-gray-300 bg-gray-200 font-medium flex items-center gap-2"
-                    >
-                        <FaTimes onClick={() => removeTag(tag)} className="cursor-pointer" /> {tag}
-                    </div>
-                ))}
-            </div>
-
             <h1>Your Profile</h1>
-            <UserForm />
+            <form className="max-w-lg mx-auto space-y-4" onSubmit={save}>
+                <FormField label="major" type={"text"} placeholder={"E.g. Computer Science"}/>
+                <FormField label="minor" type={"text"} placeholder={"E.g. Linguistics"}/>
+                <FormField label="year"  type={"number"} placeholder={"E.g. 2025"}/>
+                <div className="flex justify-center mb-4">
+                    <input
+                        type="text"
+                        value={tag}
+                        onChange={(e) => setTag(e.target.value)}
+                        className="w-60"
+                        placeholder="Enter a tag describing your interests..."
+                    />
+                    <button type="button" onClick={addTag} className="ml-1"><FaPlus /></button>
+                </div>
+                <div className="flex flex-wrap gap-2">{tagTiles}</div>
+                <button type="submit" className="w-full">
+                    Save Changes
+                </button>
+            </form>
         </div>
     );
 }

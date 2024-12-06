@@ -1,21 +1,8 @@
 import { useState } from "react";
-import { FaTimes, FaSearch } from "react-icons/fa"; 
+import { FaSearch } from "react-icons/fa"; 
 import { useLocation } from "react-router-dom";
 import { fetchCourse, fetchCourseResults } from "../api/courses";
-
-function Course({ course, setCourse }) {
-    return (
-        <div className="bg-gray-900 p-3 rounded-lg shadow-lg border border-gray-700 flex flex-col">
-            <div className="flex justify-between">
-                <h1 className="text-xl font-bold">{course.name}</h1>
-                <FaTimes onClick={() => setCourse(null)} className="cursor-pointer" />
-            </div>
-            <p className="text-sm text-gray-400 mb-2">{course.code}</p>
-            <div className="mb-2">👍 {course.likes} | 👎 {course.dislikes}</div>
-            <p className="flex-grow">{course.description}</p>
-        </div>
-    );
-}
+import Course from "../components/Course";
 
 function Courses() {
     const location = useLocation();
@@ -56,7 +43,7 @@ function Courses() {
                 <button onClick={search} className="ml-1"><FaSearch /></button>
             </div>
             {course 
-                // Either render the search results or the selected course
+                // Either render the search results or the selected course's page
                 ? <Course course={course} setCourse={setCourse} />
                 : results.length > 0 && (
                     <>

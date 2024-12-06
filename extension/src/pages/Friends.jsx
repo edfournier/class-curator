@@ -11,7 +11,7 @@ function Friends() {
     const maxTiles = 3;
     const last = page * maxTiles;
     const first = last - maxTiles;
-    const tiles = friends?.slice(first, last)?.map(({ email, name }) => 
+    const friendTiles = friends?.slice(first, last)?.map(({ email, name }) => 
         <div 
             key={email} 
             className="flex justify-between items-center p-3 rounded-lg bg-gray-700 shadow-md"
@@ -23,7 +23,6 @@ function Friends() {
 
     function requestFriend() {
         // TODO: make API call
-        console.log(email);
         setEmail("");
     }
 
@@ -45,19 +44,20 @@ function Friends() {
 
     return (
         <div className="max-w-4xl mx-auto px-6 py-3">
+            <h1>Friend Requests</h1>
             <div className="flex justify-center mb-4">
                 <input
                     type="text"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     className="w-60"
-                    placeholder="Enter a UMass email to friend..."
+                    placeholder="Enter a UMass email address..."
                 />
                 <button onClick={requestFriend} className="ml-1"><BsSendFill /></button>
             </div>
 
             <h1>Your Friends</h1>
-            <div className="space-y-2">{tiles}</div>
+            <div className="space-y-2">{friendTiles}</div>
             {friends && (
                 <div className="flex justify-center mt-4">
                     <button
