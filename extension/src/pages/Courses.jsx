@@ -13,16 +13,7 @@ function Courses() {
     async function search() {
         // Fetch results and map each matched course to a search result tile
         const courses = await fetchCourseResults(query);
-        setResults(courses.map((course) => (
-            <li
-                key={course.id}
-                className="flex justify-between border border-gray-700 hover:bg-gray-700 rounded-lg p-3 cursor-pointer"
-                onClick={() => showCourse(course)}
-            >
-                <span className="text-sm">{course.name}</span>
-                <span className="text-sm text-gray-400">{course.code}</span>
-            </li>
-        )));
+        setResults(courses);
     }
 
     async function showCourse(course) {
@@ -32,6 +23,7 @@ function Courses() {
 
     return (
         <div className="max-w-4xl mx-auto px-6 py-3">
+            <h1>Course Search</h1> 
             <div className="flex justify-center mb-4">
                 <input
                     type="text"
@@ -46,12 +38,14 @@ function Courses() {
             {course 
                 // Either render the search results or the selected course's page
                 ? <Course course={course} setCourse={setCourse} />
-                : results.length > 0 && (
-                    <>
-                        <h1>Search Results</h1> 
-                        <ul className="space-y-1">{results}</ul>
-                    </>
-                )
+                : <ul className="space-y-1">
+                    {results.map((course) => 
+                        <li key={course.id} className="flex justify-between" onClick={() => showCourse(course)}>
+                            <span className="text-sm">{course.name}</span>
+                            <span className="text-xs text-gray-400">{course.code}</span>
+                        </li>
+                    )}
+                </ul>
             }
         </div>
     );

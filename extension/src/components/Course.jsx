@@ -4,7 +4,7 @@ function Course({ course, setCourse }) {
     return (
         <div className="bg-gray-900 p-3 rounded-lg shadow-lg border border-gray-700 flex flex-col">
             <div className="flex justify-between">
-                <h1 className="text-xl font-bold">{course.name}</h1>
+                <h2>{course.name}</h2>
                 <FaTimes onClick={() => setCourse(null)} className="cursor-pointer" />
             </div>
             <p className="text-sm text-gray-400 mb-2">{course.code}</p>

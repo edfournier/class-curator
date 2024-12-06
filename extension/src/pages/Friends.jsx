@@ -1,25 +1,18 @@
 import { useEffect, useState } from "react";
-import { FaTimes } from "react-icons/fa";
 import { BsSendFill } from "react-icons/bs";
 import { IoArrowBackSharp, IoArrowForwardSharp } from "react-icons/io5";
+import Friend from "../components/Friend";
 
 function Friends() {
-    const [friends, setFriends] = useState(null);
+    const [friends, setFriends] = useState([]);
+    const [friend, setFriend] = useState(null);
     const [email, setEmail] = useState("");
     const [page, setPage] = useState(1);
 
-    const maxTiles = 3;
+    const maxTiles = 4;
     const last = page * maxTiles;
     const first = last - maxTiles;
-    const friendTiles = friends?.slice(first, last)?.map(({ email, name }) => 
-        <div 
-            key={email} 
-            className="flex justify-between items-center p-3 rounded-lg bg-gray-700 shadow-md"
-        >
-            <span className="font-semibold">{name} ({email})</span>
-            <FaTimes onClick={() => removeFriend(email)} className="cursor-pointer" />
-        </div>
-    );
+    const visibleFriends = friends.slice(first, last);
 
     function requestFriend() {
         // TODO: make API call
@@ -38,7 +31,7 @@ function Friends() {
             { name: "Bob", email: "bob@umass.edu" },
             { name: "Charlie", email: "charlie@umass.edu" },
             { name: "David", email: "david@umass.edu" },
-            { name: "Eve", email: "eve@umass.edu" },
+            { name: "Eva", email: "eva@umass.edu" }
         ]);
     }, []);
 
@@ -57,25 +50,28 @@ function Friends() {
             </div>
 
             <h1>Your Friends</h1>
-            <div className="space-y-2">{friendTiles}</div>
-            {friends && (
-                <div className="flex justify-center mt-4">
-                    <button
-                        disabled={page === 1}
-                        onClick={() => setPage((prev) => prev - 1)}
-                        className="mr-1 disabled:opacity-50"
-                    >
-                        <IoArrowBackSharp />
-                    </button>
-                    <button
-                        disabled={last >= friends.length}
-                        onClick={() => setPage((prev) => prev + 1)}
-                        className="ml-1 disabled:opacity-50"
-                    >
-                        <IoArrowForwardSharp />
-                    </button>
-                </div>
-            )}
+            {friend 
+                // Either render selected friend's page or the friends list
+                ? <Friend friend={friend} setFriend={setFriend} />
+                : <>
+                    <ul className="space-y-1">
+                        {visibleFriends.map((friend) => 
+                            <li key={friend.email} className="flex justify-between" onClick={() => setFriend(friend)}>
+                                <span className="text-sm font-medium">{friend.name}</span>
+                                <span className="text-xs text-gray-400">{friend.email}</span>
+                            </li>
+                        )}
+                    </ul>
+                    <div className="flex justify-center mt-4">
+                        <button disabled={page <= 1} onClick={() => setPage(page - 1)} className="mr-1 disabled:opacity-50">
+                            <IoArrowBackSharp />
+                        </button>
+                        <button disabled={last >= friends.length} onClick={() => setPage(page + 1)} className="ml-1 disabled:opacity-50">
+                            <IoArrowForwardSharp />
+                        </button>
+                    </div>
+                </>
+            }
         </div>
     );
 }
