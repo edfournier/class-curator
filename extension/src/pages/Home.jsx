@@ -51,6 +51,7 @@ function Home() {
                 <div className="flex justify-center mb-4">
                     <input
                         type="text"
+                        spellCheck={true}
                         value={tag}
                         onChange={(e) => setTag(e.target.value)}
                         className="w-60"

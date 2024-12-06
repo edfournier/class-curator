@@ -5,6 +5,7 @@ function FormField({ label, type="text", placeholder, onChange }) {
                 {label.charAt(0).toUpperCase()+ label.slice(1)}
             </label>
             <input 
+                spellCheck={true}
                 onChange={onChange}
                 type={type}
                 name={label} 

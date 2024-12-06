@@ -35,6 +35,7 @@ function Courses() {
             <div className="flex justify-center mb-4">
                 <input
                     type="text"
+                    spellCheck={true}
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
                     className="w-60"
