@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import Navbar from "./Navbar";
 import { FaTimes } from "react-icons/fa";
 import { BsSendFill } from "react-icons/bs";
 import { IoArrowBackSharp, IoArrowForwardSharp } from "react-icons/io5";
@@ -45,44 +44,41 @@ function Friends() {
     }, []);
 
     return (
-        <>
-            <Navbar />
-            <div className="max-w-4xl mx-auto px-6 py-3">
-                <div className="flex justify-center mb-4">
-                    <input
-                        type="text"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        className="w-60"
-                        placeholder="Enter a UMass email to friend..."
-                    />
-                    <button onClick={requestFriend} className="ml-1">
-                        <BsSendFill />
+        <div className="max-w-4xl mx-auto px-6 py-3">
+            <div className="flex justify-center mb-4">
+                <input
+                    type="text"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="w-60"
+                    placeholder="Enter a UMass email to friend..."
+                />
+                <button onClick={requestFriend} className="ml-1">
+                    <BsSendFill />
+                </button>
+            </div>
+
+            <h2 className="text-white text-lg font-semibold mb-3 border-b-2 border-gray-600">Your Friends</h2>
+            <div className="space-y-2">{tiles}</div>
+            {friends && (
+                <div className="flex justify-center mt-4">
+                    <button
+                        disabled={page === 1}
+                        onClick={() => setPage((prev) => prev - 1)}
+                        className="mr-1 disabled:opacity-50"
+                    >
+                        <IoArrowBackSharp />
+                    </button>
+                    <button
+                        disabled={last >= friends.length}
+                        onClick={() => setPage((prev) => prev + 1)}
+                        className="ml-1 disabled:opacity-50"
+                    >
+                        <IoArrowForwardSharp />
                     </button>
                 </div>
-
-                <h2 className="text-white text-lg font-semibold mb-3 border-b-2 border-gray-600">Your Friends</h2>
-                <div className="space-y-2">{tiles}</div>
-                {friends && (
-                    <div className="flex justify-center mt-4">
-                        <button
-                            disabled={page === 1}
-                            onClick={() => setPage((prev) => prev - 1)}
-                            className="mr-1 disabled:opacity-50"
-                        >
-                            <IoArrowBackSharp />
-                        </button>
-                        <button
-                            disabled={last >= friends.length}
-                            onClick={() => setPage((prev) => prev + 1)}
-                            className="ml-1 disabled:opacity-50"
-                        >
-                            <IoArrowForwardSharp />
-                        </button>
-                    </div>
-                )}
-            </div>
-        </>
+            )}
+        </div>
     );
 }
 

@@ -1,7 +1,6 @@
-import { useRef } from 'react';
+import { useRef } from "react";
 
 function Field({ label, inputRef, type, placeholder }) {
-    console.log(placeholder)
     return (
         <div className="flex items-center space-x-4">
             <label htmlFor={label} className="text-sm font-medium text-white text-center w-12">{label}</label>

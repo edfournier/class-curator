@@ -1,7 +1,6 @@
 import { useState } from "react";
-import Navbar from "./Navbar";
 import { FaTimes, FaSearch } from "react-icons/fa"; 
-import { useLocation } from 'react-router-dom';
+import { useLocation } from "react-router-dom";
 import { fetchCourse, fetchCourseResults } from "../api/courses";
 
 function Course({ course, setCourse }) {
@@ -45,28 +44,25 @@ function Courses() {
     }
 
     return (
-        <>
-            <Navbar />
-            <div className="max-w-xl mx-auto px-4 py-3">
-                <div className="flex justify-center mb-4">
-                    <input
-                        type="text"
-                        value={query}
-                        onChange={(e) => setQuery(e.target.value)}
-                        className="w-60"
-                        placeholder="Search a course by code or name..."
-                    />
-                    <button onClick={search} className="ml-1">
-                        <FaSearch />
-                    </button>
-                </div>
-                {course 
-                    // Either render the search results or the selected course
-                    ? <Course course={course} setCourse={setCourse} />
-                    : results.length > 0 && <ul className="space-y-1">{results}</ul>
-                }
+        <div className="max-w-xl mx-auto px-4 py-3">
+            <div className="flex justify-center mb-4">
+                <input
+                    type="text"
+                    value={query}
+                    onChange={(e) => setQuery(e.target.value)}
+                    className="w-60"
+                    placeholder="Search a course by code or name..."
+                />
+                <button onClick={search} className="ml-1">
+                    <FaSearch />
+                </button>
             </div>
-        </>
+            {course 
+                // Either render the search results or the selected course
+                ? <Course course={course} setCourse={setCourse} />
+                : results.length > 0 && <ul className="space-y-1">{results}</ul>
+            }
+        </div>
     );
 }
 

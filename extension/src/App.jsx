@@ -1,10 +1,11 @@
 import { MemoryRouter, Routes, Route } from "react-router-dom"; // Memory router since extensions don't have browser history
-import Login from "./components/Login";
-import Home from "./components/Home";
-import Friends from "./components/Friends";
+import Login from "./pages/Login";
+import Home from "./pages/Home";
+import Friends from "./pages/Friends";
+import Courses from "./pages/Courses";
 import AuthProvider from "./auth/AuthProvider";
-import Courses from "./components/Courses";
 import Listener from "./components/Listener";
+import Layout from "./components/Layout"
 
 function App() {
     return (
@@ -13,9 +14,9 @@ function App() {
                 <AuthProvider>
                     <Routes>
                         <Route path="/" element={<Login />} />
-                        <Route path="/home" element={<Home />} />
-                        <Route path="/friends" element={<Friends />} />
-                        <Route path="/courses" element={<Courses />} />
+                        <Route path="/home" element={<Layout><Home /></Layout>} />
+                        <Route path="/friends" element={<Layout><Friends /></Layout>} />
+                        <Route path="/courses" element={<Layout><Courses /></Layout>} />
                     </Routes>
                 </AuthProvider>
             </Listener>
