@@ -8,11 +8,14 @@ function Home() {
 
     const tagTiles = tags.map((tag) => (
         <div
-            key={tag} 
-            className="px-4 py-2 text-black rounded-full bg-gray-200 font-medium flex items-center"
+            key={tag}
+            className="px-3 py-1 text-black rounded-full bg-indigo-100 font-medium flex items-center space-x-2"
         >
-            <FaTimes onClick={() => removeTag(tag)} className="cursor-pointer" /> 
-            {tag}
+            <FaTimes 
+                onClick={() => removeTag(tag)} 
+                className="cursor-pointer text-black hover:text-indigo-600"
+            /> 
+            <span className="text-sm font-medium">{tag}</span>
         </div>
     ));
 
@@ -29,6 +32,7 @@ function Home() {
     }
 
     function save(e) {
+        // TODO: make API call
         e.preventDefault();
         console.log(e.target.elements.major.value);
         console.log(e.target.elements.minor.value);
@@ -52,10 +56,10 @@ function Home() {
                     />
                     <button type="button" onClick={addTag} className="ml-1"><FaPlus /></button>
                 </div>
-                <div className="flex flex-wrap gap-2">{tagTiles}</div>
-                <button type="submit" className="w-full">
-                    Save Changes
-                </button>
+                {tagTiles.length > 0 
+                    && <div className="flex flex-wrap gap-1 overflow-y-auto max-h-20">{tagTiles}</div>
+                }
+                <button type="submit" className="w-full">Save Changes</button>
             </form>
         </div>
     );

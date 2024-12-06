@@ -24,4 +24,25 @@
     h1 {
         @apply text-lg font-semibold mb-3 border-b-2 border-gray-600;
     }
+
+    ::-webkit-scrollbar {
+        width: 8px; 
+        height: 8px
+    }
+    
+    ::-webkit-scrollbar-track {
+        background-color: white;
+        border-radius: 10px;
+    }
+    
+    ::-webkit-scrollbar-thumb {
+        background-color: #6b7280; 
+        border-radius: 10px;
+        border: 1px solid white; 
+    }
+
+    ::-webkit-scrollbar-corner {
+        background: transparent;  
+    }
+
 }
