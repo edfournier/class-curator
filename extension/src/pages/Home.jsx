@@ -19,8 +19,8 @@ function Home() {
     }
 
     return (
-        <div className="max-w-4xl mx-auto px-2 py-3">
-            <div className="flex justify-center">
+        <div className="max-w-4xl mx-auto px-6 py-3">
+            <div className="flex justify-center mb-4">
                 <input
                     type="text"
                     value={tag}
@@ -28,11 +28,10 @@ function Home() {
                     className="w-60"
                     placeholder="Enter a tag describing your interests..."
                 />
-                <button onClick={addTag} className="ml-1">
-                    <FaPlus />
-                </button>
+                <button onClick={addTag} className="ml-1"><FaPlus /></button>
             </div>
-            <div className="flex flex-wrap gap-2 mt-4 mb-2">
+
+            <div className="flex flex-wrap gap-2">
                 {tags.map((tag) => (
                     <div
                         key={tag} 
@@ -42,6 +41,8 @@ function Home() {
                     </div>
                 ))}
             </div>
+
+            <h1>Your Profile</h1>
             <UserForm />
         </div>
     );

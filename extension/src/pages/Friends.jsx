@@ -14,7 +14,7 @@ function Friends() {
     const tiles = friends?.slice(first, last)?.map(({ email, name }) => 
         <div 
             key={email} 
-            className="flex justify-between items-center text-white p-3 rounded-lg bg-gray-700 shadow-md"
+            className="flex justify-between items-center p-3 rounded-lg bg-gray-700 shadow-md"
         >
             <span className="font-semibold">{name} ({email})</span>
             <FaTimes onClick={() => removeFriend(email)} className="cursor-pointer" />
@@ -53,12 +53,10 @@ function Friends() {
                     className="w-60"
                     placeholder="Enter a UMass email to friend..."
                 />
-                <button onClick={requestFriend} className="ml-1">
-                    <BsSendFill />
-                </button>
+                <button onClick={requestFriend} className="ml-1"><BsSendFill /></button>
             </div>
 
-            <h2 className="text-white text-lg font-semibold mb-3 border-b-2 border-gray-600">Your Friends</h2>
+            <h1>Your Friends</h1>
             <div className="space-y-2">{tiles}</div>
             {friends && (
                 <div className="flex justify-center mt-4">
