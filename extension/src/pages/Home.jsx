@@ -5,24 +5,13 @@ import FormField from "../components/FormField";
 function Home() {
     const [tags, setTags] = useState([]); 
     const [tag, setTag] = useState("");
-
-    const tagTiles = tags.map((tag) => (
-        <div
-            key={tag}
-            className="px-3 py-1 text-black rounded-full bg-indigo-100 font-medium flex items-center space-x-2"
-        >
-            <FaTimes 
-                onClick={() => removeTag(tag)} 
-                className="cursor-pointer text-black hover:text-indigo-600"
-            /> 
-            <span className="text-sm font-medium">{tag}</span>
-        </div>
-    ));
+    const [modified, setModified] = useState(false);
 
     function addTag() {
         // Ensure tag isn't duplicate or blank
         if (tag && !tags.includes(tag)) {
             setTags([...tags, tag]);
+            handleChange();
         }
         setTag(""); 
     }
@@ -31,21 +20,34 @@ function Home() {
         setTags(tags.filter(tag => tag !== target));
     }
 
-    function save(e) {
+    function handleChange() {
+        setModified(true);
+    }
+
+    function handleSave(e) {
         // TODO: make API call
         e.preventDefault();
         console.log(e.target.elements.major.value);
         console.log(e.target.elements.minor.value);
         console.log(e.target.elements.year.value);
+        setModified(false);
     }
+
+    // Map user's tags to clickable tiles
+    const tagTiles = tags.map((tag) => (
+        <div key={tag} className="px-3 py-1 text-black rounded-full bg-indigo-100 flex items-center space-x-2">
+            <FaTimes onClick={() => removeTag(tag)} className="cursor-pointer hover:text-indigo-600"/> 
+            <span className="text-sm">{tag}</span>
+        </div>
+    ));
 
     return (
         <div className="max-w-4xl mx-auto px-6 py-3">
-            <h1>Your Profile</h1>
-            <form className="max-w-lg mx-auto space-y-4" onSubmit={save}>
-                <FormField label="major" type={"text"} placeholder={"E.g. Computer Science"}/>
-                <FormField label="minor" type={"text"} placeholder={"E.g. Linguistics"}/>
-                <FormField label="year"  type={"number"} placeholder={"E.g. 2025"}/>
+            <h1>{modified ? "Your Profile*" : "Your Profile"}</h1>
+            <form className="max-w-lg mx-auto space-y-4" onSubmit={handleSave} >
+                <FormField label="major" placeholder={"E.g. Computer Science"} onChange={handleChange} />
+                <FormField label="minor" placeholder={"E.g. Linguistics"} onChange={handleChange}/>
+                <FormField label="year"  type={"number"} placeholder={"E.g. 2025"} onChange={handleChange}/>
                 <div className="flex justify-center mb-4">
                     <input
                         type="text"

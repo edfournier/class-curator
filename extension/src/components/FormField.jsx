@@ -1,10 +1,11 @@
-function FormField({ label, type, placeholder }) {
+function FormField({ label, type="text", placeholder, onChange }) {
     return (
         <div className="flex items-center space-x-4">
             <label htmlFor={label} className="text-sm font-medium text-center w-12">
                 {label.charAt(0).toUpperCase()+ label.slice(1)}
             </label>
             <input 
+                onChange={onChange}
                 type={type}
                 name={label} 
                 id={label} 
