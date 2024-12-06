@@ -9,7 +9,7 @@ function Friends() {
     const [email, setEmail] = useState("");
     const [page, setPage] = useState(1);
 
-    const maxTiles = 4;
+    const maxTiles = 3;
     const last = page * maxTiles;
     const first = last - maxTiles;
     const visibleFriends = friends.slice(first, last);
@@ -52,7 +52,7 @@ function Friends() {
             <h1>Your Friends</h1>
             {friend 
                 // Either render selected friend's page or the friends list
-                ? <Friend friend={friend} setFriend={setFriend} />
+                ? <Friend friend={friend} setFriend={setFriend} onClose={() => setFriend(null)}/>
                 : <>
                     <ul className="space-y-1">
                         {visibleFriends.map((friend) => 

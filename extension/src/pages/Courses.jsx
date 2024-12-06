@@ -37,7 +37,7 @@ function Courses() {
             </div>
             {course 
                 // Either render the search results or the selected course's page
-                ? <Course course={course} setCourse={setCourse} />
+                ? <Course course={course} setCourse={setCourse} onClose={() => setCourse(null)}/>
                 : <ul className="space-y-1">
                     {results.map((course) => 
                         <li key={course.id} className="flex justify-between" onClick={() => showCourse(course)}>
