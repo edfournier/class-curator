@@ -17,7 +17,6 @@ function Home() {
             setModified(true);
         }
         setTag(""); 
-        alerts.error("Hey!");
     }
 
     function removeTag(target) {
