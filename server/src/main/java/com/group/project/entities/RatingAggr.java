@@ -3,13 +3,15 @@ package com.group.project.entities;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.IdClass;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
 @Entity
+@IdClass(UniClass.class)
 public class RatingAggr {
     @Id @ManyToOne @JoinColumn(name="class_id", referencedColumnName = "id")
-    private UniClass uni_class;
+    private UniClass uniClass;
 
     @ManyToOne @JoinColumn(name="course_id", referencedColumnName = "id")
     private Course course;
@@ -23,15 +25,15 @@ public class RatingAggr {
     public RatingAggr() {
     }
 
-    public RatingAggr(UniClass uni_class) {
-        this.uni_class = uni_class;
-        this.course = uni_class.getCourse();
+    public RatingAggr(UniClass uniClass) {
+        this.uniClass = uniClass;
+        this.course = uniClass.getCourse();
     }
 
-    public RatingAggr(UniClass uni_class, float rate_user_avg, float rate_rmp_helpfulness,
+    public RatingAggr(UniClass uniClass, float rate_user_avg, float rate_rmp_helpfulness,
             float rate_rmp_difficulty) {
-        this.uni_class = uni_class;
-        this.course = uni_class.getCourse();
+        this.uniClass = uniClass;
+        this.course = uniClass.getCourse();
         this.rate_user_avg = rate_user_avg;
         this.rate_rmp_helpfulness = rate_rmp_helpfulness;
         this.rate_rmp_difficulty = rate_rmp_difficulty;
@@ -41,8 +43,8 @@ public class RatingAggr {
         return course;
     }
 
-    public UniClass getUni_class() {
-        return uni_class;
+    public UniClass getUniClass() {
+        return uniClass;
     }
 
     public float getRate_user_avg() {

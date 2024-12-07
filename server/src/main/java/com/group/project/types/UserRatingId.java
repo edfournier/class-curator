@@ -7,5 +7,5 @@ import com.group.project.entities.UniClass;
 
 public class UserRatingId implements Serializable{
     public User user;
-    public UniClass uni_class;
+    public UniClass uniClass;
 }
