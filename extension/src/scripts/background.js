@@ -1,7 +1,7 @@
-chrome.runtime.onMessage.addListener((message) => {
+chrome.runtime.onMessage.addListener(async (message) => {
     if (message.type === "open-popup") {
         // Open popup and show the selected course
-        chrome.action.openPopup(); 
+        await chrome.action.openPopup(); 
         chrome.runtime.sendMessage({ type: "show-course", course: message.course });
     }
 });
