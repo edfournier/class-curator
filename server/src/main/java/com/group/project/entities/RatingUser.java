@@ -2,21 +2,20 @@ package com.group.project.entities;
 
 import java.util.Date;
 
-import com.group.project.types.UserRatingId;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.persistence.IdClass;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
 @Entity
-@IdClass(UserRatingId.class)
 public class RatingUser {
-    @Id @ManyToOne @JoinColumn(name="user_id", referencedColumnName = "id")
+    @Id
+    private long id;
+
+    @ManyToOne @JoinColumn(name="user_id", referencedColumnName = "id")
     private User user;
 
-    @Id @ManyToOne @JoinColumn(name="class_id", referencedColumnName = "id")
+    @ManyToOne @JoinColumn(name="uni_class_id", referencedColumnName = "id")
     private UniClass uniClass;
 
     private int rating;

@@ -9,7 +9,7 @@ import com.group.project.entities.Course;
 import com.group.project.entities.RatingAggr;
 import com.group.project.entities.UniClass;
 
-public interface RatingAggrRepository  extends JpaRepository<RatingAggr, UniClass> {
+public interface RatingAggrRepository  extends JpaRepository<RatingAggr, Long> {
     Optional<RatingAggr> findByUniClass(UniClass uniClass);
     List<RatingAggr> findByCourse(Course course);
 }

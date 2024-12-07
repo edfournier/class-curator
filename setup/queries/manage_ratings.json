@@ -2,6 +2,6 @@
     "insert_aggregate_rating_initial_load": {
         "prefix": "WITH ins (course_code, year, semester, prof, rmp_difficulty, rmp_helpfulness) AS ( VALUES ",
         "template": "(\"{}\", {}, \"{}\", \"{}\", {}, {})",
-        "postfix": ") INSERT INTO RATING_AGGR (COURSE_ID, CLASS_ID, RATE_RMP_DIFFICULTY, RATE_RMP_HELPFULNESS) SELECT UNI_CLASS.COURSE_ID, UNI_CLASS.ID, rmp_difficulty, rmp_helpfulness FROM UNI_CLASS join (SELECT id as COURSE_ID, year, semester, rmp_difficulty, rmp_helpfulness FROM COURSE join ins ON ins.course_code = COURSE.CODE) as temp ON UNI_CLASS.COURSE_ID = temp.COURSE_ID AND UNI_CLASS.YEAR = temp.year AND UNI_CLASS.SEMESTER = temp.semester;"
+        "postfix": ") INSERT INTO RATING_AGGR (COURSE_ID, UNI_CLASS_ID, RATE_RMP_DIFFICULTY, RATE_RMP_HELPFULNESS) SELECT UNI_CLASS.COURSE_ID, UNI_CLASS.ID, rmp_difficulty, rmp_helpfulness FROM UNI_CLASS join (SELECT id as COURSE_ID, year, semester, rmp_difficulty, rmp_helpfulness FROM COURSE join ins ON ins.course_code = COURSE.CODE) as temp ON UNI_CLASS.COURSE_ID = temp.COURSE_ID AND UNI_CLASS.YEAR = temp.year AND UNI_CLASS.SEMESTER = temp.semester;"
     }
 }
