@@ -28,13 +28,13 @@ function Home() {
     }
 
     function handleSave(e) {
-        // TODO: make API call
         e.preventDefault();
-        console.log(e.target.elements.major.value);
-        console.log(e.target.elements.minor.value);
-        console.log(e.target.elements.year.value);
-        setModified(false);
-        alerts.info("Changes saved!");
+        if (modified) {
+            // TODO: make API call
+            console.log("Example of getting form value:", e.target.elements.major.value);
+            setModified(false);
+            alerts.info("Changes saved!");
+        }
     }
 
     // Map user's tags to clickable tiles
