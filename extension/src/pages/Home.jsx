@@ -2,11 +2,13 @@ import { useState } from "react";
 import { FaTimes, FaPlus } from "react-icons/fa"; 
 import FormField from "../components/FormField";
 import SubmitBox from "../components/SubmitBox";
+import { useAlerts } from "../providers/AlertProvider";
 
 function Home() {
     const [tags, setTags] = useState([]); 
     const [tag, setTag] = useState("");
     const [modified, setModified] = useState(false);
+    const alerts = useAlerts()
 
     function addTag() {
         // Ensure tag isn't duplicate or blank
@@ -15,6 +17,7 @@ function Home() {
             setModified(true);
         }
         setTag(""); 
+        alerts.error("Hey!");
     }
 
     function removeTag(target) {
@@ -32,6 +35,7 @@ function Home() {
         console.log(e.target.elements.minor.value);
         console.log(e.target.elements.year.value);
         setModified(false);
+        alerts.info("Changes saved!");
     }
 
     // Map user's tags to clickable tiles
@@ -57,7 +61,7 @@ function Home() {
                     hint={"Enter a tag describing your interests..."}
                 />
                 {tagTiles.length > 0 
-                    && <div className="flex flex-wrap gap-1 overflow-y-auto max-h-20">{tagTiles}</div>
+                    && <div className="flex flex-wrap gap-1 overflow-y-auto max-h-20 pb-1">{tagTiles}</div>
                 }
                 <div className="flex justify-center">
                     <button type="submit" className="w-full">Save Changes</button>

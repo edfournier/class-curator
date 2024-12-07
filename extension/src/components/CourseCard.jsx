@@ -5,7 +5,7 @@ function CourseCard({ course, onClose }) {
         <div className="bg-gray-900 p-3 rounded-md border-gray-700">
             <div className="flex justify-between">
                 <h2>{course.name}</h2>
-                <FaTimes onClick={onClose} className="cursor-pointer" />
+                <FaTimes onClick={onClose} className="cursor-pointer hover:text-indigo-600" />
             </div>
             <p className="text-sm text-gray-400 mb-2">{course.code}</p>
             <div className="mb-2">👍 {course.likes} | 👎 {course.dislikes}</div>
