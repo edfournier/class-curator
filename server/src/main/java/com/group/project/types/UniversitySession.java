@@ -1,4 +1,4 @@
-package com.group.common.types;
+package com.group.project.types;
 
 import java.io.Serializable;
 

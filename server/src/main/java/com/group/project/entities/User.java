@@ -1,6 +1,6 @@
 package com.group.project.entities;
 
-import com.group.common.types.UniversitySession;
+import com.group.project.types.UniversitySession;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

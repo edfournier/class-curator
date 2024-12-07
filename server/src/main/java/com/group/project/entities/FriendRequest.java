@@ -11,7 +11,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
 @Entity @IdClass(FriendshipId.class)
-public class Friendship {
+public class FriendRequest {
     @Id
     @ManyToOne @JoinColumn(name = "user_1_id", referencedColumnName = "id")
     private User user1;
@@ -22,7 +22,7 @@ public class Friendship {
 
     private Date created_at;
 
-    public Friendship(User user1, User user2) {
+    public FriendRequest(User user1, User user2) {
         this.user1 = user1;
         this.user2 = user2;
     }
