@@ -1,17 +1,7 @@
-import { useContext } from "react";
-import { AuthContext } from "./AuthProvider";
-
-/*
- * Simple hook for other components to access the auth context
- */
-export function useAuth() {
-    return useContext(AuthContext);
-}
-
 /*
  * Supposed to be used for auth code flow, but launchWebAuthFlow proved too buggy
  */
-export async function getAuthCode() {
+async function getAuthCode() {
     const params = new URLSearchParams({
         response_type: "code",  
         client_id: chrome.runtime.getManifest().oauth2.client_id,

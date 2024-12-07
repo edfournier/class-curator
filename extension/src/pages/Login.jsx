@@ -1,4 +1,4 @@
-import { useAuth } from "../auth/auth.js";
+import { useAuth } from "../providers/AuthProvider";
 import Spinner from "../components/Spinner";
 import { useState, useEffect } from "react";
 

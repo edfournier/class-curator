@@ -1,7 +1,14 @@
-import { useState, createContext } from "react";
+import { useState, createContext, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
-export const AuthContext = createContext();
+const AuthContext = createContext();
+
+/*
+ * Hook for other components to access the auth context
+ */
+export function useAuth() {
+    return useContext(AuthContext);
+}
 
 function AuthProvider({ children }) {
     const [token, setToken] = useState(null);  

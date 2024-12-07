@@ -3,7 +3,7 @@ import Login from "./pages/Login";
 import Home from "./pages/Home";
 import Friends from "./pages/Friends";
 import Courses from "./pages/Courses";
-import AuthProvider from "./auth/AuthProvider";
+import AuthProvider from "./providers/AuthProvider";
 import Listener from "./components/Listener";
 import Layout from "./components/Layout"
 
