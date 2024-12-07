@@ -35,14 +35,14 @@ function Home() {
 
     // Map user's tags to clickable tiles
     const tagTiles = tags.map((tag) => (
-        <div key={tag} className="px-3 py-1 text-black rounded-full bg-indigo-100 flex items-center space-x-2">
+        <div key={tag} className="px-3 py-1 text-black rounded-full bg-indigo-200 flex items-center space-x-2">
             <FaTimes onClick={() => removeTag(tag)} className="cursor-pointer hover:text-indigo-600"/> 
             <span className="text-sm">{tag}</span>
         </div>
     ));
 
     return (
-        <div className="max-w-4xl mx-auto px-6 py-3">
+        <>
             <h1>{modified ? "Your Profile*" : "Your Profile"}</h1>
             <form className="max-w-lg mx-auto space-y-4" onSubmit={handleSave} >
                 <FormField label="major" placeholder={"E.g. Computer Science"} onChange={handleChange} />
@@ -64,7 +64,7 @@ function Home() {
                 }
                 <button type="submit" className="w-full">Save Changes</button>
             </form>
-        </div>
+        </>
     );
 }
 

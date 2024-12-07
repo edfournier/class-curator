@@ -22,7 +22,7 @@ function Courses() {
     }
 
     return (
-        <div className="max-w-4xl mx-auto px-6 py-3">
+        <>
             <h1>Course Search</h1> 
             <div className="flex justify-center mb-4">
                 <input
@@ -40,14 +40,18 @@ function Courses() {
                 ? <Course course={course} setCourse={setCourse} onClose={() => setCourse(null)}/>
                 : <ul className="space-y-1">
                     {results.map((course) => 
-                        <li key={course.id} className="flex justify-between" onClick={() => showCourse(course)}>
+                        <li 
+                            key={course.id} 
+                            className="flex justify-between p-3 border border-gray-700 hover:bg-gray-700 rounded-lg cursor-pointer" 
+                            onClick={() => showCourse(course)}
+                        >
                             <span className="text-sm">{course.name}</span>
                             <span className="text-xs text-gray-400">{course.code}</span>
                         </li>
                     )}
                 </ul>
             }
-        </div>
+        </>
     );
 }
 

@@ -4,8 +4,8 @@
 
 @layer base {
     html {
-        width: 350px;
-        height: 450px;
+        width: 360px;
+        height: 600px;
     }
 
     body {
@@ -18,7 +18,7 @@
     }
 
     input {
-        @apply px-2 py-2 text-slate-950 bg-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500;
+        @apply px-2 py-2 text-slate-950 bg-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500;
     }
 
     h1 {
@@ -27,10 +27,6 @@
 
     h2 {
         @apply text-lg font-bold
-    }
-
-    li {
-        @apply p-3 border border-gray-700 hover:bg-gray-700 rounded-lg  cursor-pointer;
     }
 
     ::-webkit-scrollbar {

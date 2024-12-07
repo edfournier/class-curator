@@ -36,7 +36,7 @@ function Friends() {
     }, []);
 
     return (
-        <div className="max-w-4xl mx-auto px-6 py-3">
+        <>
             <h1>Friend Requests</h1>
             <div className="flex justify-center mb-4">
                 <input
@@ -48,7 +48,6 @@ function Friends() {
                 />
                 <button onClick={requestFriend} className="ml-1"><BsSendFill /></button>
             </div>
-
             <h1>Your Friends</h1>
             {friend 
                 // Either render selected friend's page or the friends list
@@ -56,7 +55,11 @@ function Friends() {
                 : <>
                     <ul className="space-y-1">
                         {visibleFriends.map((friend) => 
-                            <li key={friend.email} className="flex justify-between" onClick={() => setFriend(friend)}>
+                            <li 
+                                key={friend.email} 
+                                className="flex justify-between p-3 border border-gray-700 hover:bg-gray-700 rounded-lg cursor-pointer" 
+                                onClick={() => setFriend(friend)}
+                            >
                                 <span className="text-sm font-medium">{friend.name}</span>
                                 <span className="text-xs text-gray-400">{friend.email}</span>
                             </li>
@@ -72,7 +75,7 @@ function Friends() {
                     </div>
                 </>
             }
-        </div>
+        </>
     );
 }
 
