@@ -2,7 +2,7 @@ import { FaTimes } from "react-icons/fa";
 
 function Course({ course, onClose }) {
     return (
-        <div className="bg-gray-900 p-3 rounded-md border border-gray-700 flex flex-col">
+        <div className="bg-gray-900 p-3 rounded-md border-gray-700">
             <div className="flex justify-between">
                 <h2>{course.name}</h2>
                 <FaTimes onClick={onClose} className="cursor-pointer" />

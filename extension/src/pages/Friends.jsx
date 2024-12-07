@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { BsSendFill } from "react-icons/bs";
-import { IoArrowBackSharp, IoArrowForwardSharp } from "react-icons/io5";
 import Friend from "../components/Friend";
+import Pager from "../components/Pager";
 
 function Friends() {
     const [friends, setFriends] = useState([]);
@@ -9,7 +9,7 @@ function Friends() {
     const [email, setEmail] = useState("");
     const [page, setPage] = useState(1);
 
-    const maxTiles = 3;
+    const maxTiles = 4;
     const last = page * maxTiles;
     const first = last - maxTiles;
     const visibleFriends = friends.slice(first, last);
@@ -65,14 +65,12 @@ function Friends() {
                             </li>
                         )}
                     </ul>
-                    <div className="flex justify-center mt-4">
-                        <button disabled={page <= 1} onClick={() => setPage(page - 1)} className="mr-1 disabled:opacity-50">
-                            <IoArrowBackSharp />
-                        </button>
-                        <button disabled={last >= friends.length} onClick={() => setPage(page + 1)} className="ml-1 disabled:opacity-50">
-                            <IoArrowForwardSharp />
-                        </button>
-                    </div>
+                    <Pager 
+                        onLeft={() => setPage(page - 1)} 
+                        onRight={() => setPage(page + 1)} 
+                        leftOff={page <= 1} 
+                        rightOff={last >= friends.length} 
+                    />
                 </>
             }
         </>
