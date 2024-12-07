@@ -1,13 +1,22 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaTimes, FaThumbsUp, FaThumbsDown, FaRegThumbsUp, FaRegThumbsDown } from "react-icons/fa"; 
 
 function CourseCard({ course, onClose }) {
     const [thumb, setThumb] = useState("");
+    const [interested, setInterested] = useState(false);  
 
     function handleThumb(type) {
-        setThumb(type === thumb ? "" : type)
+        setThumb(type === thumb ? "" : type);
         // TODO: API call for like/dislike status
     }
+
+    function handleInterest() {
+        setInterested(!interested); 
+        // TODO: API call for interest status
+    }
+
+    // TODO: historical graph
+    // TODO: recommended prof based on average rating
 
     return (
         <div className="card">
@@ -31,6 +40,14 @@ function CourseCard({ course, onClose }) {
                 </div>
             </div>
             <p className="flex-grow">{course.description}</p>
+            <div className="mt-3 flex justify-center">
+                <button
+                    onClick={handleInterest}
+                    className={interested ? "py-1" : "py-1 bg-gray-600 text-gray-300 hover:bg-gray-500"}
+                >
+                    I'm Interested!
+                </button>
+            </div>
         </div>
     );
 }

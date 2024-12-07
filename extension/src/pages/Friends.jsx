@@ -4,12 +4,14 @@ import { FaCheck, FaTimes } from "react-icons/fa";
 import FriendCard from "../components/FriendCard";
 import SubmitBox from "../components/SubmitBox";
 import PagableList from "../components/PagableList";
+import { useAlerts } from "../providers/AlertProvider";
 
 function Friends() {
     const [friends, setFriends] = useState([]);
     const [friend, setFriend] = useState(null);   // Current friend shown in expanded view
     const [email, setEmail] = useState("");       // Target of friend request
     const [requests, setRequests] = useState([]); // Incoming requests
+    const alerts = useAlerts();
 
     function handleSendRequest() {
         // TODO: make API call
@@ -18,6 +20,9 @@ function Friends() {
 
     function handleDecideRequest(accepted) {
         // TODO: make API call
+        if (accepted) {
+            alerts.info(`Added ${requests[0].email}!`);
+        }
         setRequests(requests.slice(1));
     }
 
