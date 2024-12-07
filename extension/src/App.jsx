@@ -12,16 +12,16 @@ function App() {
     return (
         <MemoryRouter>
             <Listener>
-                <AuthProvider>
-                    <AlertProvider>
+                <AlertProvider>
+                    <AuthProvider>
                         <Routes>
                             <Route path="/" element={<Login />} />
                             <Route path="/home" element={<Layout><Home /></Layout>} />
                             <Route path="/friends" element={<Layout><Friends /></Layout>} />
                             <Route path="/courses" element={<Layout><Courses /></Layout>} />
                         </Routes>
-                    </AlertProvider>
-                </AuthProvider>
+                    </AuthProvider>
+                </AlertProvider>
             </Listener>
         </MemoryRouter>
     );

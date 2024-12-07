@@ -1,5 +1,6 @@
 import { useState, createContext, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAlerts } from "../providers/AlertProvider";
 
 const AuthContext = createContext();
 
@@ -11,30 +12,44 @@ export function useAuth() {
 }
 
 function AuthProvider({ children }) {
-    const [token, setToken] = useState(null);  
     const navigate = useNavigate();
+    const [user, setUser] = useState(null);
+    const alerts = useAlerts();
 
     async function login(details) {
+        // Retrieve token from Chrome's cache
+        const { token }  = await chrome.identity.getAuthToken(details); 
+
         try {
-            // Get token from Chrome's built-in cache
-            const token = await chrome.identity.getAuthToken(details); 
-            console.log(token);
-            setToken(token);
+            // Check cache first
+            let { user } = await chrome.storage.local.get("user");
+            if (!user) {
+                // Fetch user details
+                const res = await fetch("https://www.googleapis.com/oauth2/v3/userinfo", {
+                    headers: { "Authorization": `Bearer ${token}`}
+                });
+                user = await res.json();
+                chrome.storage.local.set({ user }); // Cache user details
+            }
+            console.log(user);
+            setUser(user);
             navigate("/home");
         }
-        catch (error) {
-            console.error("Login failed:", error);
+        catch (err) {
+            console.error(err);
+            alerts.error("Couldn't contact Google servers");
         }
     }
 
     async function logout() {
-        // Nukes context and boots to login
-        setToken(null);
+        // Nuke state and boot to login
+        setUser(null);
+        chrome.storage.local.clear();
         navigate("/");
     }
 
     return (
-        <AuthContext.Provider value={{ token, setToken, login, logout }}>
+        <AuthContext.Provider value={{ user, login, logout }}>
             {children}
         </AuthContext.Provider>
     );

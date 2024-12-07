@@ -8,16 +8,29 @@ import { useState, useEffect } from "react";
 function Login() {
     const { login } = useAuth();
     const [loading, setLoading] = useState(true);
+
+    async function handleLogin(details) {
+        try {
+            setLoading(true);
+            await login(details);
+        }
+        catch (err) {
+            // Triggers if auto-login fails (i.e. new user) or user doesn't approve access
+            console.log(err); 
+        }
+        finally {
+            setLoading(false)
+        }
+    }
     
     useEffect(() => {
         // Attempts to automatically login
-        login({ interactive: false })
-            .then(() => setLoading(false));
+        handleLogin({ interactive: false })
     }, []);
     
     return loading ? <Spinner /> : (
         <div className="flex items-center justify-center min-h-screen">
-            <button onClick={() => login({ interactive: true })} className="px-6">
+            <button onClick={() => handleLogin({ interactive: true })} className="px-6">
                 Login
             </button>
         </div>
