@@ -1,6 +1,6 @@
 import { FaTimes } from "react-icons/fa"; 
 
-function Course({ course, onClose }) {
+function CourseCard({ course, onClose }) {
     return (
         <div className="bg-gray-900 p-3 rounded-md border-gray-700">
             <div className="flex justify-between">
@@ -14,4 +14,4 @@ function Course({ course, onClose }) {
     );
 }
 
-export default Course;
+export default CourseCard;

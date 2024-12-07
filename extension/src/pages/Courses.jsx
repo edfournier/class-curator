@@ -2,7 +2,7 @@ import { useState } from "react";
 import { FaSearch } from "react-icons/fa"; 
 import { useLocation } from "react-router-dom";
 import { fetchCourse, fetchCourseResults } from "../api/courses";
-import Course from "../components/Course";
+import CourseCard from "../components/CourseCard";
 import SubmitBox from "../components/SubmitBox";
 
 function Courses() {
@@ -34,7 +34,7 @@ function Courses() {
             />
             {course 
                 // Either render the search results or the selected course's page
-                ? <Course course={course} setCourse={setCourse} onClose={() => setCourse(null)}/>
+                ? <CourseCard course={course} setCourse={setCourse} onClose={() => setCourse(null)}/>
                 : <ul className="space-y-1">
                     {results.map((course) => 
                         <li 

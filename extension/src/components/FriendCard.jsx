@@ -2,7 +2,7 @@ import { FaTimes } from "react-icons/fa";
 
 // TODO: highlight classes that you have common interests
 
-function Friend({ friend, onClose, onUnfriend }) {
+function FriendCard({ friend, onClose, onUnfriend }) {
     const interests = [
         { name: "Data Structures", code: "CS 187" },
         { name: "Algorithms", code: "CS 201" },
@@ -41,4 +41,4 @@ function Friend({ friend, onClose, onUnfriend }) {
     );
 }
 
-export default Friend;
+export default FriendCard;
