@@ -49,7 +49,8 @@ function Home() {
         setTags([
             "Machine Learning",
             "Artificial Intelligence",
-            "Data Science"
+            "Data Science",
+            "Computer Networks"
         ]);
         setFormData({
             major: "Computer Science",
@@ -73,7 +74,7 @@ function Home() {
                     hint={"Enter a tag describing your interests..."}
                 />
                 {tags.length > 0 
-                    && <div className="flex flex-wrap gap-1 overflow-y-auto max-h-20 pb-1">{
+                    && <div className="flex flex-wrap gap-1 overflow-y-auto max-h-28 pt-2 pb-2 border-b-[1px] border-t-[1px] border-gray-700">{
                         // Map user's tags to clickable tiles
                         tags.map((tag) => 
                             <div key={tag} className="px-3 py-1 text-black rounded-full bg-indigo-200 flex items-center space-x-2">
