@@ -1,5 +1,6 @@
 package com.group.project.entities;
 
+import com.group.project.types.UserRatingId;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -8,7 +9,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
 @Entity
-@IdClass(UniClass.class)
+@IdClass(UserRatingId.class)
 public class RatingAggr {
     @Id @ManyToOne @JoinColumn(name="class_id", referencedColumnName = "id")
     private UniClass uniClass;

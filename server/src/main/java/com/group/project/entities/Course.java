@@ -29,19 +29,23 @@ public class Course {
         this.description = description;
     }
 
-    String getCode() {
+    public String getCode() {
         return code;
     }
 
-    String getSubject() {
+    public String getSubject() {
         return subject;
     }
 
-    String getName() {
+    public String getName() {
         return name;
     }
     
-    String getDescription() {
+    public String getDescription() {
         return description;
+    }
+
+    public long getId() {
+        return id;
     }
 }

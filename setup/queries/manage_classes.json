@@ -7,6 +7,6 @@
     "insert_class": {
         "prefix": "WITH ins (course_code, year, semester, prof) AS ( VALUES ",
         "template": "(\"{}\", {}, \"{}\", \"{}\")",
-        "postfix": ") INSERT INTO UNICLASS (COURSE_ID, YEAR, SEMESTER, PROF) SELECT COURSE.id, ins.year, ins.semester, ins.prof FROM COURSE join ins ON ins.course_code = COURSE.code;"
+        "postfix": ") INSERT INTO UNI_CLASS (COURSE_ID, YEAR, SEMESTER, PROF) SELECT COURSE.id, ins.year, ins.semester, ins.prof FROM COURSE join ins ON ins.course_code = COURSE.code;"
     }
 }

@@ -2,6 +2,7 @@ package com.group.project.entities;
 
 import com.group.project.types.UniversitySession;
 
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -18,9 +19,8 @@ public class UniClass {
     @ManyToOne @JoinColumn(name= "course_id", referencedColumnName = "id")
     private Course course;
 
-    private int year;
-
-    private String semester;
+    @Embedded
+    private UniversitySession session;
 
     private String prof;
 
@@ -28,8 +28,7 @@ public class UniClass {
 
     public UniClass(Course course, UniversitySession session, String prof) {
         this.course = course;
-        this.year = session.year;
-        this.semester = session.semester;
+        this.session = session;
         this.prof = prof;
     }
 
@@ -42,19 +41,11 @@ public class UniClass {
         return course;
     }
 
-    public int getYear() {
-        return year;
-    }
-
-    public String getSemester() {
-        return semester;
+    public UniversitySession getSession() {
+        return session;
     }
 
     public String getProf() {
         return prof;
-    }
-
-    public UniversitySession getSession() {
-        return new UniversitySession(year, semester);
     }
 }

@@ -13,5 +13,5 @@ import com.group.project.types.UserRatingId;
 public interface RatingUserRepository  extends JpaRepository<RatingUser, UserRatingId> {
     List<RatingUser> findByUser(User user);
     List<RatingUser> findByUniClass(UniClass uniClass);
-    Optional<RatingUser> findByUser_UniClass(User user, UniClass uniClass);
+    Optional<RatingUser> findByUserAndUniClass(User user, UniClass uniClass);
 }
