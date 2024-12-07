@@ -31,6 +31,7 @@ function Friends() {
         // TODO: make API call
         setFriends(friends.filter((e) => e.email !== friend.email));
         setFriend(null);
+        setPage(1);
     }
 
     useEffect(() => {
