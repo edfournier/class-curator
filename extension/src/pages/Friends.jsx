@@ -61,15 +61,12 @@ function Friends() {
                 icon={<BsSendFill />} 
                 hint={"Enter a UMass email address..."}
             />
+            
             {requests.length > 0 && 
-                <div className="bg-gray-900 p-3 rounded-md border border-gray-700 mb-6">
-                    <h2 className="text-lg font-semibold mb-2">Incoming Friend Request</h2>
+                <div className="bg-gray-900 p-3 rounded-md border-gray-700 mb-2">
                     <div className="flex justify-between items-center">
-                        <div>
-                            <p className="text-sm font-medium">{requests[0].name}</p>
-                            <p className="text-xs text-gray-400">{requests[0].email}</p>
-                        </div>
-                        <div className="flex space-x-2">
+                        <span className="text-sm font-medium">{requests[0].email}</span>
+                        <div className="flex space-x-3">
                             <FaCheck
                                 className="text-green-500 cursor-pointer hover:text-green-600"
                                 onClick={() => handleRequest(true)}

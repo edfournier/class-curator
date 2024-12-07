@@ -60,7 +60,7 @@ function Home() {
                     && <div className="flex flex-wrap gap-1 overflow-y-auto max-h-20">{tagTiles}</div>
                 }
                 <div className="flex justify-center">
-                    <button type="submit" className="w-72">Save Changes</button>
+                    <button type="submit" className="w-full">Save Changes</button>
                 </div>
             </form>
         </>

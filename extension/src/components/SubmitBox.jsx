@@ -6,7 +6,7 @@ function SubmitBox({ value, onChange, onClick, hint, icon }) {
                 type="text"
                 value={value}
                 onChange={onChange}
-                className="w-60"
+                className="w-full"
                 placeholder={hint}
             />
             <button type="button" onClick={onClick} className="ml-1">{icon}</button>
