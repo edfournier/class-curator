@@ -17,22 +17,20 @@ function Friends() {
     const first = last - maxTiles;
     const visibleFriends = friends.slice(first, last);
 
-    function requestFriend() {
+    function sendRequest() {
         // TODO: make API call
         setEmail("");
     }
 
-    function removeFriend(target) {
+    function handleRequest(accepted) {
         // TODO: make API call
-        setFriends(friends.filter((friend) => friend.email !== target));
+        setRequests(requests.slice(1));
     }
 
-    function handleRequest(accepted) {
-        // TODO: make api calls
-        if (accepted) {
-            setFriends([...friends, requests]);
-        }
-        setRequests(requests.slice(1));
+    function removeFriend() {
+        // TODO: make API call
+        setFriends(friends.filter((e) => e.email !== friend.email));
+        setFriend(null);
     }
 
     useEffect(() => {
@@ -57,7 +55,7 @@ function Friends() {
             <SubmitBox 
                 value={email} 
                 onChange={(e) => setEmail(e.target.value)} 
-                onClick={requestFriend} 
+                onClick={sendRequest} 
                 icon={<BsSendFill />} 
                 hint={"Enter a UMass email address..."}
             />
@@ -83,7 +81,7 @@ function Friends() {
             <h1>Your Friends</h1>
             {friend 
                 // Either render selected friend's page or the friends list
-                ? <Friend friend={friend} setFriend={setFriend} onClose={() => setFriend(null)}/>
+                ? <Friend friend={friend} setFriend={setFriend} onClose={() => setFriend(null)} onUnfriend={removeFriend}/>
                 : <>
                     <ul className="space-y-1">
                         {visibleFriends.map((friend) => 

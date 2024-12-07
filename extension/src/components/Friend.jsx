@@ -2,18 +2,13 @@ import { FaTimes } from "react-icons/fa";
 
 // TODO: highlight classes that you have common interests
 
-function Friend({ friend, onClose }) {
+function Friend({ friend, onClose, onUnfriend }) {
     const interests = [
         { name: "Data Structures", code: "CS 187" },
         { name: "Algorithms", code: "CS 201" },
         { name: "Operating Systems", code: "CS 350" },
         { name: "Machine Learning", code: "CS 500" }
     ];
-
-    function handleUnfriend() {
-        // TODO: add API call
-        console.log("Unfriending...");
-    };
 
     return (
         <div className="bg-gray-900 p-3 rounded-md border-gray-700">
@@ -38,7 +33,7 @@ function Friend({ friend, onClose }) {
                 }
             </ul>
             <div className="flex justify-center">
-                <button onClick={handleUnfriend} className="w-20 hover:bg-red-500">
+                <button onClick={onUnfriend} className="w-20 hover:bg-red-500">
                     Unfriend
                 </button>
             </div>
