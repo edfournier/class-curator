@@ -26,7 +26,11 @@
     }
 
     h2 {
-        @apply text-lg font-bold
+        @apply border-b-[1px] border-gray-700 text-lg font-bold 
+    }
+
+    .card {
+        @apply bg-gray-900 p-3 rounded-md border-gray-700;
     }
 
     ::-webkit-scrollbar {

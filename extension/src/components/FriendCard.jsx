@@ -12,16 +12,12 @@ function FriendCard({ friend, onClose, onUnfriend }) {
     ];
 
     return (
-        <div className="bg-gray-900 p-3 rounded-md border-gray-700">
-            <div className="flex justify-between mb-4">
-                <p className="text-xs text-gray-400">
-                    {friend.email}
-                </p>
+        <div className="card">
+            <div className="flex justify-between">
+                <p className="text-xs text-gray-400">{friend.email}</p>
                 <FaTimes onClick={onClose} className="cursor-pointer hover:text-indigo-600" />
             </div>
-            <h2 className="border-b-[1px] border-gray-700 mb-3">
-                {friend.name}'s Interests
-            </h2>
+            <h2 className="mb-3 mt-2">{friend.name}'s Interests</h2>
             <ul className="overflow-y-auto max-h-36 mb-6 space-y-2 mr-1">
                 {interests.length === 0 
                     ? <span className="font-semibold text-indigo-200">{friend.name} has no interests!</span>
