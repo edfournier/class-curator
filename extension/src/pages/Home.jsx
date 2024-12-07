@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FaTimes, FaPlus } from "react-icons/fa"; 
 import FormField from "../components/FormField";
 import SubmitBox from "../components/SubmitBox";
@@ -8,7 +8,8 @@ function Home() {
     const [tags, setTags] = useState([]); 
     const [tag, setTag] = useState("");
     const [modified, setModified] = useState(false);
-    const alerts = useAlerts()
+    const [formData, setFormData] = useState({});
+    const alerts = useAlerts();
 
     function addTag() {
         // Ensure tag isn't duplicate or blank
@@ -21,9 +22,15 @@ function Home() {
 
     function removeTag(target) {
         setTags(tags.filter(tag => tag !== target));
+        setModified(true);
     }
 
-    function handleChange() {
+    function handleFormChange(e) {
+        const { name, value } = e.target;
+        setFormData({
+            ...formData,
+            [name]: value
+        });
         setModified(true);
     }
 
@@ -31,27 +38,33 @@ function Home() {
         e.preventDefault();
         if (modified) {
             // TODO: make API call
-            console.log("Example of getting form value:", e.target.elements.major.value);
+            // Use 'e.target.elements.major.value' to get form values
             setModified(false);
             alerts.info("Changes saved!");
         }
     }
 
-    // Map user's tags to clickable tiles
-    const tagTiles = tags.map((tag) => (
-        <div key={tag} className="px-3 py-1 text-black rounded-full bg-indigo-200 flex items-center space-x-2">
-            <FaTimes onClick={() => removeTag(tag)} className="cursor-pointer hover:text-indigo-600"/> 
-            <span className="text-sm">{tag}</span>
-        </div>
-    ));
+    useEffect(() => {
+        // TODO: make API call
+        setTags([
+            "Machine Learning",
+            "Artificial Intelligence",
+            "Data Science"
+        ]);
+        setFormData({
+            major: "Computer Science",
+            minor: "Linguistics",
+            year: 2025
+        });
+    }, []); 
 
     return (
         <>
             <h1>{modified ? "Your Profile*" : "Your Profile"}</h1>
             <form className="max-w-lg mx-auto space-y-4" onSubmit={handleSave} >
-                <FormField label="major" placeholder={"E.g. Computer Science"} onChange={handleChange} />
-                <FormField label="minor" placeholder={"E.g. Linguistics"} onChange={handleChange}/>
-                <FormField label="year"  type={"number"} placeholder={"E.g. 2025"} onChange={handleChange}/>
+                <FormField value={formData.major} label="major" placeholder={"E.g. Computer Science"} onChange={handleFormChange} />
+                <FormField value={formData.minor} label="minor" placeholder={"E.g. Linguistics"} onChange={handleFormChange}/>
+                <FormField value={formData.year} label="year"  type={"number"} placeholder={"E.g. 2025"} onChange={handleFormChange}/>
                 <SubmitBox 
                     value={tag}
                     onChange={(e) => setTag(e.target.value)}
@@ -59,8 +72,16 @@ function Home() {
                     icon={<FaPlus />}
                     hint={"Enter a tag describing your interests..."}
                 />
-                {tagTiles.length > 0 
-                    && <div className="flex flex-wrap gap-1 overflow-y-auto max-h-20 pb-1">{tagTiles}</div>
+                {tags.length > 0 
+                    && <div className="flex flex-wrap gap-1 overflow-y-auto max-h-20 pb-1">{
+                        // Map user's tags to clickable tiles
+                        tags.map((tag) => 
+                            <div key={tag} className="px-3 py-1 text-black rounded-full bg-indigo-200 flex items-center space-x-2">
+                                <FaTimes onClick={() => removeTag(tag)} className="cursor-pointer hover:text-indigo-600"/> 
+                                <span className="text-sm">{tag}</span>
+                            </div>
+                        )
+                    }</div>
                 }
                 <div className="flex justify-center">
                     <button type="submit" className="w-full">Save Changes</button>

@@ -11,17 +11,17 @@ function Friends() {
     const [email, setEmail] = useState("");       // Target of friend request
     const [requests, setRequests] = useState([]); // Incoming requests
 
-    function sendRequest() {
+    function handleSendRequest() {
         // TODO: make API call
         setEmail("");
     }
 
-    function handleRequest(accepted) {
+    function handleDecideRequest(accepted) {
         // TODO: make API call
         setRequests(requests.slice(1));
     }
 
-    function removeFriend() {
+    function handleUnfriend() {
         // TODO: make API call
         setFriends(friends.filter((e) => e.email !== friend.email));
         setFriend(null);
@@ -50,7 +50,7 @@ function Friends() {
             <SubmitBox 
                 value={email} 
                 onChange={(e) => setEmail(e.target.value)} 
-                onClick={sendRequest} 
+                onClick={handleSendRequest} 
                 icon={<BsSendFill />} 
                 hint={"Enter a UMass email address..."}
             />
@@ -61,11 +61,11 @@ function Friends() {
                         <div className="flex space-x-3">
                             <FaCheck
                                 className="text-green-500 cursor-pointer hover:text-green-600"
-                                onClick={() => handleRequest(true)}
+                                onClick={() => handleDecideRequest(true)}
                             />
                             <FaTimes
                                 className="text-red-500 cursor-pointer hover:text-red-600"
-                                onClick={() => handleRequest(false)}
+                                onClick={() => handleDecideRequest(false)}
                             />
                         </div>
                     </div>
@@ -75,7 +75,7 @@ function Friends() {
             <h1>Your Friends</h1>
             {friend 
                 // Either render selected friend's card or the friends list
-                ? <FriendCard friend={friend} setFriend={setFriend} onClose={() => setFriend(null)} onUnfriend={removeFriend}/>
+                ? <FriendCard friend={friend} setFriend={setFriend} onClose={() => setFriend(null)} onUnfriend={handleUnfriend}/>
                 : <PagableList 
                     entries={friends} 
                     onClick={setFriend} 

@@ -3,6 +3,7 @@ import { FaTimes } from "react-icons/fa";
 // TODO: highlight classes that you have common interests
 
 function FriendCard({ friend, onClose, onUnfriend }) {
+    // TODO: api call that gets the friends should return this data
     const interests = [
         { name: "Data Structures", code: "CS 187" },
         { name: "Algorithms", code: "CS 201" },
