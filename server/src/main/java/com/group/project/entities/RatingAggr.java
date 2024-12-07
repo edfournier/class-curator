@@ -9,7 +9,7 @@ import jakarta.persistence.ManyToOne;
 @Entity
 public class RatingAggr {
     @Id @ManyToOne @JoinColumn(name="class_id", referencedColumnName = "id")
-    private Class uni_class;
+    private UniClass uni_class;
 
     @ManyToOne @JoinColumn(name="course_id", referencedColumnName = "id")
     private Course course;
@@ -23,12 +23,12 @@ public class RatingAggr {
     public RatingAggr() {
     }
 
-    public RatingAggr(Class uni_class) {
+    public RatingAggr(UniClass uni_class) {
         this.uni_class = uni_class;
         this.course = uni_class.getCourse();
     }
 
-    public RatingAggr(Class uni_class, float rate_user_avg, float rate_rmp_helpfulness,
+    public RatingAggr(UniClass uni_class, float rate_user_avg, float rate_rmp_helpfulness,
             float rate_rmp_difficulty) {
         this.uni_class = uni_class;
         this.course = uni_class.getCourse();
@@ -41,7 +41,7 @@ public class RatingAggr {
         return course;
     }
 
-    public Class getUni_class() {
+    public UniClass getUni_class() {
         return uni_class;
     }
 

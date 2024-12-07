@@ -17,7 +17,7 @@ public class RatingUser {
     private User user;
 
     @Id @ManyToOne @JoinColumn(name="class_id", referencedColumnName = "id")
-    private Class uni_class;
+    private UniClass uni_class;
 
     private int rating;
 
@@ -30,14 +30,14 @@ public class RatingUser {
     public RatingUser() {
     }
 
-    public RatingUser(User user, Class uni_class) {
+    public RatingUser(User user, UniClass uni_class) {
         this.user = user;
         this.uni_class = uni_class;
         rating = 0;
         review = "";
     }
 
-    public RatingUser(User user, Class uni_class, int rating, String review, Date created_at, Date updated_at) {
+    public RatingUser(User user, UniClass uni_class, int rating, String review, Date created_at, Date updated_at) {
         this.user = user;
         this.uni_class = uni_class;
         this.rating = rating;
@@ -50,7 +50,7 @@ public class RatingUser {
         return user;
     }
 
-    public Class getUni_class() {
+    public UniClass getUni_class() {
         return uni_class;
     }
 

@@ -45,7 +45,7 @@ with open(SETUP_QUERIES_PATH) as queries:
     cursor.execute(queries['create_table_user'])
     cursor.execute(queries['create_table_session'])
     cursor.execute(queries['create_table_course'])
-    cursor.execute(queries['create_table_class'])
+    cursor.execute(queries['create_table_uni_class'])
     cursor.execute(queries['create_table_rating_aggr'])
     cursor.execute(queries['create_table_rating_user'])
     cursor.execute(queries['create_table_friendship'])

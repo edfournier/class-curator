@@ -10,7 +10,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
 @Entity
-public class Class {
+public class UniClass {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private long id;
@@ -24,9 +24,9 @@ public class Class {
 
     private String prof;
 
-    public Class() {}
+    public UniClass() {}
 
-    public Class(Course course, UniversitySession session, String prof) {
+    public UniClass(Course course, UniversitySession session, String prof) {
         this.course = course;
         this.year = session.year;
         this.semester = session.semester;
