@@ -18,7 +18,7 @@ function FriendCard({ friend, onClose, onUnfriend }) {
                 <FaTimes onClick={onClose} className="cursor-pointer hover:text-indigo-600" />
             </div>
             <h2 className="mb-3 mt-2">{friend.name}'s Interests</h2>
-            <ul className="overflow-y-auto max-h-36 mb-6 space-y-2 mr-1">
+            <ul className="overflow-y-auto max-h-36 mb-6 space-y-1 mr-1 ml-2">
                 {interests.length === 0 
                     ? <span className="font-semibold text-indigo-200">{friend.name} has no interests!</span>
                     : interests.map((interest, i) => 

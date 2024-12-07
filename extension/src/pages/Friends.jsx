@@ -29,6 +29,7 @@ function Friends() {
     function handleUnfriend() {
         // TODO: make API call
         setFriends(friends.filter((e) => e.email !== friend.email));
+        alerts.info(`Unfriended ${friend.email}!`);
         setFriend(null);
         setPage(1);
     }

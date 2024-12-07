@@ -31,7 +31,7 @@ function Login() {
     return loading ? <Spinner /> : (
         <div className="flex items-center justify-center min-h-screen">
             <button onClick={() => handleLogin({ interactive: true })} className="px-6">
-                Login
+                Login with Google
             </button>
         </div>
     );
