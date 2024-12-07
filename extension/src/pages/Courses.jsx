@@ -4,12 +4,13 @@ import { useLocation } from "react-router-dom";
 import { fetchCourse, fetchCourseResults } from "../api/courses";
 import CourseCard from "../components/CourseCard";
 import SubmitBox from "../components/SubmitBox";
+import PagableList from "../components/PagableList";
 
 function Courses() {
     const location = useLocation();
     const [query, setQuery] = useState(location?.state?.course || ""); // Handles open-popup trigger
     const [course, setCourse] = useState(null); 
-    const [results, setResults] = useState([]); 
+    const [results, setResults] = useState(null); 
 
     async function search() {
         // Fetch results and map each matched course to a search result tile
@@ -32,22 +33,17 @@ function Courses() {
                 icon={<FaSearch />}
                 hint={"Search a course by code or name..."}
             />
-            {course 
+            {results && (course 
                 // Either render the search results or the selected course's page
                 ? <CourseCard course={course} setCourse={setCourse} onClose={() => setCourse(null)}/>
-                : <ul className="space-y-1">
-                    {results.map((course) => 
-                        <li 
-                            key={course.id} 
-                            className="flex justify-between p-3 border border-gray-700 hover:bg-gray-700 rounded-lg cursor-pointer" 
-                            onClick={() => showCourse(course)}
-                        >
-                            <span className="text-sm">{course.name}</span>
-                            <span className="text-xs text-gray-400">{course.code}</span>
-                        </li>
-                    )}
-                </ul>
-            }
+                : <PagableList 
+                    entries={results}
+                    onClick={showCourse}
+                    emptyMessage={"No matching results found!"}
+                    mainKey={"name"}
+                    subKey={"code"}
+                />
+            )}
         </>
     );
 }

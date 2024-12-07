@@ -3,7 +3,7 @@ import { BsSendFill } from "react-icons/bs";
 import { FaCheck, FaTimes } from "react-icons/fa";
 import FriendCard from "../components/FriendCard";
 import SubmitBox from "../components/SubmitBox";
-import FriendsList from "../components/FriendsList";
+import PagableList from "../components/PagableList";
 
 function Friends() {
     const [friends, setFriends] = useState([]);
@@ -76,7 +76,13 @@ function Friends() {
             {friend 
                 // Either render selected friend's card or the friends list
                 ? <FriendCard friend={friend} setFriend={setFriend} onClose={() => setFriend(null)} onUnfriend={removeFriend}/>
-                : <FriendsList friends={friends} onClick={setFriend} />
+                : <PagableList 
+                    entries={friends} 
+                    onClick={setFriend} 
+                    mainKey={"name"}
+                    subKey={"email"}
+                    emptyMessage={"You have no friends!"}
+                />
             }
         </>
     );
