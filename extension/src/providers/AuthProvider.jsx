@@ -21,21 +21,19 @@ function AuthProvider({ children }) {
         const { token }  = await chrome.identity.getAuthToken(details); 
 
         try {
-            // Check cache first
+            // Check cache first for user details
             let { user, expiry } = await chrome.storage.local.get();
             if (!user || expiry < Date.now()) {
-                console.log("recalling...");
+                // Fetch user details
                 const res = await fetch("https://www.googleapis.com/oauth2/v3/userinfo", {
                     headers: { 
                         "Authorization": `Bearer ${token}`
                     }
                 });
                 user = await res.json();
-
-                // Cache for 1 day
                 await chrome.storage.local.set({ 
                     user, 
-                    expiry: Date.now() + 86400000
+                    expiry: Date.now() + 86400000 // Cache valid for 1 day
                 }); 
             }
             console.log(user, expiry);
