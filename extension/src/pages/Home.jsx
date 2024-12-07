@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { FaTimes, FaPlus } from "react-icons/fa"; 
 import FormField from "../components/FormField";
+import SubmitBox from "../components/SubmitBox";
 
 function Home() {
     const [tags, setTags] = useState([]); 
@@ -11,7 +12,7 @@ function Home() {
         // Ensure tag isn't duplicate or blank
         if (tag && !tags.includes(tag)) {
             setTags([...tags, tag]);
-            handleChange();
+            setModified(true);
         }
         setTag(""); 
     }
@@ -48,21 +49,19 @@ function Home() {
                 <FormField label="major" placeholder={"E.g. Computer Science"} onChange={handleChange} />
                 <FormField label="minor" placeholder={"E.g. Linguistics"} onChange={handleChange}/>
                 <FormField label="year"  type={"number"} placeholder={"E.g. 2025"} onChange={handleChange}/>
-                <div className="flex justify-center mb-4">
-                    <input
-                        type="text"
-                        spellCheck={true}
-                        value={tag}
-                        onChange={(e) => setTag(e.target.value)}
-                        className="w-60"
-                        placeholder="Enter a tag describing your interests..."
-                    />
-                    <button type="button" onClick={addTag} className="ml-1"><FaPlus /></button>
-                </div>
+                <SubmitBox 
+                    value={tag}
+                    onChange={(e) => setTag(e.target.value)}
+                    onClick={addTag}
+                    icon={<FaPlus />}
+                    hint={"Enter a tag describing your interests..."}
+                />
                 {tagTiles.length > 0 
                     && <div className="flex flex-wrap gap-1 overflow-y-auto max-h-20">{tagTiles}</div>
                 }
-                <button type="submit" className="w-full">Save Changes</button>
+                <div className="flex justify-center">
+                    <button type="submit" className="w-72">Save Changes</button>
+                </div>
             </form>
         </>
     );

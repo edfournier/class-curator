@@ -3,6 +3,7 @@ import { FaSearch } from "react-icons/fa";
 import { useLocation } from "react-router-dom";
 import { fetchCourse, fetchCourseResults } from "../api/courses";
 import Course from "../components/Course";
+import SubmitBox from "../components/SubmitBox";
 
 function Courses() {
     const location = useLocation();
@@ -24,17 +25,13 @@ function Courses() {
     return (
         <>
             <h1>Course Search</h1> 
-            <div className="flex justify-center mb-4">
-                <input
-                    type="text"
-                    spellCheck={true}
-                    value={query}
-                    onChange={(e) => setQuery(e.target.value)}
-                    className="w-60"
-                    placeholder="Search a course by code or name..."
-                />
-                <button onClick={search} className="ml-1"><FaSearch /></button>
-            </div>
+            <SubmitBox 
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                onClick={search}
+                icon={<FaSearch />}
+                hint={"Search a course by code or name..."}
+            />
             {course 
                 // Either render the search results or the selected course's page
                 ? <Course course={course} setCourse={setCourse} onClose={() => setCourse(null)}/>

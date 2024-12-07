@@ -1,13 +1,16 @@
 import { useEffect, useState } from "react";
 import { BsSendFill } from "react-icons/bs";
+import { FaCheck, FaTimes } from "react-icons/fa";
 import Friend from "../components/Friend";
 import Pager from "../components/Pager";
+import SubmitBox from "../components/SubmitBox";
 
 function Friends() {
     const [friends, setFriends] = useState([]);
-    const [friend, setFriend] = useState(null);
-    const [email, setEmail] = useState("");
-    const [page, setPage] = useState(1);
+    const [friend, setFriend] = useState(null);   // Current friend shown in expanded view
+    const [email, setEmail] = useState("");       // Target of friend request
+    const [page, setPage] = useState(1);          // Current page of visible friends
+    const [requests, setRequests] = useState([]); // Incoming requests
 
     const maxTiles = 4;
     const last = page * maxTiles;
@@ -24,8 +27,16 @@ function Friends() {
         setFriends(friends.filter((friend) => friend.email !== target));
     }
 
+    function handleRequest(accepted) {
+        // TODO: make api calls
+        if (accepted) {
+            setFriends([...friends, requests]);
+        }
+        setRequests(requests.slice(1));
+    }
+
     useEffect(() => {
-        // TODO: replace with API call
+        // TODO: replace with API calls
         setFriends([
             { name: "Alice", email: "alice@umass.edu" },
             { name: "Bob", email: "bob@umass.edu" },
@@ -33,21 +44,45 @@ function Friends() {
             { name: "David", email: "david@umass.edu" },
             { name: "Eva", email: "eva@umass.edu" }
         ]);
+
+        setRequests([
+            { name: "Johnny", email: "jappleseed@umass.edu" },
+            { name: "Sally", email: "sally@umass.edu" }
+        ]);
     }, []);
 
     return (
         <>
             <h1>Friend Requests</h1>
-            <div className="flex justify-center mb-4">
-                <input
-                    type="text"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="w-60"
-                    placeholder="Enter a UMass email address..."
-                />
-                <button onClick={requestFriend} className="ml-1"><BsSendFill /></button>
-            </div>
+            <SubmitBox 
+                value={email} 
+                onChange={(e) => setEmail(e.target.value)} 
+                onClick={requestFriend} 
+                icon={<BsSendFill />} 
+                hint={"Enter a UMass email address..."}
+            />
+            {requests.length > 0 && 
+                <div className="bg-gray-900 p-3 rounded-md border border-gray-700 mb-6">
+                    <h2 className="text-lg font-semibold mb-2">Incoming Friend Request</h2>
+                    <div className="flex justify-between items-center">
+                        <div>
+                            <p className="text-sm font-medium">{requests[0].name}</p>
+                            <p className="text-xs text-gray-400">{requests[0].email}</p>
+                        </div>
+                        <div className="flex space-x-2">
+                            <FaCheck
+                                className="text-green-500 cursor-pointer hover:text-green-600"
+                                onClick={() => handleRequest(true)}
+                            />
+                            <FaTimes
+                                className="text-red-500 cursor-pointer hover:text-red-600"
+                                onClick={() => handleRequest(false)}
+                            />
+                        </div>
+                    </div>
+                </div>
+            }
+
             <h1>Your Friends</h1>
             {friend 
                 // Either render selected friend's page or the friends list
