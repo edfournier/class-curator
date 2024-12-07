@@ -22,16 +22,23 @@ function AuthProvider({ children }) {
 
         try {
             // Check cache first
-            let { user } = await chrome.storage.local.get("user");
-            if (!user) {
-                // Fetch user details
+            let { user, expiry } = await chrome.storage.local.get();
+            if (!user || expiry < Date.now()) {
+                console.log("recalling...");
                 const res = await fetch("https://www.googleapis.com/oauth2/v3/userinfo", {
-                    headers: { "Authorization": `Bearer ${token}`}
+                    headers: { 
+                        "Authorization": `Bearer ${token}`
+                    }
                 });
                 user = await res.json();
-                chrome.storage.local.set({ user }); // Cache user details
+
+                // Cache for 1 day
+                await chrome.storage.local.set({ 
+                    user, 
+                    expiry: Date.now() + 86400000
+                }); 
             }
-            console.log(user);
+            console.log(user, expiry);
             setUser(user);
             navigate("/home");
         }
