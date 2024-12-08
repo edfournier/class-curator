@@ -1,7 +1,10 @@
 chrome.runtime.onMessage.addListener(async (message) => {
     if (message.type === "open-popup") {
-        // Open popup and show the selected course
-        await chrome.action.openPopup(); 
-        chrome.runtime.sendMessage({ type: "show-course", course: message.course });
+        /*
+         * Using session storage here because Chrome doesn't offer a way
+         * to wait until recieving end is open before sending a message
+         */
+        await chrome.storage.session.set({ redirect: message.course });
+        chrome.action.openPopup(); 
     }
 });

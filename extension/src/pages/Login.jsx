@@ -7,10 +7,11 @@ import { useState, useEffect } from "react";
  */
 function Login() {
     const { login } = useAuth();
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(true); 
 
     async function handleLogin(details) {
         try {
+            // Show spinner while OAuth consent page is up
             setLoading(true);
             await login(details);
         }
@@ -25,7 +26,7 @@ function Login() {
     
     useEffect(() => {
         // Attempts to automatically login
-        handleLogin({ interactive: false })
+        handleLogin({ interactive: false });
     }, []);
     
     return loading ? <Spinner /> : (

@@ -4,25 +4,22 @@ import Home from "./pages/Home";
 import Friends from "./pages/Friends";
 import Courses from "./pages/Courses";
 import AuthProvider from "./providers/AuthProvider";
-import Listener from "./components/Listener";
 import Layout from "./components/Layout"
 import AlertProvider from "./providers/AlertProvider";
 
 function App() {
     return (
         <MemoryRouter>
-            <Listener>
-                <AlertProvider>
-                    <AuthProvider>
-                        <Routes>
-                            <Route path="/" element={<Login />} />
-                            <Route path="/home" element={<Layout><Home /></Layout>} />
-                            <Route path="/friends" element={<Layout><Friends /></Layout>} />
-                            <Route path="/courses" element={<Layout><Courses /></Layout>} />
-                        </Routes>
-                    </AuthProvider>
-                </AlertProvider>
-            </Listener>
+            <AlertProvider>
+                <AuthProvider>
+                    <Routes>
+                        <Route path="/" element={<Login />} />
+                        <Route path="/home" element={<Layout><Home /></Layout>} />
+                        <Route path="/friends" element={<Layout><Friends /></Layout>} />
+                        <Route path="/courses" element={<Layout><Courses /></Layout>} />
+                    </Routes>
+                </AuthProvider>
+            </AlertProvider>
         </MemoryRouter>
     );
 }

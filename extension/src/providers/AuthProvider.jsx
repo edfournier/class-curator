@@ -38,7 +38,15 @@ function AuthProvider({ children }) {
             }
             console.log(user, expiry);
             setUser(user);
-            navigate("/home");
+
+            const { redirect } = await chrome.storage.session.get("redirect");
+            if (redirect) {
+                await chrome.storage.session.remove("redirect");
+                navigate("/courses", { state: { course: redirect } });
+            }
+            else {
+                navigate("/home");
+            }
         }
         catch (err) {
             console.error(err);
