@@ -8,5 +8,6 @@ import com.group.project.entities.Course;
 
 public interface CourseRepository extends JpaRepository<Course, Long> {
     Optional<Course> findById(long id);
+
     Optional<Course> findByCode(String code);
 }

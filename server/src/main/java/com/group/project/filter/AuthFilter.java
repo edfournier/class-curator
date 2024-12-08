@@ -27,21 +27,21 @@ public class AuthFilter extends OncePerRequestFilter {
     private RestTemplate rest;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+            throws ServletException, IOException {
         String authHeader = request.getHeader("Authorization");
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Authorization header missing or invalid");
             return;
         }
 
-        try {      
-            String token = authHeader.substring(7); 
-            JsonNode tokenInfo = getTokenInfo(token);     
+        try {
+            String token = authHeader.substring(7);
+            JsonNode tokenInfo = getTokenInfo(token);
             String email = tokenInfo.get("email").asText();
             request.setAttribute("username", email);
             filterChain.doFilter(request, response);
-        } 
-        catch (Exception e) {
+        } catch (Exception e) {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid token");
         }
     }

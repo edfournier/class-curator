@@ -1,4 +1,4 @@
-package com.group.project.controller;  
+package com.group.project.controller;
 
 import java.net.URISyntaxException;
 import java.util.List;
@@ -20,7 +20,7 @@ import com.group.project.repositories.FriendshipRepository;
 import com.group.project.repositories.UserRepository;
 
 @RestController
-@RequestMapping("/private/friendship")  
+@RequestMapping("/private/friendship")
 public class FriendshipController {
 
     @Autowired
@@ -37,18 +37,25 @@ public class FriendshipController {
     public List<User> getFriends(@RequestAttribute Long id) {
         // TODO: Handle null user
         User user = userRepository.findById(id).orElseThrow();
-        Stream<User> friendsStream = Stream.concat(friendshipRepository.findByUser1(user).stream(), friendshipRepository.findByUser2(user).stream()); // Friendships are a unidirected graph
+
+        // Friendships are a undirected graph
+        List<Friendship> leftHalf = friendshipRepository.findByUser1(user);
+        List<Friendship> rightHalf = friendshipRepository.findByUser2(user);
+        Stream<User> leftHalfFriends = leftHalf.stream().flatMap(friendship -> Stream.of(friendship.getUser2()));
+        Stream<User> rightHalfFriends = rightHalf.stream().flatMap(friendship -> Stream.of(friendship.getUser1()));
+        Stream<User> friendsStream = Stream.concat(leftHalfFriends, rightHalfFriends);
         return friendsStream.toList();
     }
 
     @PostMapping
-    public ResponseEntity createFriendship(@RequestBody User user, @RequestBody String user_2_username) throws URISyntaxException {
+    public ResponseEntity<Object> createFriendship(@RequestBody User user, @RequestBody String user_2_username)
+            throws URISyntaxException {
         // TODO: Handle null user
         // TODO: Handle null user2
         // TODO: Handle authenticated user
         User user1 = userRepository.findByUsername(user.getUsername()).orElseThrow();
         User user2 = userRepository.findByUsername(user_2_username).orElseThrow();
-        
+
         // Because unidirectional graph
         if (user1.getId() > user2.getId()) {
             User temp = user1;
@@ -61,7 +68,7 @@ public class FriendshipController {
     }
 
     @DeleteMapping("/{user_2_username}")
-    public ResponseEntity deleteFriendship(@RequestBody User user, @RequestAttribute String user_2_username) {
+    public ResponseEntity<Object> deleteFriendship(@RequestBody User user, @RequestAttribute String user_2_username) {
         // TODO: Handle null user
         // TODO: Handle null user2
         // TODO: Handle authenticated user

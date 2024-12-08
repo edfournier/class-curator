@@ -20,7 +20,8 @@ public class Course {
 
     private String description;
 
-    public Course() {}
+    public Course() {
+    }
 
     public Course(String code, String name, String subject, String description) {
         this.code = code;
@@ -40,7 +41,7 @@ public class Course {
     public String getName() {
         return name;
     }
-    
+
     public String getDescription() {
         return description;
     }

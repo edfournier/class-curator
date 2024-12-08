@@ -11,18 +11,22 @@ import jakarta.persistence.ManyToOne;
 
 @Entity
 public class FriendRequest {
-    @Id @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
-    @ManyToOne @JoinColumn(name = "sender_id", referencedColumnName = "id")
+    @ManyToOne
+    @JoinColumn(name = "sender_id", referencedColumnName = "id")
     private User user1;
 
-    @ManyToOne @JoinColumn(name = "receiver_id", referencedColumnName = "id")
+    @ManyToOne
+    @JoinColumn(name = "receiver_id", referencedColumnName = "id")
     private User user2;
 
     private Date created_at;
 
-    public FriendRequest() {}
+    public FriendRequest() {
+    }
 
     public FriendRequest(User user1, User user2) {
         this.user1 = user1;

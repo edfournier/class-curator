@@ -12,7 +12,8 @@ public class Session {
     @Id
     private String token;
 
-    @OneToOne @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @OneToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
     private Date expires_at;

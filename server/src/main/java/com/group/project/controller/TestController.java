@@ -1,4 +1,4 @@
-package com.group.project.controller;  
+package com.group.project.controller;
 
 import java.util.List;
 import java.util.stream.Stream;
@@ -28,7 +28,7 @@ import com.group.project.repositories.UserRepository;
 import com.group.project.types.UniversitySession;
 
 @RestController
-@RequestMapping("/")  
+@RequestMapping("/")
 public class TestController {
 
     @Autowired
@@ -53,22 +53,24 @@ public class TestController {
     FriendRequestRepository friendRequestRepository;
 
     // Example of using private endpoint
-    @GetMapping("/private/hello")  
+    @GetMapping("/private/hello")
     public String hello(@RequestAttribute String username) {
         return "Hello " + username + "!";
     }
 
     // Example of using public endpoint
-    @GetMapping("/")  
+    @GetMapping("/")
     public String defaultGreet() {
         return "Hello User! Launch the extension to see more or hit the /test API to try your luck :P";
     }
 
     // testing ground for DB fns
     @GetMapping("/testFriendship")
-    public ResponseEntity testFriendship(@RequestParam String u1, @RequestParam String u2) {        
-        User user1 = userRepository.findByUsername(u2).orElse(new User(u2, "U2", new UniversitySession(2024, "FALL"), "Computer Science"));
-        User user2 = userRepository.findByUsername(u1).orElse(new User(u1, "U1", new UniversitySession(2024, "FALL"), "Computer Science"));
+    public ResponseEntity<Object> testFriendship(@RequestParam String u1, @RequestParam String u2) {
+        User user1 = userRepository.findByUsername(u2)
+                .orElse(new User(u2, "U2", new UniversitySession(2024, "FALL"), "Computer Science"));
+        User user2 = userRepository.findByUsername(u1)
+                .orElse(new User(u1, "U1", new UniversitySession(2024, "FALL"), "Computer Science"));
 
         userRepository.save(user1);
         userRepository.save(user2);
@@ -90,16 +92,19 @@ public class TestController {
         Stream<User> friendsStream = Stream.concat(leftHalfFriends, rightHalfFriends);
 
         // // TODO: Handle missing friendship
-        // Friendship friendship = friendshipRepository.findByUser1AndUser2(user1, user2).orElseThrow();
+        // Friendship friendship = friendshipRepository.findByUser1AndUser2(user1,
+        // user2).orElseThrow();
 
         // friendshipRepository.delete(friendship);
         return ResponseEntity.ok(friendsStream.toList());
     }
 
     @GetMapping("/testFriendReq")
-    public ResponseEntity testFriendshipReq(@RequestParam String u1, @RequestParam String u2) {        
-        User user1 = userRepository.findByUsername(u2).orElse(new User(u2, "U2", new UniversitySession(2024, "FALL"), "Computer Science"));
-        User user2 = userRepository.findByUsername(u1).orElse(new User(u1, "U1", new UniversitySession(2024, "FALL"), "Computer Science"));
+    public ResponseEntity<Object> testFriendshipReq(@RequestParam String u1, @RequestParam String u2) {
+        User user1 = userRepository.findByUsername(u2)
+                .orElse(new User(u2, "U2", new UniversitySession(2024, "FALL"), "Computer Science"));
+        User user2 = userRepository.findByUsername(u1)
+                .orElse(new User(u1, "U1", new UniversitySession(2024, "FALL"), "Computer Science"));
 
         userRepository.save(user1);
         userRepository.save(user2);
@@ -121,36 +126,42 @@ public class TestController {
         Stream<User> friendsStream = Stream.concat(leftHalfFriends, rightHalfFriends);
 
         // // TODO: Handle missing friendship
-        // Friendship friendship = friendshipRepository.findByUser1AndUser2(user1, user2).orElseThrow();
+        // Friendship friendship = friendshipRepository.findByUser1AndUser2(user1,
+        // user2).orElseThrow();
 
         // friendshipRepository.delete(friendship);
         return ResponseEntity.ok(friendsStream.toList());
     }
 
     @GetMapping("/testRating")
-    public ResponseEntity<Object> testRating(@RequestParam String code, @RequestParam String semester, @RequestParam int year, @RequestParam int rating) {
+    public ResponseEntity<Object> testRating(@RequestParam String code, @RequestParam String semester,
+            @RequestParam int year, @RequestParam int rating) {
         Course course = courseRepository.findByCode(code).get();
-        UniClass uniClass = uniClassRepository.findByCourseAndSession(course, new UniversitySession(year, semester)).getFirst();
+        UniClass uniClass = uniClassRepository.findByCourseAndSession(course, new UniversitySession(year, semester))
+                .getFirst();
 
         User user = userRepository.findByUsername("u1").orElseThrow();
 
-        UserRating userRating = userRatingRepository.findByUserAndUniClass(user, uniClass).orElse(new UserRating(user, uniClass, rating));
+        UserRating userRating = userRatingRepository.findByUserAndUniClass(user, uniClass)
+                .orElse(new UserRating(user, uniClass, rating));
         userRating.setRating(rating);
         userRating = userRatingRepository.save(userRating);
-        
-        
+
         return ResponseEntity.ok(userRating);
     }
 
     @GetMapping("/testRating2")
-    public ResponseEntity<Object> testRating2(@RequestParam String code, @RequestParam String semester, @RequestParam int year) {
+    public ResponseEntity<Object> testRating2(@RequestParam String code, @RequestParam String semester,
+            @RequestParam int year) {
         Course course = courseRepository.findByCode(code).get();
-        
+
         List<AggrRating> aggrRatings = aggrRatingRepository.findByCourse(course);
         return ResponseEntity.ok(aggrRatings);
 
-        // UniClass uniClass = uniClassRepository.findByCourseAndSession(course, new UniversitySession(year, semester)).getFirst();
-        // AggrRating aggrRating = aggrRatingRepository.findByUniClass(uniClass).orElseThrow();        
+        // UniClass uniClass = uniClassRepository.findByCourseAndSession(course, new
+        // UniversitySession(year, semester)).getFirst();
+        // AggrRating aggrRating =
+        // aggrRatingRepository.findByUniClass(uniClass).orElseThrow();
         // return ResponseEntity.ok(aggrRating);
     }
 }

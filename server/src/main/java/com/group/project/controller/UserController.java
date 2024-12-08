@@ -1,4 +1,4 @@
-package com.group.project.controller;  
+package com.group.project.controller;
 
 import java.util.List;
 
@@ -15,7 +15,7 @@ import com.group.project.entities.User;
 import com.group.project.repositories.UserRepository;
 
 @RestController
-@RequestMapping("/private/users")  
+@RequestMapping("/private/users")
 public class UserController {
 
     @Autowired
@@ -36,7 +36,7 @@ public class UserController {
     }
 
     @PutMapping("/{username}")
-    public ResponseEntity updateUser(@RequestBody User user, @RequestAttribute String username) {
+    public ResponseEntity<Object> updateUser(@RequestBody User user, @RequestAttribute String username) {
         // TODO: Check if authenticated user
         // TODO: Handle missing user
         User currentUser = userRepository.findByUsername(username).orElseThrow(RuntimeException::new);

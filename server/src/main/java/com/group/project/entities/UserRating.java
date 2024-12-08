@@ -12,10 +12,12 @@ public class UserRating {
     @Id
     private long id;
 
-    @ManyToOne @JoinColumn(name="user_id", referencedColumnName = "id")
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
-    @ManyToOne @JoinColumn(name="uni_class_id", referencedColumnName = "id")
+    @ManyToOne
+    @JoinColumn(name = "uni_class_id", referencedColumnName = "id")
     private UniClass uniClass;
 
     private int rating;

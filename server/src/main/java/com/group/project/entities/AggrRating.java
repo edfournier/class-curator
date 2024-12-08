@@ -7,13 +7,15 @@ import jakarta.persistence.ManyToOne;
 
 @Entity
 public class AggrRating {
-    @Id 
+    @Id
     private long id;
 
-    @ManyToOne @JoinColumn(name="uni_class_id")
+    @ManyToOne
+    @JoinColumn(name = "uni_class_id")
     private UniClass uniClass;
 
-    @ManyToOne @JoinColumn(name="course_id", referencedColumnName = "id")
+    @ManyToOne
+    @JoinColumn(name = "course_id", referencedColumnName = "id")
     private Course course;
 
     private float rate_user_avg;
@@ -60,5 +62,5 @@ public class AggrRating {
 
     public float getRate_rmp_difficulty() {
         return rate_rmp_difficulty;
-    } 
+    }
 }

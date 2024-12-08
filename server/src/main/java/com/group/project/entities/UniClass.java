@@ -16,7 +16,8 @@ public class UniClass {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private long id;
 
-    @ManyToOne @JoinColumn(name= "course_id", referencedColumnName = "id")
+    @ManyToOne
+    @JoinColumn(name = "course_id", referencedColumnName = "id")
     private Course course;
 
     @Embedded
@@ -24,14 +25,14 @@ public class UniClass {
 
     private String prof;
 
-    public UniClass() {}
+    public UniClass() {
+    }
 
     public UniClass(Course course, UniversitySession session, String prof) {
         this.course = course;
         this.session = session;
         this.prof = prof;
     }
-
 
     public long getId() {
         return id;

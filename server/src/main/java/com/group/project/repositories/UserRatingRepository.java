@@ -9,8 +9,10 @@ import com.group.project.entities.UserRating;
 import com.group.project.entities.UniClass;
 import com.group.project.entities.User;
 
-public interface UserRatingRepository  extends JpaRepository<UserRating, Long> {
+public interface UserRatingRepository extends JpaRepository<UserRating, Long> {
     List<UserRating> findByUser(User user);
+
     List<UserRating> findByUniClass(UniClass uniClass);
+
     Optional<UserRating> findByUserAndUniClass(User user, UniClass uniClass);
 }

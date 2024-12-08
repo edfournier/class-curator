@@ -13,7 +13,7 @@ import jakarta.persistence.Id;
 
 @Entity
 public class User {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -24,14 +24,15 @@ public class User {
 
     @Embedded
     @AttributeOverrides({
-        @AttributeOverride(name = "year", column = @Column(name = "grad_year")),
-        @AttributeOverride(name = "semester", column = @Column(name = "grad_semester"))
+            @AttributeOverride(name = "year", column = @Column(name = "grad_year")),
+            @AttributeOverride(name = "semester", column = @Column(name = "grad_semester"))
     })
     private UniversitySession grad_session;
 
     private String major; // Not Null
 
-    public User() {}
+    public User() {
+    }
 
     public User(String username, String display_name, UniversitySession grad_session, String major) {
         this.username = username;
