@@ -8,21 +8,21 @@ export async function getFriends() {
     ]);
 }
 
-export async function getRequests() {
+export async function getIncomingRequests() {
     return Promise.resolve([
         { name: "Johnny", email: "jappleseed@umass.edu" },
         { name: "Sally", email: "sally@umass.edu" }
     ]);
 }
 
-export async function deleteFriend() {
-
+export async function deleteFriend(email) {
+    return Promise.resolve();
 }
 
-export async function postFriendRequest() {
-
+export async function postFriendRequest(email) {
+    return Promise.resolve();
 }
 
-export async function postRequestDecision() {
-
+export async function postRequestDecision(isAccepted) {
+    return Promise.resolve();
 }

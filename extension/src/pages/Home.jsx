@@ -3,19 +3,23 @@ import { FaTimes, FaPlus } from "react-icons/fa";
 import FormField from "../components/FormField";
 import SubmitBox from "../components/SubmitBox";
 import { useAlerts } from "../providers/AlertProvider";
+import { getUserDetails, putUserDetails } from "../api/user.js";
 
 function Home() {
+    const alerts = useAlerts();
     const [tags, setTags] = useState([]); 
     const [tag, setTag] = useState("");
     const [modified, setModified] = useState(false);
     const [formData, setFormData] = useState({});
-    const alerts = useAlerts();
 
     function addTag() {
         // Ensure tag isn't duplicate or blank
         if (tag && !tags.includes(tag)) {
             setTags([...tags, tag]);
             setModified(true);
+        }
+        else {
+            alerts.error("New tags cannot be blank or duplicates!");
         }
         setTag(""); 
     }
@@ -26,38 +30,54 @@ function Home() {
     }
 
     function handleFormChange(e) {
+        // Add new key's value to form data
         const { name, value } = e.target;
-        setFormData({
-            ...formData,
-            [name]: value
-        });
+        setFormData({ ...formData, [name]: value }); 
         setModified(true);
     }
 
-    function handleSave(e) {
+    async function handleSave(e) {
         e.preventDefault();
         if (modified) {
-            // TODO: make API call
-            // Use 'e.target.elements.major.value' to get form values
-            setModified(false);
-            alerts.info("Changes saved!");
+            try {
+                // Send new details to backend
+                const details = {
+                    major: e.target.elements.major.value,
+                    minor: e.target.elements.minor.value,
+                    year: e.target.elements.year.value,
+                    tags: tags
+                }
+                await putUserDetails(details);
+                setModified(false);
+                alerts.info("Changes saved!");
+            }
+            catch (err) {
+                console.error(err);
+                alerts.error("Failed to save changes, please try again");
+            }
         }
     }
 
 
     useEffect(() => {
-        // TODO: make API call
-        setTags([
-            "Machine Learning",
-            "Artificial Intelligence",
-            "Data Science",
-            "Computer Networks"
-        ]);
-        setFormData({
-            major: "Computer Science",
-            minor: "Linguistics",
-            year: 2025
-        });
+        async function load() {
+            try {
+                // Load user details from backend
+                const userDetails = await getUserDetails();
+                setTags(userDetails.tags);
+                setFormData({ 
+                    major: userDetails.major,
+                    minor: userDetails.minor,
+                    year: userDetails.year
+                });
+            }
+            catch (err) {
+                console.error(err);
+                alerts.error("Failed to load user's details");
+            }
+        }
+
+        load();
     }, []); 
 
     return (

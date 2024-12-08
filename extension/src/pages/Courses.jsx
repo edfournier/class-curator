@@ -1,26 +1,41 @@
 import { useState } from "react";
 import { FaSearch } from "react-icons/fa"; 
 import { useLocation } from "react-router-dom";
-import { fetchCourse, fetchCourseResults } from "../api/courses";
+import { getCourseDetails, getCourseResults } from "../api/courses";
 import CourseCard from "../components/CourseCard";
 import SubmitBox from "../components/SubmitBox";
 import PagableList from "../components/PagableList";
+import { useAlerts } from "../providers/AlertProvider";
 
 function Courses() {
     const location = useLocation();
+    const alerts = useAlerts();
     const [query, setQuery] = useState(location?.state?.course || ""); // Handles open-popup trigger
     const [course, setCourse] = useState(null); 
     const [results, setResults] = useState(null); 
 
     async function search() {
-        // Fetch results and map each matched course to a search result tile
-        const courses = await fetchCourseResults(query);
-        setResults(courses);
+        try {
+            // Fetch top results from user query
+            const courses = await getCourseResults(query);
+            setResults(courses);
+        }
+        catch (err) {
+            console.error(err);
+            alerts.error("Failed to execute query, please try again");
+        }
     }
 
     async function showCourse(course) {
-        const result = await fetchCourse(course.id);
-        setCourse(result);
+        try {
+            // Get details for clicked course 
+            const result = await getCourseDetails(course.id);
+            setCourse(result);
+        }
+        catch (err) {
+            console.error(err);
+            alerts.error("Failed to get course details, please try again");
+        }
     }
 
     return (
@@ -35,7 +50,10 @@ function Courses() {
             />
             {results && (course 
                 // Either render the search results or the selected course's page
-                ? <CourseCard course={course} setCourse={setCourse} onClose={() => setCourse(null)}/>
+                ? <CourseCard 
+                    course={course}  
+                    onClose={() => setCourse(null)}
+                />
                 : <PagableList 
                     entries={results}
                     onClick={showCourse}

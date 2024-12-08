@@ -1,15 +1,33 @@
+import { useEffect, useState } from "react";
 import { FaTimes } from "react-icons/fa"; 
+import { getUserInterests } from "../api/user";
+import { useAlerts } from "../providers/AlertProvider";
 
 // TODO: highlight classes that you have common interests
 
-function FriendCard({ friend, onClose, onUnfriend }) {
-    // TODO: api call that gets the friends should return this data
-    const interests = [
-        { name: "Data Structures", code: "CS 187" },
-        { name: "Algorithms", code: "CS 201" },
-        { name: "Operating Systems", code: "CS 350" },
-        { name: "Machine Learning", code: "CS 500" }
-    ];
+function FriendCard({ friend, userInterests, onClose, onUnfriend }) {
+    const alerts = useAlerts();
+    const [friendInterests, setFriendInterests] = useState([]);
+
+    useEffect(() => {
+        async function load() {
+            try {
+                const friendInterests = await getUserInterests(friend.email);
+
+                // Find intersection of logged-in user and this friend's interests
+                for (const interest of friendInterests) {
+                    interest.isCommon = userInterests.some(({ code }) => code === interest.code);
+                }
+                setFriendInterests(friendInterests);
+            } 
+            catch (err) {
+                console.error(err);
+                alerts.error("Failed to get friend's interests");
+            }
+        }
+
+        load();
+    }, []);
 
     return (
         <div className="card">
@@ -19,14 +37,21 @@ function FriendCard({ friend, onClose, onUnfriend }) {
             </div>
             <h2 className="mb-3 mt-2">{friend.name}'s Interests</h2>
             <ul className="overflow-y-auto max-h-36 mb-6 space-y-1 mr-1 ml-2">
-                {interests.length === 0 
+                {friendInterests.length === 0 
                     ? <span className="font-semibold text-indigo-200">{friend.name} has no interests!</span>
-                    : interests.map((interest, i) => 
-                        <li key={i}>
-                            <span className="font-semibold text-indigo-200">{interest.name}</span>
-                            <span className="text-gray-400"> {interest.code}</span>
-                        </li>
-                    )
+                    : friendInterests.map((interest) => {
+                        return (
+                            <li key={interest.code}>
+                                <span
+                                    className={`font-semibold ${interest.isCommon ? "text-indigo-500" : "text-indigo-200"}`}
+                                    title={interest.isCommon ? "You're both interested in this course!" : ""}
+                                >
+                                    {interest.name}
+                                </span>
+                                <span className="text-gray-400"> {interest.code}</span>
+                            </li>
+                        );
+                    })
                 }
             </ul>
             <div className="flex justify-center">

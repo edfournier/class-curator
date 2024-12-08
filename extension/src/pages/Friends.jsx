@@ -5,49 +5,87 @@ import FriendCard from "../components/FriendCard";
 import SubmitBox from "../components/SubmitBox";
 import PagableList from "../components/PagableList";
 import { useAlerts } from "../providers/AlertProvider";
+import { deleteFriend, getFriends, getIncomingRequests, postFriendRequest, postRequestDecision } from "../api/friends";
+import { getUserInterests } from "../api/user";
+import { useAuth } from "../providers/AuthProvider";
 
 function Friends() {
-    const [friends, setFriends] = useState([]);
-    const [friend, setFriend] = useState(null);   // Current friend shown in expanded view
-    const [email, setEmail] = useState("");       // Target of friend request
-    const [requests, setRequests] = useState([]); // Incoming requests
     const alerts = useAlerts();
+    const [friends, setFriends] = useState([]);
+    const [friend, setFriend] = useState(null);             // Current friend shown in card view
+    const [email, setEmail] = useState("");                 // Target of friend request
+    const [requests, setRequests] = useState([]);           // Incoming friend requests
+    const [userInterests, setUserInterests] = useState([]); // Interests of logged in user
+    const { user } = useAuth();
 
-    function handleSendRequest() {
-        // TODO: make API call
-        setEmail("");
-    }
-
-    function handleDecideRequest(accepted) {
-        // TODO: make API call
-        if (accepted) {
-            alerts.info(`Added ${requests[0].email}!`);
+    async function handleSendRequest() {
+        try {
+            // Check email isn't invalid
+            if (!email.includes("@umass.edu")) {
+                alerts.error("Please enter a valid UMass email, e.g. edfournier@umass.edu");
+            }
+            else {
+                // Notify backend of new request
+                await postFriendRequest(email);
+                alerts.info(`Sent request to ${email}!`);
+            }
+            setEmail("");
         }
-        setRequests(requests.slice(1));
+        catch (err) {
+            console.error(err);
+            alerts.error("Failed to send friend request");
+        }
     }
 
-    function handleUnfriend() {
-        // TODO: make API call
-        setFriends(friends.filter((e) => e.email !== friend.email));
-        alerts.info(`Unfriended ${friend.email}!`);
-        setFriend(null);
-        setPage(1);
+    async function handleDecideRequest(isAccepted) {
+        try {
+            // Notify backend of accept/deny
+            await postRequestDecision(isAccepted);
+            if (isAccepted) {
+                alerts.info(`Added ${requests[0].email}!`);
+            }
+
+            // Show next request
+            setRequests(requests.slice(1)); 
+        }
+        catch (err) {
+            console.error(err);
+            alerts.error("Failed to respond to request, please try again");
+        }
+    }
+
+    async function handleUnfriend() {
+        try {
+            // Notify backend to unfriend
+            await deleteFriend(friend.email);
+            setFriends(friends.filter(({ email }) => email !== friend.email));
+            setFriend(null);
+            alerts.info(`Unfriended ${friend.email}!`);
+        }
+        catch (err) {
+            console.error(err);
+            alerts.error("Failed to unfriend, please try again");
+        }
     }
 
     useEffect(() => {
-        // TODO: replace with API calls
-        setFriends([
-            { name: "Alice", email: "alice@umass.edu" },
-            { name: "Bob", email: "bob@umass.edu" },
-            { name: "Charlie", email: "charlie@umass.edu" },
-            { name: "David", email: "david@umass.edu" },
-            { name: "Eva", email: "eva@umass.edu" }
-        ]);
+        async function load() {
+            try {
+                // Load user's friends and requests 
+                const [friends, requests, userInterests] = await Promise.all(
+                    [getFriends(), getIncomingRequests(), getUserInterests(user.email)]
+                );
+                setFriends(friends);
+                setRequests(requests);
+                setUserInterests(userInterests);
+            }
+            catch (err) {
+                console.error(err);
+                alerts.error("Failed to load user's friends");
+            }
+        }
 
-        setRequests([
-            { name: "Johnny", email: "jappleseed@umass.edu" },
-            { name: "Sally", email: "sally@umass.edu" }
-        ]);
+        load();
     }, []);
 
     return (
@@ -81,7 +119,12 @@ function Friends() {
             <h1>Your Friends</h1>
             {friend 
                 // Either render selected friend's card or the friends list
-                ? <FriendCard friend={friend} setFriend={setFriend} onClose={() => setFriend(null)} onUnfriend={handleUnfriend}/>
+                ? <FriendCard 
+                    friend={friend} 
+                    userInterests={userInterests}
+                    onClose={() => setFriend(null)} 
+                    onUnfriend={handleUnfriend}
+                />
                 : <PagableList 
                     entries={friends} 
                     onClick={setFriend} 
