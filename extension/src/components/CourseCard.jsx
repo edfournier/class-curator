@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { FaTimes, FaThumbsUp, FaThumbsDown, FaRegThumbsUp, FaRegThumbsDown } from "react-icons/fa"; 
 import { getCourseDetails, getCourseInsights, postCourseInterest, postCourseRating } from "../api/courses";
 import { useAlerts } from "../providers/AlertProvider";
+import CourseRatingChart from "./CourseRatingChart";
 
 function CourseCard({ course, onClose }) {
     const alerts = useAlerts();
@@ -74,6 +75,7 @@ function CourseCard({ course, onClose }) {
                 </div>
             </div>
             <p className="flex-grow">{details.description}</p>
+            <CourseRatingChart data={insights.data} />
             <div className="mt-3 flex justify-center">
                 <button
                     onClick={handleInterest}

@@ -30,8 +30,6 @@ export async function getCourseInsights(id) {
             { semester: "SPRING", year: 2021, helpfulness: 2.6, difficulty: 0.2 },
             { semester: "FALL", year: 2016, helpfulness: 2.8, difficulty: 2.6 },
             { semester: "FALL", year: 2022, helpfulness: 4.6, difficulty: 2.1 },
-            { semester: "SPRING", year: 2018, helpfulness: 1.9, difficulty: 3.5 },
-            { semester: "SPRING", year: 2016, helpfulness: 2.5, difficulty: 0.9 }
         ]
     });
 }
