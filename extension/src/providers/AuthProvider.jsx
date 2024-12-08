@@ -1,6 +1,7 @@
 import { useState, createContext, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAlerts } from "../providers/AlertProvider";
+import axios from "axios";
 
 const AuthContext = createContext();
 
@@ -25,20 +26,17 @@ function AuthProvider({ children }) {
             let { user, expiry } = await chrome.storage.local.get();
             if (!user || expiry < Date.now()) {
                 // Fetch user details
-                const res = await fetch("https://www.googleapis.com/oauth2/v3/userinfo", {
-                    headers: { 
-                        "Authorization": `Bearer ${token}`
-                    }
+                const user = await axios.get("https://www.googleapis.com/oauth2/v3/userinfo", {
+                    headers: { Authorization: `Bearer ${token}` }
                 });
-                user = await res.json();
-                await chrome.storage.local.set({ 
-                    user, 
-                    expiry: Date.now() + 86400000 // Cache valid for 1 day
-                }); 
+
+                // Cache valid for 1 day
+                await chrome.storage.local.set({ user, expiry: Date.now() + 86400000 }); 
             }
             console.log(user, expiry);
             setUser(user);
 
+            // Check if we're redirecting to course page from SPIRE
             const { redirect } = await chrome.storage.session.get("redirect");
             if (redirect) {
                 await chrome.storage.session.remove("redirect");
@@ -54,15 +52,8 @@ function AuthProvider({ children }) {
         }
     }
 
-    async function logout() {
-        // Nuke state and boot to login
-        setUser(null);
-        chrome.storage.local.clear();
-        navigate("/");
-    }
-
     return (
-        <AuthContext.Provider value={{ user, login, logout }}>
+        <AuthContext.Provider value={{ user, login }}>
             {children}
         </AuthContext.Provider>
     );

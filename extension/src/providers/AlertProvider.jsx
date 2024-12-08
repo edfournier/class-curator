@@ -41,7 +41,7 @@ function AlertProvider({ children }) {
     return (
         <AlertContext.Provider value={{ error, info }}>
             {children}
-            <div className={`fixed bottom-0 z-50 w-full duration-500 ease-in-out ${showing ? "translate-y-0" : "translate-y-16"}`}>
+            <div aria-label="alert" className={`fixed bottom-0 z-50 w-full duration-500 ease-in-out ${showing ? "translate-y-0" : "translate-y-16"}`}>
                 <div className={`p-3 rounded-t-lg font-bold bg-gray-900 border-t-[1px] border-gray-700 flex items-center justify-between`}>
                     <div className="flex items-center">
                         {alert && alert.type === "error" 
@@ -51,6 +51,7 @@ function AlertProvider({ children }) {
                         {alert && alert.message}
                     </div>
                     <FaTimes 
+                        aria-label="close"
                         className="cursor-pointer hover:text-indigo-600 mr-2" 
                         onClick={hideAlert} 
                     />
