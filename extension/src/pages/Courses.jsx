@@ -1,18 +1,19 @@
 import { useState } from "react";
 import { FaSearch } from "react-icons/fa"; 
 import { useLocation } from "react-router-dom";
-import { getCourseDetails, getCourseResults } from "../api/courses";
+import { getCourseResults } from "../api/courses";
 import CourseCard from "../components/CourseCard";
 import SubmitBox from "../components/SubmitBox";
 import PagableList from "../components/PagableList";
 import { useAlerts } from "../providers/AlertProvider";
 
 function Courses() {
-    const location = useLocation();
     const alerts = useAlerts();
-    const [query, setQuery] = useState(location?.state?.course || ""); // Handles open-popup trigger
-    const [course, setCourse] = useState(null); 
-    const [results, setResults] = useState(null); 
+    const location = useLocation();
+    const redirect = location?.state?.course;           // Handle case popup was opened from SPIRE
+    const [course, setCourse] = useState(null);         // Details and insights of the course being shown in card view
+    const [results, setResults] = useState(null);       // Search results from given query
+    const [query, setQuery] = useState(redirect || ""); 
 
     async function search() {
         try {
@@ -23,18 +24,6 @@ function Courses() {
         catch (err) {
             console.error(err);
             alerts.error("Failed to execute query, please try again");
-        }
-    }
-
-    async function showCourse(course) {
-        try {
-            // Get details for clicked course 
-            const result = await getCourseDetails(course.id);
-            setCourse(result);
-        }
-        catch (err) {
-            console.error(err);
-            alerts.error("Failed to get course details, please try again");
         }
     }
 
@@ -56,7 +45,7 @@ function Courses() {
                 />
                 : <PagableList 
                     entries={results}
-                    onClick={showCourse}
+                    onClick={setCourse}
                     emptyMessage={"No matching results found!"}
                     mainKey={"name"}
                     subKey={"code"}

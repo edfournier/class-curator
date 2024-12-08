@@ -1,22 +1,56 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { FaTimes, FaThumbsUp, FaThumbsDown, FaRegThumbsUp, FaRegThumbsDown } from "react-icons/fa"; 
+import { getCourseDetails, getCourseInsights, postCourseInterest, postCourseRating } from "../api/courses";
+import { useAlerts } from "../providers/AlertProvider";
 
 function CourseCard({ course, onClose }) {
+    const alerts = useAlerts();
     const [thumb, setThumb] = useState("");
-    const [interested, setInterested] = useState(false);  
+    const [isInterested, setIsInterested] = useState(false);  
+    const [details, setDetails] = useState({});
+    const [insights, setInsights] = useState({});
 
-    function handleThumb(type) {
-        setThumb(type === thumb ? "" : type);
-        // TODO: API call for like/dislike status
+    async function handleThumb(type) {
+        try {
+            await postCourseRating(course.id, type);
+            setThumb(type === thumb ? "" : type);
+        }
+        catch (err) {
+            console.error(err);
+            alerts.err("Failed to register rating, please try again");
+        }
     }
 
-    function handleInterest() {
-        setInterested(!interested); 
-        // TODO: API call for interest status
+    async function handleInterest() {
+        try {
+            await postCourseInterest(course.id, isInterested);
+            setIsInterested(!isInterested); 
+        }
+        catch (err) {
+            console.error(err);
+            alerts.err("Failed to register interest, please try again");
+        }
     }
 
-    // TODO: historical graph
-    // TODO: recommended prof based on average rating
+    useEffect(() => {
+        async function load() {
+            try {
+                // Get details and insights for clicked course 
+                const [details, insights] = await Promise.all([
+                    getCourseDetails(course.id),
+                    getCourseInsights(course.id)
+                ]);
+                setDetails(details),
+                setInsights(insights);
+            }
+            catch (err) {
+                console.error(err);
+                alerts.error("Failed to get course details and insights");
+            }
+        }
+
+        load();
+    }, []);
 
     return (
         <div className="card">
@@ -30,20 +64,20 @@ function CourseCard({ course, onClose }) {
                     <button className="p-1" onClick={() => handleThumb("up")}>
                         {thumb === "up" ? <FaThumbsUp /> : <FaRegThumbsUp />}
                     </button>
-                    <span>{course.likes}</span>
+                    <span>{details.likes}</span>
                 </div>
                 <div className="flex items-center space-x-1">
                     <button className="p-1" onClick={() => handleThumb("down")}>
                         {thumb === "down" ? <FaThumbsDown /> : <FaRegThumbsDown />}
                     </button>
-                    <span>{course.dislikes}</span>
+                    <span>{details.dislikes}</span>
                 </div>
             </div>
-            <p className="flex-grow">{course.description}</p>
+            <p className="flex-grow">{details.description}</p>
             <div className="mt-3 flex justify-center">
                 <button
                     onClick={handleInterest}
-                    className={interested ? "py-1" : "py-1 bg-gray-600 text-gray-300 hover:bg-gray-500"}
+                    className={isInterested ? "py-1" : "py-1 bg-gray-600 text-gray-300 hover:bg-gray-500"}
                 >
                     I'm Interested!
                 </button>

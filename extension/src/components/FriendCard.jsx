@@ -3,8 +3,6 @@ import { FaTimes } from "react-icons/fa";
 import { getUserInterests } from "../api/user";
 import { useAlerts } from "../providers/AlertProvider";
 
-// TODO: highlight classes that you have common interests
-
 function FriendCard({ friend, userInterests, onClose, onUnfriend }) {
     const alerts = useAlerts();
     const [friendInterests, setFriendInterests] = useState([]);
