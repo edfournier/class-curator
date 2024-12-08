@@ -74,7 +74,7 @@ function CourseCard({ course, onClose }) {
                     <span>{details.dislikes}</span>
                 </div>
             </div>
-            <p className="flex-grow">{details.description}</p>
+            <p className="flex-grow mb-2">{details.description}</p>
             <CourseRatingChart data={insights.data} />
             <div className="mt-3 flex justify-center">
                 <button
