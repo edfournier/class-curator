@@ -4,12 +4,13 @@ from utils.sqlite3_ops import construct_query_with_values, open_db_connection, p
 
 ## file paths
 RELATIVE_PATH = '.' # NOTE: Change this 
-COURSE_PATH = f'{RELATIVE_PATH}/rmp/courses.json'
-RATINGS_PATH = f'{RELATIVE_PATH}/rmp/ratings.csv'
-DB_PATH = f'{RELATIVE_PATH}/class_c.db'
-SETUP_QUERIES_PATH = f'{RELATIVE_PATH}/queries/setup.json'
-MANAGE_CLASSES_QUERIES_PATH = f'{RELATIVE_PATH}/queries/manage_classes.json'
-MANAGE_RATINGS_QUERIES_PATH = f'{RELATIVE_PATH}/queries/manage_ratings.json'
+DB_PATH = f'{RELATIVE_PATH}/server/class_c.db'
+SETUP_FOLDER_PATH = f'{RELATIVE_PATH}/setup'
+COURSE_PATH = f'{SETUP_FOLDER_PATH}/rmp/courses.json'
+RATINGS_PATH = f'{SETUP_FOLDER_PATH}/rmp/ratings.csv'
+SETUP_QUERIES_PATH = f'{SETUP_FOLDER_PATH}/queries/setup.json'
+MANAGE_CLASSES_QUERIES_PATH = f'{SETUP_FOLDER_PATH}/queries/manage_classes.json'
+MANAGE_RATINGS_QUERIES_PATH = f'{SETUP_FOLDER_PATH}/queries/manage_ratings.json'
 
 
 ## --- Read data from sources --- ##
@@ -42,10 +43,11 @@ cursor = db_connection.cursor()
 with open(SETUP_QUERIES_PATH) as queries:
     queries = json.load(queries)
     cursor.execute(queries['create_table_user'])
+    cursor.execute(queries['create_table_session'])
     cursor.execute(queries['create_table_course'])
-    cursor.execute(queries['create_table_class'])
-    cursor.execute(queries['create_table_rating_aggr'])
-    cursor.execute(queries['create_table_rating_user'])
+    cursor.execute(queries['create_table_uni_class'])
+    cursor.execute(queries['create_table_aggr_rating'])
+    cursor.execute(queries['create_table_user_rating'])
     cursor.execute(queries['create_table_friendship'])
     cursor.execute(queries['create_table_friend_request'])
     db_connection.commit()
@@ -67,6 +69,6 @@ with open(MANAGE_CLASSES_QUERIES_PATH) as class_queries:
 # Data Population - RMP Ratings
 with open(MANAGE_RATINGS_QUERIES_PATH) as rating_queries:
     rating_queries = json.load(rating_queries)
-    query_insert_rating_aggr = construct_query_with_values(rating_queries["insert_aggregate_rating_initial_load"], data_classes)
-    cursor.execute(query_insert_rating_aggr)
+    query_insert_aggr_rating = construct_query_with_values(rating_queries["insert_aggregate_rating_initial_load"], data_classes)
+    cursor.execute(query_insert_aggr_rating)
     db_connection.commit()
