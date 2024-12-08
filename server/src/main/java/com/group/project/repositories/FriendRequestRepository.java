@@ -6,12 +6,10 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.group.project.entities.FriendRequest;
-import com.group.project.entities.Friendship;
 import com.group.project.entities.User;
-import com.group.project.types.FriendshipId;
 
-public interface FriendRequestRepository  extends JpaRepository<FriendRequest, FriendshipId> {
-    List<User> findByUser1(User user1);
-    List<User> findByUser2(User user2);
-    Optional<Friendship> findByUser1AndUser2(User user1, User user2);
+public interface FriendRequestRepository  extends JpaRepository<FriendRequest, Long> {
+    List<FriendRequest> findByUser1(User user1);
+    List<FriendRequest> findByUser2(User user2);
+    Optional<FriendRequest> findByUser1AndUser2(User user1, User user2);
 }

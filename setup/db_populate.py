@@ -49,7 +49,7 @@ with open(SETUP_QUERIES_PATH) as queries:
     cursor.execute(queries['create_table_aggr_rating'])
     cursor.execute(queries['create_table_user_rating'])
     cursor.execute(queries['create_table_friendship'])
-    cursor.execute(queries['create_table_friendrequest'])
+    cursor.execute(queries['create_table_friend_request'])
     db_connection.commit()
 
 # Data Population - Courses and Classes

@@ -1,6 +1,7 @@
 package com.group.project.controller;  
 
 import java.util.List;
+import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -11,12 +12,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.group.project.entities.Course;
+import com.group.project.entities.FriendRequest;
 import com.group.project.entities.Friendship;
 import com.group.project.entities.AggrRating;
 import com.group.project.entities.UserRating;
 import com.group.project.entities.UniClass;
 import com.group.project.entities.User;
 import com.group.project.repositories.CourseRepository;
+import com.group.project.repositories.FriendRequestRepository;
 import com.group.project.repositories.FriendshipRepository;
 import com.group.project.repositories.AggrRatingRepository;
 import com.group.project.repositories.UserRatingRepository;
@@ -32,9 +35,6 @@ public class TestController {
     UserRepository userRepository;
 
     @Autowired
-    FriendshipRepository friendshipRepository;
-
-    @Autowired
     CourseRepository courseRepository;
 
     @Autowired
@@ -45,6 +45,12 @@ public class TestController {
 
     @Autowired
     UserRatingRepository userRatingRepository;
+
+    @Autowired
+    FriendshipRepository friendshipRepository;
+
+    @Autowired
+    FriendRequestRepository friendRequestRepository;
 
     // Example of using private endpoint
     @GetMapping("/private/hello")  
@@ -74,17 +80,51 @@ public class TestController {
             user2 = temp;
         }
 
-        Friendship friendship = new Friendship(user1, user2);
-        friendship = friendshipRepository.save(friendship); // Errors out because of SELECT on Friendship fails with "misused columns"
+        Friendship friendship_new = new Friendship(user1, user2);
+        friendship_new = friendshipRepository.save(friendship_new);
 
-        // Stream<User> friendsStream = Stream.concat(friendshipRepository.findByUser1(user2).stream(), friendshipRepository.findByUser2(user2).stream());
+        List<Friendship> leftHalf = friendshipRepository.findByUser1(user2);
+        List<Friendship> rightHalf = friendshipRepository.findByUser2(user2);
+        Stream<User> leftHalfFriends = leftHalf.stream().flatMap(friendship -> Stream.of(friendship.getUser2()));
+        Stream<User> rightHalfFriends = rightHalf.stream().flatMap(friendship -> Stream.of(friendship.getUser1()));
+        Stream<User> friendsStream = Stream.concat(leftHalfFriends, rightHalfFriends);
 
         // // TODO: Handle missing friendship
         // Friendship friendship = friendshipRepository.findByUser1AndUser2(user1, user2).orElseThrow();
 
         // friendshipRepository.delete(friendship);
-        // return friendsStream.toList();
-        return ResponseEntity.ok(friendship);
+        return ResponseEntity.ok(friendsStream.toList());
+    }
+
+    @GetMapping("/testFriendReq")
+    public ResponseEntity testFriendshipReq(@RequestParam String u1, @RequestParam String u2) {        
+        User user1 = userRepository.findByUsername(u2).orElse(new User(u2, "U2", new UniversitySession(2024, "FALL"), "Computer Science"));
+        User user2 = userRepository.findByUsername(u1).orElse(new User(u1, "U1", new UniversitySession(2024, "FALL"), "Computer Science"));
+
+        userRepository.save(user1);
+        userRepository.save(user2);
+
+        // Because unidirectional graph
+        if (user1.getId() > user2.getId()) {
+            User temp = user1;
+            user1 = user2;
+            user2 = temp;
+        }
+
+        FriendRequest friendship_new = new FriendRequest(user1, user2);
+        friendship_new = friendRequestRepository.save(friendship_new);
+
+        List<FriendRequest> leftHalf = friendRequestRepository.findByUser1(user2);
+        List<FriendRequest> rightHalf = friendRequestRepository.findByUser2(user2);
+        Stream<User> leftHalfFriends = leftHalf.stream().flatMap(friendship -> Stream.of(friendship.getUser2()));
+        Stream<User> rightHalfFriends = rightHalf.stream().flatMap(friendship -> Stream.of(friendship.getUser1()));
+        Stream<User> friendsStream = Stream.concat(leftHalfFriends, rightHalfFriends);
+
+        // // TODO: Handle missing friendship
+        // Friendship friendship = friendshipRepository.findByUser1AndUser2(user1, user2).orElseThrow();
+
+        // friendshipRepository.delete(friendship);
+        return ResponseEntity.ok(friendsStream.toList());
     }
 
     @GetMapping("/testRating")
