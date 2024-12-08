@@ -99,7 +99,7 @@ function Friends() {
                 hint={"Enter a UMass email address..."}
             />
             {requests.length > 0 && 
-                <div className="bg-gray-900 p-3 rounded-md border-gray-700 mb-2">
+                <div className="bg-gray-900 p-3 rounded-md border-[1px] border-gray-700 mb-2">
                     <div className="flex justify-between items-center">
                         <span className="text-sm font-medium">{requests[0].email}</span>
                         <div className="flex space-x-3">

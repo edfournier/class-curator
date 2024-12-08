@@ -30,7 +30,7 @@
     }
 
     .card {
-        @apply bg-gray-900 p-3 rounded-md border-gray-700;
+        @apply bg-gray-900 p-3 rounded-md border-[1px] border-gray-700;
     }
 
     ::-webkit-scrollbar {
