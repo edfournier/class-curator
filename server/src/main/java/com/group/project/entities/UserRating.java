@@ -8,7 +8,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
 @Entity
-public class RatingUser {
+public class UserRating {
     @Id
     private long id;
 
@@ -26,17 +26,37 @@ public class RatingUser {
 
     private Date updated_at;
 
-    public RatingUser() {
+    public UserRating() {
     }
 
-    public RatingUser(User user, UniClass uniClass) {
+    public UserRating(User user, UniClass uniClass) {
         this.user = user;
         this.uniClass = uniClass;
         rating = 0;
         review = "";
+        this.created_at = new Date();
+        this.updated_at = new Date();
     }
 
-    public RatingUser(User user, UniClass uniClass, int rating, String review, Date created_at, Date updated_at) {
+    public UserRating(User user, UniClass uniClass, int rating) {
+        this.user = user;
+        this.uniClass = uniClass;
+        this.rating = rating;
+        this.review = "";
+        this.created_at = new Date();
+        this.updated_at = new Date();
+    }
+
+    public UserRating(User user, UniClass uniClass, int rating, String review) {
+        this.user = user;
+        this.uniClass = uniClass;
+        this.rating = rating;
+        this.review = review;
+        this.created_at = new Date();
+        this.updated_at = new Date();
+    }
+
+    public UserRating(User user, UniClass uniClass, int rating, String review, Date created_at, Date updated_at) {
         this.user = user;
         this.uniClass = uniClass;
         this.rating = rating;
@@ -71,13 +91,19 @@ public class RatingUser {
 
     public void setRating(int rating) {
         this.rating = rating;
+        this.setUpdated_atToNow();
     }
 
     public void setReview(String review) {
         this.review = review;
+        this.setUpdated_atToNow();
     }
 
     public void setUpdated_at(Date updated_at) {
         this.updated_at = updated_at;
-    }        
+    }
+
+    public void setUpdated_atToNow() {
+        this.setUpdated_at(new Date());
+    }
 }

@@ -6,7 +6,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
 @Entity
-public class RatingAggr {
+public class AggrRating {
     @Id 
     private long id;
 
@@ -22,15 +22,18 @@ public class RatingAggr {
 
     private float rate_rmp_difficulty;
 
-    public RatingAggr() {
+    public AggrRating() {
     }
 
-    public RatingAggr(UniClass uniClass) {
+    public AggrRating(UniClass uniClass) {
         this.uniClass = uniClass;
         this.course = uniClass.getCourse();
+        this.rate_user_avg = -1.0f;
+        this.rate_rmp_helpfulness = -1.0f;
+        this.rate_rmp_difficulty = -1.0f;
     }
 
-    public RatingAggr(UniClass uniClass, float rate_user_avg, float rate_rmp_helpfulness,
+    public AggrRating(UniClass uniClass, float rate_user_avg, float rate_rmp_helpfulness,
             float rate_rmp_difficulty) {
         this.uniClass = uniClass;
         this.course = uniClass.getCourse();
@@ -57,17 +60,5 @@ public class RatingAggr {
 
     public float getRate_rmp_difficulty() {
         return rate_rmp_difficulty;
-    }
-
-    public void setRate_user_avg(float rate_user_avg) {
-        this.rate_user_avg = rate_user_avg;
-    }
-
-    public void setRate_rmp_helpfulness(float rate_rmp_helpfulness) {
-        this.rate_rmp_helpfulness = rate_rmp_helpfulness;
-    }
-
-    public void setRate_rmp_difficulty(float rate_rmp_difficulty) {
-        this.rate_rmp_difficulty = rate_rmp_difficulty;
-    }    
+    } 
 }
