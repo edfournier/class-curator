@@ -1,12 +1,12 @@
 function createExtensionButton(course) {
     const button = document.createElement("button");
-    button.textContent = "🧩";
+    button.textContent = "🔍"; 
     button.style.marginLeft = "10px";
     button.addEventListener("click", (event) => {
         event.stopPropagation();
         event.preventDefault();
 
-        // Tell background script to open popup with this course course
+        // Tell background script to open popup with this course
         chrome.runtime.sendMessage({ type: "open-popup", course: course.title });
     });
     return button;
@@ -17,10 +17,31 @@ function createRatingsDisplay(course) {
     const likes = 0;
     const dislikes = 0;
 
-    const display = document.createElement("span");
-    display.textContent = `(${likes} 👍 ${dislikes} 👎)`;
-    display.style.marginLeft = "10px";
-    return display;
+    // Create a container for the two spans
+    const container = document.createElement("span");
+    container.style.display = "inline-flex"; 
+    container.style.alignItems = "center"; 
+    container.style.padding = "4px 10px";
+    container.style.backgroundColor = "#4c6ef5"; 
+    container.style.color = "white"; 
+    container.style.borderRadius = "12px"; 
+    container.style.fontSize = "14px";
+    container.style.fontWeight = "bold"; 
+    container.style.marginLeft = "10px"; 
+    container.style.cursor = "default";
+
+    const likesSpan = document.createElement("span");
+    likesSpan.textContent = `${likes} 👍`;
+    likesSpan.style.marginRight = "10px";
+
+    const dislikesSpan = document.createElement("span");
+    dislikesSpan.textContent = `${dislikes} 👎`;
+
+    // Append both spans inside the container
+    container.appendChild(likesSpan);
+    container.appendChild(dislikesSpan);
+
+    return container;
 }
 
 function embed() {
