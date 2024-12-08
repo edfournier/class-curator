@@ -17,31 +17,31 @@ function createRatingsDisplay(course) {
     const likes = 0;
     const dislikes = 0;
 
-    // Create a container for the two spans
-    const container = document.createElement("span");
-    container.style.display = "inline-flex"; 
-    container.style.alignItems = "center"; 
-    container.style.padding = "4px 10px";
-    container.style.backgroundColor = "#4c6ef5"; 
-    container.style.color = "white"; 
-    container.style.borderRadius = "12px"; 
-    container.style.fontSize = "14px";
-    container.style.fontWeight = "bold"; 
-    container.style.marginLeft = "10px"; 
-    container.style.cursor = "default";
+    // Create a display for the two spans
+    const display = document.createElement("span");
+    display.style.display = "inline-flex"; 
+    display.style.alignItems = "center"; 
+    display.style.padding = "4px 10px";
+    display.style.backgroundColor = "#4c6ef5"; 
+    display.style.color = "white"; 
+    display.style.borderRadius = "12px"; 
+    display.style.fontSize = "14px";
+    display.style.fontWeight = "bold"; 
+    display.style.marginLeft = "10px"; 
+    display.style.cursor = "default";
 
     const likesSpan = document.createElement("span");
     likesSpan.textContent = `${likes} 👍`;
-    likesSpan.style.marginRight = "10px";
 
     const dislikesSpan = document.createElement("span");
     dislikesSpan.textContent = `${dislikes} 👎`;
+    dislikesSpan.style.marginLeft = "10px"; 
 
-    // Append both spans inside the container
-    container.appendChild(likesSpan);
-    container.appendChild(dislikesSpan);
+    // Append both spans inside the display
+    display.appendChild(likesSpan);
+    display.appendChild(dislikesSpan);
 
-    return container;
+    return display;
 }
 
 function embed() {
