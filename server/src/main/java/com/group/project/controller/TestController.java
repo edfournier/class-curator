@@ -1,3 +1,4 @@
+// TODO: DELETE THIS CONTROLLER
 package com.group.project.controller;
 
 import java.util.List;
@@ -21,6 +22,7 @@ import com.group.project.entities.User;
 import com.group.project.repositories.CourseRepository;
 import com.group.project.repositories.FriendRequestRepository;
 import com.group.project.repositories.FriendshipRepository;
+import com.group.project.repositories.SessionRepository;
 import com.group.project.repositories.AggrRatingRepository;
 import com.group.project.repositories.UserRatingRepository;
 import com.group.project.repositories.UniClassRepository;
@@ -52,10 +54,13 @@ public class TestController {
     @Autowired
     FriendRequestRepository friendRequestRepository;
 
+    @Autowired
+    SessionRepository sessionRepository;
+
     // Example of using private endpoint
     @GetMapping("/private/hello")
-    public String hello(@RequestAttribute String username) {
-        return "Hello " + username + "!";
+    public String hello(@RequestAttribute User user) {
+        return "Hello " + user.getDisplayName() + "!";
     }
 
     // Example of using public endpoint
