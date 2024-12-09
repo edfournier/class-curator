@@ -36,7 +36,7 @@ def recommend_courses(input_tags: List[str], courses: List[Dict]) -> List[str]:
         course_tags = course["name"].split(" ")
         print(len(course_tags))
         course_embedding = similarity_model(" ".join(course_tags))[0]
-
+        
         # Calculate cosine similarity
         cosine_similarity = sum(a * b for a, b in zip(input_embedding, course_embedding))
         

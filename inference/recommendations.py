@@ -2,60 +2,79 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from typing import List, Dict
 from transformers import pipeline
-import requests
+import sqlite3
 import json
+import requests
 
 app = FastAPI()
 
-# Initialize the HuggingFace pipeline for text similarity
+# Initialize the HuggingFace pipeline for text similarity (using BERT-like model)
 similarity_model = pipeline("feature-extraction", model="sentence-transformers/all-MiniLM-L6-v2")
 
-# Paths
-url = "http://localhost:8080"  # Base URL for user and course data
-RELATIVE_PATH = '.'  # Update this path as needed
-COURSE_PATH = f'{RELATIVE_PATH}/setup/rmp/courses.json'
+url = "http://localhost:8080" # Database URL Base Endpoint
+RELATIVE_PATH = '.' # NOTE: Change this 
+DB_PATH = f'{RELATIVE_PATH}/server/class_c.db'
+SETUP_FOLDER_PATH = f'{RELATIVE_PATH}/setup'
+COURSE_PATH = f'{SETUP_FOLDER_PATH}/rmp/courses.json'
+RATINGS_PATH = f'{SETUP_FOLDER_PATH}/rmp/ratings.csv'
+SETUP_QUERIES_PATH = f'{SETUP_FOLDER_PATH}/queries/setup.json'
+MANAGE_CLASSES_QUERIES_PATH = f'{SETUP_FOLDER_PATH}/queries/manage_classes.json'
+MANAGE_RATINGS_QUERIES_PATH = f'{SETUP_FOLDER_PATH}/queries/manage_ratings.json'
+
+
+# Sample payload structure for incoming requests
+class RecommendationRequest(BaseModel):
+    tags: List[str]
+
 
 # Compute cosine similarity between input tags and course tags
-def recommend_courses(input_tags: List[str]) -> List[str]:
-    with open(COURSE_PATH, 'r') as courses_file:
-        courses = json.load(courses_file)  # [{code, name, subject, description, tags}]
+def recommend_courses(input_tags: List[str], courses: List[Dict]) -> List[str]:
+    input_embedding = similarity_model(" ".join(input_tags))[0]
+    recommendations = []
+
+    for course in courses:
+        course_tags = course["name"].split(" ")
+        print(len(course_tags))
+        course_embedding = similarity_model(" ".join(course_tags))[0]
         
-        input_embedding = similarity_model(" ".join(input_tags))[0]
-        recommendations = []
+        # Calculate cosine similarity
+        cosine_similarity = sum(a * b for a, b in zip(input_embedding, course_embedding))
+        
+        if cosine_similarity > 0.7:  # Threshold for recommendation
+            recommendations.append(course["title"])
 
-        for course in courses:
-            course_tags = course["tags"].split(", ")
-            course_embedding = similarity_model(" ".join(course_tags))[0]
+    return recommendations
 
-            # Calculate cosine similarity
-            cosine_similarity = sum(a * b for a, b in zip(input_embedding, course_embedding))
-            
-            if cosine_similarity > 0.7:  # Threshold for recommendation
-                recommendations.append(course["title"])
-
-        return recommendations
-
-# Endpoint to get course recommendations based on user ID
-@app.get("/recommendations/{user_id}")
-def get_course_recommendations(user_id: str):
-    # Fetch user data
-    user_profile_url = f"{url}/private/users/{user_id}"
-    response = requests.get(user_profile_url)
-    
+# Get user data from database
+@app.get("/{user_id}")
+def get_user_data(user_name):
+    user_url = url + "/users/{user_id}"
+    response = requests.get(user_url)
+    # Check if the request was successful
     if response.status_code == 200:
-        user_data = response.json()
-        
-        # Assuming the user's tags are stored as a comma-separated string
-        user_tags_str = user_data.get("tags", "")
-        
-        if not user_tags_str:
-            raise HTTPException(status_code=400, detail="No tags found for the user.")
-        
-        user_tags = [tag.strip() for tag in user_tags_str.split(",")]
-        
-        # Get course recommendations
-        recommendations = recommend_courses(user_tags)
-        
-        return {"user_id": user_id, "recommended_courses": recommendations}
+        # Parse the JSON response
+        data = response.json()
+        print(data)
+        return data
     else:
-        raise HTTPException(status_code=response.status_code, detail="Failed to fetch user data")
+        print(f"Request failed with status code: {response.status_code}")
+
+
+# Get courses from database
+@app.get("/courses")
+def get_user_data(user_name):
+    course_url = url + "/private/courses"
+    response = requests.get(course_url)
+    # Check if the request was successful
+    if response.status_code == 200:
+        # Parse the JSON response
+        data = response.json()
+        print(data)
+        return data
+    else:
+        print(f"Request failed with status code: {response.status_code}")
+
+with open("../rmp/courses.json", 'r') as courses_file:
+    courses = json.load(courses_file) # [{code, name, subject, description}]
+    user = {"major": "Computer Science", "minor": "Mathematics", "year": 2025, "tags": ["Machine Learning", "Artificial Intelligence"]}
+    recommend_courses(user["tags"], courses)
