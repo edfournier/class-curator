@@ -12,7 +12,7 @@ export async function getCourseDetails(id) {
         code: "CS121",
         likes: 10,
         dislikes: 0,
-        description: "Learn about data organization, algorithms, and efficiency."
+        description: "An overview of fundamental accounting concepts, so that a company?s balance sheet and income statement may be read and understood. The course will explain how performance is tracked and offer insight into basic financial statement analysis and interpretation of results. The course will also explain how accounting records support internal decision making and walk through some relevant decision scenarios. In addition, the use of accounting records to coordinate and motivate employee action will be demonstrated."
     });
 }
 

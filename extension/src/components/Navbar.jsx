@@ -28,7 +28,7 @@ function Navbar() {
     const { user } = useAuth();
 
     return (
-        <div className="bg-gray-900 py-2 px-4 shadow-md w-full">
+        <div className="bg-gray-900 py-2 px-4 shadow-md w-full fixed top-0">
             <div className="flex justify-between items-center">
                 <div className="space-x-6">
                     <Link name="Home" path="/home" />

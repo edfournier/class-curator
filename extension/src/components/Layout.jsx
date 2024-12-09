@@ -7,7 +7,7 @@ const Layout = ({ children }) => {
     return (
         <>
             <Navbar />
-            <main className="max-w-4xl mx-auto px-6 py-3">
+            <main className="max-w-4xl mx-auto px-6 py-3 mt-12">
                 {children}
             </main>
         </>
