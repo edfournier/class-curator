@@ -36,11 +36,13 @@ public class UserController {
     }
 
     @RestController
-    @RequestMapping(value = {"/user", "/private/user"})
+    @RequestMapping("/user")
     public class PublicUserController {
         @GetMapping("/{userId}")
         public ResponseEntity<Object> getUserDetails(@PathVariable int userId) {
             Optional<User> user = userRepository.findById(userId);
+
+            // Return 404 if user does not exist
             if (!user.isPresent()) {
                 return ResponseEntity.notFound().build();
             }
@@ -50,11 +52,16 @@ public class UserController {
         @GetMapping("/{userId}/interests")
         public ResponseEntity<Object> getUserInterest(@PathVariable int userId) {
             Optional<User> user = userRepository.findById(userId);
+
+            // Return 404 if user does not exist
             if (!user.isPresent()) {
                 return ResponseEntity.notFound().build();
             }
+
+            // Fetch list of course where user has marked "interested"
             List<UserInterest> userInterests = userInterestRepository.findByUser(user.get());
-            List<Course> courses = userInterests.stream().flatMap(interest -> Stream.of(interest.getCourse())).toList();
+            List<Course> courses = userInterests.stream().flatMap(userInterest -> Stream.of(userInterest.getCourse()))
+                    .toList();
             return ResponseEntity.ok(courses);
         }
     }
@@ -68,8 +75,10 @@ public class UserController {
         }
 
         @PutMapping
-        public ResponseEntity<Object> updateCurrentUserDetails(@RequestAttribute User currentUser, @RequestBody UpdateUserDetailsForm formData) {
-            boolean updated = false;
+        public ResponseEntity<Object> updateCurrentUserDetails(@RequestAttribute User currentUser,
+                @RequestBody UpdateUserDetailsForm formData) {
+            boolean updated = false; // flag to track if entity has changed
+
             if (formData.major.isPresent()) {
                 currentUser.setMajor(formData.major.get());
                 updated = true;
@@ -83,10 +92,10 @@ public class UserController {
             if (formData.gradYear.isPresent() || formData.gradSemester.isPresent()) {
                 UniversitySession updatedGradSession;
                 try {
+                    // Fill in the blanks with existing values if either semester or year has changed
                     updatedGradSession = new UniversitySession(
-                        formData.gradYear.orElse(currentUser.getGradSession().year),
-                        formData.gradSemester.orElse(currentUser.getGradSession().semester)
-                    );
+                            formData.gradYear.orElse(currentUser.getGradSession().year),
+                            formData.gradSemester.orElse(currentUser.getGradSession().semester));
                 } catch (Exception e) {
                     return ResponseEntity.badRequest().body(e.getMessage());
                 }
@@ -99,6 +108,7 @@ public class UserController {
                 updated = true;
             }
 
+            // Only attempt save if entity has changed
             if (updated) {
                 currentUser = userRepository.save(currentUser);
             }
@@ -108,8 +118,10 @@ public class UserController {
 
         @GetMapping("/interests")
         public ResponseEntity<Object> getUserInterest(@RequestAttribute User currentUser) {
+            // Fetch list of course where user has marked "interested"
             List<UserInterest> userInterests = userInterestRepository.findByUser(currentUser);
-            List<Course> courses = userInterests.stream().flatMap(interest -> Stream.of(interest.getCourse())).toList();
+            List<Course> courses = userInterests.stream().flatMap(userInterest -> Stream.of(userInterest.getCourse()))
+                    .toList();
             return ResponseEntity.ok(courses);
         }
     }

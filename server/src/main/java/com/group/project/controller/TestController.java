@@ -17,7 +17,6 @@ import com.group.project.entities.FriendRequest;
 import com.group.project.entities.Friendship;
 import com.group.project.entities.AggrRating;
 import com.group.project.entities.UserRating;
-import com.group.project.entities.UniClass;
 import com.group.project.entities.User;
 import com.group.project.repositories.CourseRepository;
 import com.group.project.repositories.FriendRequestRepository;
@@ -144,13 +143,11 @@ public class TestController {
     public ResponseEntity<Object> testRating(@RequestParam String code, @RequestParam String semester,
             @RequestParam int year, @RequestParam int rating) throws Exception {
         Course course = courseRepository.findByCode(code).get();
-        UniClass uniClass = uniClassRepository.findByCourseAndSession(course, new UniversitySession(year, semester))
-                .getFirst();
 
         User user = userRepository.findByUsername("u1").orElseThrow();
 
-        UserRating userRating = userRatingRepository.findByUserAndUniClass(user, uniClass)
-                .orElse(new UserRating(user, uniClass, rating));
+        UserRating userRating = userRatingRepository.findByUserAndCourse(user, course)
+                .orElse(new UserRating(user, course));
         userRating.setRating(rating);
         userRating = userRatingRepository.save(userRating);
 
