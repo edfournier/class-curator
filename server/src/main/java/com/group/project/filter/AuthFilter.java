@@ -89,7 +89,7 @@ public class AuthFilter extends OncePerRequestFilter {
             user = userQueryResult.get();
         } else {
             // TODO: Can check if user is Umass student
-            String displayName = tokenInfo.get("name").asText();
+            String displayName = email.split("@")[0];
             int defaultGradYear = Year.now().getValue() + 4;
             user = new User(email, displayName, new UniversitySession(defaultGradYear, defaultGradSemester),
                     defaultMajor);
