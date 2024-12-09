@@ -75,6 +75,9 @@ function CourseCard({ course, onClose }) {
                 </div>
             </div>
             <p className="flex-grow mb-2">{details.description}</p>
+            {insights.prof && 
+                <><span>Best Professor:</span> <span className="text-indigo-200">{insights.prof}</span></> 
+            }
             <CourseRatingChart data={insights.data} />
             <div className="mt-3 flex justify-center">
                 <button
