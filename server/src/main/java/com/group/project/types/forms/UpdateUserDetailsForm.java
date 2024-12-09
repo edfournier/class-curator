@@ -8,7 +8,7 @@ public class UpdateUserDetailsForm {
     final public Optional<String> tags;
     final public Optional<Integer> gradYear;
     final public Optional<String> gradSemester;
-    
+
     public UpdateUserDetailsForm(Optional<String> major, Optional<String> minor, Optional<String> tags,
             Optional<Integer> gradYear, Optional<String> gradSemester) {
         this.major = major;

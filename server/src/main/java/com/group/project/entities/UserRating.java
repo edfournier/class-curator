@@ -1,6 +1,6 @@
 package com.group.project.entities;
 
-import java.util.Date;
+import com.group.project.utils.domain.DomainMapper;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -17,80 +17,41 @@ public class UserRating {
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "uni_class_id", referencedColumnName = "id")
-    private UniClass uniClass;
+    @JoinColumn(name = "course_id", referencedColumnName = "id")
+    private Course course;
 
     private int rating;
-
-    private Date created_at;
-
-    private Date updated_at;
 
     public UserRating() {
     }
 
-    public UserRating(User user, UniClass uniClass) {
+    public UserRating(User user, Course course) {
         this.user = user;
-        this.uniClass = uniClass;
+        this.course = course;
         rating = 0;
-        this.created_at = new Date();
-        this.updated_at = new Date();
     }
 
-    public UserRating(User user, UniClass uniClass, int rating) {
+    public UserRating(User user, Course course, int rating) throws Exception {
         this.user = user;
-        this.uniClass = uniClass;
+        this.course = course;
+        DomainMapper.validateRating(rating);
         this.rating = rating;
-        this.created_at = new Date();
-        this.updated_at = new Date();
-    }
-
-    public UserRating(User user, UniClass uniClass, int rating, String review) {
-        this.user = user;
-        this.uniClass = uniClass;
-        this.rating = rating;
-        this.created_at = new Date();
-        this.updated_at = new Date();
-    }
-
-    public UserRating(User user, UniClass uniClass, int rating, Date created_at, Date updated_at) {
-        this.user = user;
-        this.uniClass = uniClass;
-        this.rating = rating;
-        this.created_at = created_at;
-        this.updated_at = updated_at;
     }
 
     public User getUser() {
         return user;
     }
 
-    public UniClass getUniClass() {
-        return uniClass;
+    public Course getCourse() {
+        return course;
     }
 
     public int getRating() {
         return rating;
     }
 
-    public void setRating(int rating) {
+    public void setRating(int rating) throws Exception {
+        DomainMapper.validateRating(rating);
         this.rating = rating;
-        this.setUpdated_atToNow();
-    }
-
-    public Date getCreated_at() {
-        return created_at;
-    }
-    
-    public Date getUpdated_at() {
-        return updated_at;
-    }
-    
-    public void setUpdated_at(Date updated_at) {
-        this.updated_at = updated_at;
-    }
-
-    public void setUpdated_atToNow() {
-        this.setUpdated_at(new Date());
     }
 }
