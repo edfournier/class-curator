@@ -2,79 +2,47 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from typing import List, Dict
 from transformers import pipeline
-import sqlite3
+from sentence_transformers import SentenceTransformer, util
 import json
-import requests
 
 app = FastAPI()
 
-# Initialize the HuggingFace pipeline for text similarity (using BERT-like model)
-similarity_model = pipeline("feature-extraction", model="sentence-transformers/all-MiniLM-L6-v2")
-
-url = "http://localhost:8080" # Database URL Base Endpoint
-RELATIVE_PATH = '.' # NOTE: Change this 
-DB_PATH = f'{RELATIVE_PATH}/server/class_c.db'
-SETUP_FOLDER_PATH = f'{RELATIVE_PATH}/setup'
-COURSE_PATH = f'{SETUP_FOLDER_PATH}/rmp/courses.json'
-RATINGS_PATH = f'{SETUP_FOLDER_PATH}/rmp/ratings.csv'
-SETUP_QUERIES_PATH = f'{SETUP_FOLDER_PATH}/queries/setup.json'
-MANAGE_CLASSES_QUERIES_PATH = f'{SETUP_FOLDER_PATH}/queries/manage_classes.json'
-MANAGE_RATINGS_QUERIES_PATH = f'{SETUP_FOLDER_PATH}/queries/manage_ratings.json'
-
+# Initialize the model for sentence embeddings
+model = SentenceTransformer('all-MiniLM-L6-v2')
 
 # Sample payload structure for incoming requests
 class RecommendationRequest(BaseModel):
     tags: List[str]
 
+# Load course data
+with open("setup/rmp/courses.json", 'r') as courses_file:
+    courses = json.load(courses_file)  # [{code, name, subject, description}]
 
-# Compute cosine similarity between input tags and course tags
+# Function to recommend courses based on semantic search
 def recommend_courses(input_tags: List[str], courses: List[Dict]) -> List[str]:
-    input_embedding = similarity_model(" ".join(input_tags))[0]
-    recommendations = []
+    input_text = " ".join(input_tags)
+    input_embedding = model.encode(input_text, convert_to_tensor=True)
 
-    for course in courses:
-        course_tags = course["name"].split(" ")
-        print(len(course_tags))
-        course_embedding = similarity_model(" ".join(course_tags))[0]
-        
-        # Calculate cosine similarity
-        cosine_similarity = sum(a * b for a, b in zip(input_embedding, course_embedding))
-        
-        if cosine_similarity > 0.7:  # Threshold for recommendation
-            recommendations.append(course["title"])
+    # Prepare course titles and descriptions, handling null descriptions
+    course_titles = [course['name'] for course in courses]
+    course_descriptions = [course['description'] if course['description'] else "" for course in courses]
+
+    # Encode course descriptions
+    course_embeddings = model.encode(course_descriptions, convert_to_tensor=True)
+
+    # Perform semantic search
+    hits = util.semantic_search(input_embedding, course_embeddings, top_k=5)[0]
+
+    recommendations = [course_titles[hit['corpus_id']] for hit in hits]
 
     return recommendations
 
-# Get user data from database
-@app.get("/{user_id}")
-def get_user_data(user_name):
-    user_url = url + "/users/{user_id}"
-    response = requests.get(user_url)
-    # Check if the request was successful
-    if response.status_code == 200:
-        # Parse the JSON response
-        data = response.json()
-        print(data)
-        return data
-    else:
-        print(f"Request failed with status code: {response.status_code}")
+@app.post("/recommend")
+def get_recommendations(request: RecommendationRequest):
+    recommendations = recommend_courses(request.tags, courses)
+    return {"recommended_courses": recommendations}
 
-
-# Get courses from database
-@app.get("/courses")
-def get_user_data(user_name):
-    course_url = url + "/private/courses"
-    response = requests.get(course_url)
-    # Check if the request was successful
-    if response.status_code == 200:
-        # Parse the JSON response
-        data = response.json()
-        print(data)
-        return data
-    else:
-        print(f"Request failed with status code: {response.status_code}")
-
-with open("../rmp/courses.json", 'r') as courses_file:
-    courses = json.load(courses_file) # [{code, name, subject, description}]
-    user = {"major": "Computer Science", "minor": "Mathematics", "year": 2025, "tags": ["Machine Learning", "Artificial Intelligence"]}
-    recommend_courses(user["tags"], courses)
+# Example usage
+if __name__ == "__main__":
+    user = {"tags": ["Machine Learning", "Artificial Intelligence"]}
+    print(recommend_courses(user["tags"], courses))
