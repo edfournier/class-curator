@@ -2,36 +2,24 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from typing import List, Dict
 from transformers import pipeline
-import sqlite3
-import json
 import requests
+import json
 
 app = FastAPI()
 
-# Initialize the HuggingFace pipeline for text similarity (using BERT-like model)
+# Initialize the HuggingFace pipeline for text similarity
 similarity_model = pipeline("feature-extraction", model="sentence-transformers/all-MiniLM-L6-v2")
 
-url = "http://localhost:8080" # Database File Path
-RELATIVE_PATH = '.' # NOTE: Change this 
-DB_PATH = f'{RELATIVE_PATH}/server/class_c.db'
-SETUP_FOLDER_PATH = f'{RELATIVE_PATH}/setup'
-COURSE_PATH = f'{SETUP_FOLDER_PATH}/rmp/courses.json'
-RATINGS_PATH = f'{SETUP_FOLDER_PATH}/rmp/ratings.csv'
-SETUP_QUERIES_PATH = f'{SETUP_FOLDER_PATH}/queries/setup.json'
-MANAGE_CLASSES_QUERIES_PATH = f'{SETUP_FOLDER_PATH}/queries/manage_classes.json'
-MANAGE_RATINGS_QUERIES_PATH = f'{SETUP_FOLDER_PATH}/queries/manage_ratings.json'
-
-
-# Sample payload structure for incoming requests
-class RecommendationRequest(BaseModel):
-    tags: List[str]
-
+# Paths
+url = "http://localhost:8080"  # Base URL for user and course data
+RELATIVE_PATH = '.'  # Update this path as needed
+COURSE_PATH = f'{RELATIVE_PATH}/setup/rmp/courses.json'
 
 # Compute cosine similarity between input tags and course tags
-def recommend_courses(input_tags: List[str], courses: List[Dict]) -> List[str]:
+def recommend_courses(input_tags: List[str]) -> List[str]:
     with open(COURSE_PATH, 'r') as courses_file:
-        courses = json.load(courses_file) # [{code, name, subject, description}]
-        user = {"major": "Computer Science", "minor": "Mathematics", "year": 2025, "tags": ["Machine Learning", "Artificial Intelligence"]}
+        courses = json.load(courses_file)  # [{code, name, subject, description, tags}]
+        
         input_embedding = similarity_model(" ".join(input_tags))[0]
         recommendations = []
 
@@ -47,31 +35,27 @@ def recommend_courses(input_tags: List[str], courses: List[Dict]) -> List[str]:
 
         return recommendations
 
-# Get user data from database
-@app.get("/{user_name}")
-def get_user_data(user_name):
-    user_profile_url = url + "/private/users/{user_name}"
+# Endpoint to get course recommendations based on user ID
+@app.get("/recommendations/{user_id}")
+def get_course_recommendations(user_id: str):
+    # Fetch user data
+    user_profile_url = f"{url}/private/users/{user_id}"
     response = requests.get(user_profile_url)
-    # Check if the request was successful
+    
     if response.status_code == 200:
-        # Parse the JSON response
-        data = response.json()
-        print(data)
-        return data
+        user_data = response.json()
+        
+        # Assuming the user's tags are stored as a comma-separated string
+        user_tags_str = user_data.get("tags", "")
+        
+        if not user_tags_str:
+            raise HTTPException(status_code=400, detail="No tags found for the user.")
+        
+        user_tags = [tag.strip() for tag in user_tags_str.split(",")]
+        
+        # Get course recommendations
+        recommendations = recommend_courses(user_tags)
+        
+        return {"user_id": user_id, "recommended_courses": recommendations}
     else:
-        print(f"Request failed with status code: {response.status_code}")
-
-
-# Get courses from database
-@app.get("/courses")
-def get_user_data(user_name):
-    course_url = url + "/private/courses"
-    response = requests.get(course_url)
-    # Check if the request was successful
-    if response.status_code == 200:
-        # Parse the JSON response
-        data = response.json()
-        print(data)
-        return data
-    else:
-        print(f"Request failed with status code: {response.status_code}")
+        raise HTTPException(status_code=response.status_code, detail="Failed to fetch user data")
