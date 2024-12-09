@@ -27,7 +27,7 @@ import com.group.project.repositories.AggrRatingRepository;
 import com.group.project.repositories.UserRatingRepository;
 import com.group.project.repositories.UniClassRepository;
 import com.group.project.repositories.UserRepository;
-import com.group.project.types.UniversitySession;
+import com.group.project.types.common.UniversitySession;
 
 @RestController
 @RequestMapping("/")
@@ -71,7 +71,7 @@ public class TestController {
 
     // testing ground for DB fns
     @GetMapping("/testFriendship")
-    public ResponseEntity<Object> testFriendship(@RequestParam String u1, @RequestParam String u2) {
+    public ResponseEntity<Object> testFriendship(@RequestParam String u1, @RequestParam String u2) throws Exception {
         User user1 = userRepository.findByUsername(u2)
                 .orElse(new User(u2, "U2", new UniversitySession(2024, "FALL"), "Computer Science"));
         User user2 = userRepository.findByUsername(u1)
@@ -105,7 +105,7 @@ public class TestController {
     }
 
     @GetMapping("/testFriendReq")
-    public ResponseEntity<Object> testFriendshipReq(@RequestParam String u1, @RequestParam String u2) {
+    public ResponseEntity<Object> testFriendshipReq(@RequestParam String u1, @RequestParam String u2) throws Exception {
         User user1 = userRepository.findByUsername(u2)
                 .orElse(new User(u2, "U2", new UniversitySession(2024, "FALL"), "Computer Science"));
         User user2 = userRepository.findByUsername(u1)
@@ -120,6 +120,8 @@ public class TestController {
             user1 = user2;
             user2 = temp;
         }
+
+        // Check if not existing friendship
 
         FriendRequest friendship_new = new FriendRequest(user1, user2);
         friendship_new = friendRequestRepository.save(friendship_new);
@@ -140,7 +142,7 @@ public class TestController {
 
     @GetMapping("/testRating")
     public ResponseEntity<Object> testRating(@RequestParam String code, @RequestParam String semester,
-            @RequestParam int year, @RequestParam int rating) {
+            @RequestParam int year, @RequestParam int rating) throws Exception {
         Course course = courseRepository.findByCode(code).get();
         UniClass uniClass = uniClassRepository.findByCourseAndSession(course, new UniversitySession(year, semester))
                 .getFirst();

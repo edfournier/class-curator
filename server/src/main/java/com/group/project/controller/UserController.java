@@ -1,49 +1,116 @@
 package com.group.project.controller;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.group.project.entities.Course;
 import com.group.project.entities.User;
+import com.group.project.entities.UserInterest;
+import com.group.project.repositories.UserInterestRepository;
 import com.group.project.repositories.UserRepository;
+import com.group.project.types.common.UniversitySession;
+import com.group.project.types.forms.UpdateUserDetailsForm;
 
 @RestController
-@RequestMapping("/private/users")
 public class UserController {
-
     @Autowired
     private final UserRepository userRepository;
 
-    public UserController(UserRepository userRepository) {
+    @Autowired
+    private final UserInterestRepository userInterestRepository;
+
+    public UserController(UserRepository userRepository, UserInterestRepository userInterestRepository) {
         this.userRepository = userRepository;
+        this.userInterestRepository = userInterestRepository;
     }
 
-    @GetMapping
-    public List<User> getUsers() {
-        return userRepository.findAll();
+    @RestController
+    @RequestMapping(value = {"/user", "/private/user"})
+    public class PublicUserController {
+        @GetMapping("/{userId}")
+        public ResponseEntity<Object> getUserDetails(@PathVariable int userId) {
+            Optional<User> user = userRepository.findById(userId);
+            if (!user.isPresent()) {
+                return ResponseEntity.notFound().build();
+            }
+            return ResponseEntity.ok(user.get());
+        }
+
+        @GetMapping("/{userId}/interests")
+        public ResponseEntity<Object> getUserInterest(@PathVariable int userId) {
+            Optional<User> user = userRepository.findById(userId);
+            if (!user.isPresent()) {
+                return ResponseEntity.notFound().build();
+            }
+            List<UserInterest> userInterests = userInterestRepository.findByUser(user.get());
+            List<Course> courses = userInterests.stream().flatMap(interest -> Stream.of(interest.getCourse())).toList();
+            return ResponseEntity.ok(courses);
+        }
     }
 
-    @GetMapping("/{username}")
-    public User getUser(@RequestAttribute String username) {
-        return userRepository.findByUsername(username).get();
-    }
+    @RestController
+    @RequestMapping("/private/user")
+    public class PrivateUserController {
+        @GetMapping
+        public ResponseEntity<User> getCurrentUserDetails(@RequestAttribute User currentUser) {
+            return ResponseEntity.ok(currentUser);
+        }
 
-    @PutMapping("/{username}")
-    public ResponseEntity<Object> updateUser(@RequestBody User user, @RequestAttribute String username) {
-        // TODO: Check if authenticated user
-        // TODO: Handle missing user
-        User currentUser = userRepository.findByUsername(username).orElseThrow(RuntimeException::new);
-        currentUser.setDisplayName(user.getDisplayName());
-        currentUser.setMajor(user.getMajor());
-        currentUser = userRepository.save(user);
+        @PutMapping
+        public ResponseEntity<Object> updateCurrentUserDetails(@RequestAttribute User currentUser, @RequestBody UpdateUserDetailsForm formData) {
+            boolean updated = false;
+            if (formData.major.isPresent()) {
+                currentUser.setMajor(formData.major.get());
+                updated = true;
+            }
 
-        return ResponseEntity.ok(currentUser);
+            if (formData.minor.isPresent()) {
+                currentUser.setMinor(formData.minor.get());
+                updated = true;
+            }
+
+            if (formData.gradYear.isPresent() || formData.gradSemester.isPresent()) {
+                UniversitySession updatedGradSession;
+                try {
+                    updatedGradSession = new UniversitySession(
+                        formData.gradYear.orElse(currentUser.getGradSession().year),
+                        formData.gradSemester.orElse(currentUser.getGradSession().semester)
+                    );
+                } catch (Exception e) {
+                    return ResponseEntity.badRequest().body(e.getMessage());
+                }
+                currentUser.setGradSession(updatedGradSession);
+                updated = true;
+            }
+
+            if (formData.tags.isPresent()) {
+                currentUser.setTags(formData.tags.get());
+                updated = true;
+            }
+
+            if (updated) {
+                currentUser = userRepository.save(currentUser);
+            }
+
+            return ResponseEntity.ok(currentUser);
+        }
+
+        @GetMapping("/interests")
+        public ResponseEntity<Object> getUserInterest(@RequestAttribute User currentUser) {
+            List<UserInterest> userInterests = userInterestRepository.findByUser(currentUser);
+            List<Course> courses = userInterests.stream().flatMap(interest -> Stream.of(interest.getCourse())).toList();
+            return ResponseEntity.ok(courses);
+        }
     }
 }

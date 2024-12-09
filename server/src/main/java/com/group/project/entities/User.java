@@ -1,6 +1,6 @@
 package com.group.project.entities;
 
-import com.group.project.types.UniversitySession;
+import com.group.project.types.common.UniversitySession;
 
 import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.AttributeOverrides;

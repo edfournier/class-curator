@@ -6,7 +6,7 @@ import com.group.project.entities.Session;
 import com.group.project.entities.User;
 import com.group.project.repositories.SessionRepository;
 import com.group.project.repositories.UserRepository;
-import com.group.project.types.UniversitySession;
+import com.group.project.types.common.UniversitySession;
 
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,7 +69,7 @@ public class AuthFilter extends OncePerRequestFilter {
                 user = createUserAndRefreshSession(token);
             }
 
-            request.setAttribute("user", user);
+            request.setAttribute("currentUser", user);
             request.setAttribute("username", user.getUsername()); // TODO: Remove this!
             filterChain.doFilter(request, response);
         } catch (Exception e) {
@@ -78,11 +78,11 @@ public class AuthFilter extends OncePerRequestFilter {
         return;
     }
 
-    private User createUserAndRefreshSession(String token) throws IOException, ParseException {
+    private User createUserAndRefreshSession(String token) throws IOException, ParseException, Exception {
         User user = null;
         JsonNode tokenInfo = getTokenInfo(token);
         String email = tokenInfo.get("email").asText();
-        
+
         // Check if user exists in DB, else create new user
         Optional<User> userQueryResult = userRepository.findByUsername(email);
         if (userQueryResult.isPresent()) {
