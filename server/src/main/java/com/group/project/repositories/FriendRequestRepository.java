@@ -8,10 +8,15 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.group.project.entities.FriendRequest;
 import com.group.project.entities.User;
 
+import jakarta.transaction.Transactional;
+
 public interface FriendRequestRepository extends JpaRepository<FriendRequest, Long> {
-    List<FriendRequest> findByUser1(User user1);
+    List<FriendRequest> findBySender(User sender);
 
-    List<FriendRequest> findByUser2(User user2);
+    List<FriendRequest> findByReceiver(User receiver);
 
-    Optional<FriendRequest> findByUser1AndUser2(User user1, User user2);
+    Optional<FriendRequest> findBySenderAndReceiver(User sender, User receiver);
+
+    @Transactional
+    Long removeBySenderAndReceiver(User sender, User receiver);
 }

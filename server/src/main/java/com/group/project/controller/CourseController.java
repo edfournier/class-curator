@@ -2,7 +2,6 @@ package com.group.project.controller;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -28,8 +27,6 @@ import com.group.project.types.presentation.PublicCourseDetails;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 
-
-
 @RestController
 public class CourseController {
     @Autowired
@@ -41,7 +38,8 @@ public class CourseController {
     @Autowired
     private final UserInterestRepository userInterestRepository;
 
-    public CourseController(CourseRepository courseRepository, UserRatingRepository userRatingRepository, UserInterestRepository userInterestRepository) {
+    public CourseController(CourseRepository courseRepository, UserRatingRepository userRatingRepository,
+            UserInterestRepository userInterestRepository) {
         this.courseRepository = courseRepository;
         this.userRatingRepository = userRatingRepository;
         this.userInterestRepository = userInterestRepository;
@@ -69,12 +67,13 @@ public class CourseController {
             // Fetch vote counts for each course
             for (String courseCode : splitCourseCodes) {
                 courseCode = UniversityStrings.standardizeCourseCode(courseCode);
-                Optional<Course> course = courseRepository.findByCode(courseCode);
-                if (course.isPresent()) {
+                Course course = courseRepository.findByCode(courseCode).orElse(null);
+                if (course != null) {
                     // Count upvotes and downvotes for course
-                    int upvotes = userRatingRepository.countByCourseAndRatingEquals(course.get(), DomainMapper.UPVOTE);
-                    int downvotes = userRatingRepository.countByCourseAndRatingEquals(course.get(), DomainMapper.DOWNVOTE);
-                    coursesDetails.add(new PublicCourseDetails(course.get(), upvotes, downvotes));
+                    int upvotes = userRatingRepository.countByCourseAndRatingEquals(course, DomainMapper.UPVOTE);
+                    int downvotes = userRatingRepository.countByCourseAndRatingEquals(course,
+                            DomainMapper.DOWNVOTE);
+                    coursesDetails.add(new PublicCourseDetails(course, upvotes, downvotes));
                 }
             }
 
@@ -89,75 +88,78 @@ public class CourseController {
         public ResponseEntity<Object> getCourseDetails(@RequestAttribute User currentUser,
                 @PathVariable String courseCode) {
             courseCode = UniversityStrings.standardizeCourseCode(courseCode);
-            Optional<Course> course = courseRepository.findByCode(courseCode);
+            Course course = courseRepository.findByCode(courseCode).orElse(null);
 
             // Return 404 if no matching course is found
-            if (!course.isPresent()) {
+            if (course == null) {
                 return ResponseEntity.notFound().build();
             }
 
             // Count upvotes and downvotes for course
-            int upvotes = userRatingRepository.countByCourseAndRatingEquals(course.get(), DomainMapper.UPVOTE);
-            int downvotes = userRatingRepository.countByCourseAndRatingEquals(course.get(), DomainMapper.DOWNVOTE);
+            int upvotes = userRatingRepository.countByCourseAndRatingEquals(course, DomainMapper.UPVOTE);
+            int downvotes = userRatingRepository.countByCourseAndRatingEquals(course, DomainMapper.DOWNVOTE);
 
             // Get currentUser's rating for course
-            int user_rating = 0;
-            Optional<UserRating> userRating = userRatingRepository.findByUserAndCourse(currentUser, course.get());
-            if (userRating.isPresent()) {
-                user_rating = userRating.get().getRating();
+            int user_rating_value = DomainMapper.BLANK_VOTE;
+            UserRating userRating = userRatingRepository.findByUserAndCourse(currentUser, course).orElse(null);
+            if (userRating != null) {
+                user_rating_value = userRating.getRating();
             }
 
-            return ResponseEntity.ok(new PrivateCourseDetails(course.get(), upvotes, downvotes, user_rating));
+            return ResponseEntity.ok(new PrivateCourseDetails(course, upvotes, downvotes, user_rating_value));
         }
 
         @PutMapping("/{courseCode}/interest")
-        public ResponseEntity<Object> putUserInterest(@RequestAttribute User currentUser, @PathVariable String courseCode) {
+        public ResponseEntity<Object> putUserInterest(@RequestAttribute User currentUser,
+                @PathVariable String courseCode) {
             courseCode = UniversityStrings.standardizeCourseCode(courseCode);
-            Optional<Course> course = courseRepository.findByCode(courseCode);
+            Course course = courseRepository.findByCode(courseCode).orElse(null);
 
             // Return 404 if no matching course is found
-            if (!course.isPresent()) {
+            if (course == null) {
                 return ResponseEntity.notFound().build();
             }
 
             // Create interest if not already set
-            if(!userInterestRepository.findByUserAndCourse(currentUser, course.get()).isPresent()) {                
-                UserInterest userInterest = new UserInterest(currentUser, course.get());
+            if (!userInterestRepository.findByUserAndCourse(currentUser, course).isPresent()) {
+                UserInterest userInterest = new UserInterest(currentUser, course);
                 userInterest = userInterestRepository.save(userInterest);
             }
             return ResponseEntity.ok().build();
         }
 
         @DeleteMapping("/{courseCode}/interest")
-        public ResponseEntity<Object> deleteUserInterest(@RequestAttribute User currentUser, @PathVariable String courseCode) {
+        public ResponseEntity<Object> deleteUserInterest(@RequestAttribute User currentUser,
+                @PathVariable String courseCode) {
             courseCode = UniversityStrings.standardizeCourseCode(courseCode);
-            Optional<Course> course = courseRepository.findByCode(courseCode);
+            Course course = courseRepository.findByCode(courseCode).orElse(null);
 
             // Return 404 if no matching course is found
-            if (!course.isPresent()) {
+            if (course == null) {
                 return ResponseEntity.notFound().build();
             }
 
             // Delete interest if not set
-            if(userInterestRepository.findByUserAndCourse(currentUser, course.get()).isPresent()) {                
-                userInterestRepository.deleteByUserAndCourse(currentUser, course.get());
+            if (userInterestRepository.findByUserAndCourse(currentUser, course).isPresent()) {
+                userInterestRepository.removeByUserAndCourse(currentUser, course);
             }
             return ResponseEntity.ok().build();
         }
 
         @PostMapping("/{courseCode}/rating")
-        public ResponseEntity<Object> postCourseRating(@RequestAttribute User currentUser, @PathVariable String courseCode, @RequestParam int v) {
+        public ResponseEntity<Object> postCourseRating(@RequestAttribute User currentUser,
+                @PathVariable String courseCode, @RequestParam int v) {
             courseCode = UniversityStrings.standardizeCourseCode(courseCode);
-            Optional<Course> course = courseRepository.findByCode(courseCode);
+            Course course = courseRepository.findByCode(courseCode).orElse(null);
 
             // Return 404 if no matching course is found
-            if (!course.isPresent()) {
+            if (course == null) {
                 return ResponseEntity.notFound().build();
             }
 
-            
             // Create record if no existing rating exists
-            UserRating userRating = userRatingRepository.findByUserAndCourse(currentUser, course.get()).orElse(new UserRating(currentUser, course.get()));
+            UserRating userRating = userRatingRepository.findByUserAndCourse(currentUser, course)
+                    .orElse(new UserRating(currentUser, course));
             try {
                 userRating.setRating(v);
             } catch (Exception e) {
@@ -168,6 +170,6 @@ public class CourseController {
             userRatingRepository.save(userRating);
             return ResponseEntity.ok().build();
         }
-        
+
     }
 }

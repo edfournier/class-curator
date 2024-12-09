@@ -17,29 +17,29 @@ public class FriendRequest {
 
     @ManyToOne
     @JoinColumn(name = "sender_id", referencedColumnName = "id")
-    private User user1;
+    private User sender;
 
     @ManyToOne
     @JoinColumn(name = "receiver_id", referencedColumnName = "id")
-    private User user2;
+    private User receiver;
 
     private Date created_at;
 
     public FriendRequest() {
     }
 
-    public FriendRequest(User user1, User user2) {
-        this.user1 = user1;
-        this.user2 = user2;
+    public FriendRequest(User sender, User receiver) {
+        this.sender = sender;
+        this.receiver = receiver;
         this.created_at = new Date();
     }
 
-    public User getUser1() {
-        return user1;
+    public User getSender() {
+        return sender;
     }
 
-    public User getUser2() {
-        return user2;
+    public User getReceiver() {
+        return receiver;
     }
 
     public Date getCreated_at() {

@@ -29,6 +29,13 @@ public class Friendship {
     }
 
     public Friendship(User user1, User user2) {
+        // Because friendship is an undirected graph
+        if (user1.getId() > user2.getId()) {
+            User temp = user1;
+            user1 = user2;
+            user2 = temp;
+        }
+
         this.user1 = user1;
         this.user2 = user2;
         this.created_at = new Date();
