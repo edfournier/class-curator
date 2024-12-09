@@ -8,11 +8,9 @@ import json
 
 app = FastAPI()
 
-# Open 
+# Open connection to database
 con = sqlite3.connect('../server/class_c.db')
 cursor = con.cursor()
-query = "SELECT * from COURSE;"
-courses = cursor.execute(query).fetchall()
 
 # Initialize the model for sentence embeddings
 model = SentenceTransformer('all-MiniLM-L6-v2')
@@ -22,8 +20,9 @@ class RecommendationRequest(BaseModel):
     tags: List[str]
 
 # Load course data
-with open("setup/rmp/courses.json", 'r') as courses_file:
-    courses = json.load(courses_file)  # [{code, name, subject, description}]
+query = "SELECT * from COURSE;"
+courses = cursor.execute(query).fetchall()
+print(courses[0])
 
 # Function to recommend courses based on semantic search
 def recommend_courses(input_tags: List[str], courses: List[Dict]) -> List[str]:
@@ -31,8 +30,8 @@ def recommend_courses(input_tags: List[str], courses: List[Dict]) -> List[str]:
     input_embedding = model.encode(input_text, convert_to_tensor=True)
 
     # Prepare course titles and descriptions, handling null descriptions
-    course_titles = [course['name'] for course in courses]
-    course_descriptions = [course['description'] if course['description'] else "" for course in courses]
+    course_titles = [course[3] for course in courses]
+    course_descriptions = [course[4] if course[4] else "" for course in courses]
 
     # Encode course descriptions
     course_embeddings = model.encode(course_descriptions, convert_to_tensor=True)
