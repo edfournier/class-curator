@@ -32,16 +32,22 @@ def recommend_courses(input_tags: List[str], courses: List[Dict]) -> List[str]:
     course_embeddings = model.encode(course_descriptions, convert_to_tensor=True)
 
     # Perform semantic search
-    hits = util.semantic_search(input_embedding, course_embeddings, top_k=5)[0]
+    hits = util.semantic_search(input_embedding, course_embeddings, top_k=10)[0]
 
     recommendations = [course_titles[hit['corpus_id']] for hit in hits]
 
-    return [course_dict[recommendation] for recommendation in recommendations]
+    recommendations = list(set(recommendations))
+
+    return [course_dict[recommendation] for recommendation in recommendations][:5]
 
 @app.post("/recommend/{user_id}")
 def get_recommendations():
     query = "SELECT * FROM USER WHERE ID = {user_id};"
     user = cursor.execute(query).fetchone()
-    tags = user[3]
+    tags = user[7]
     recommendations = recommend_courses(tags, courses)
     return {"recommended_courses": recommendations}
+
+if __name__ == "__main__":
+    user = {"tags": ["Machine Learning", "Artificial Intelligence"]}
+    print(recommend_courses(user["tags"], courses))
