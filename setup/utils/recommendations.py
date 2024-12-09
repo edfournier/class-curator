@@ -11,7 +11,7 @@ app = FastAPI()
 # Initialize the HuggingFace pipeline for text similarity (using BERT-like model)
 similarity_model = pipeline("feature-extraction", model="sentence-transformers/all-MiniLM-L6-v2")
 
-url = "http://localhost:8080" # Database File Path
+url = "http://localhost:8080" # Database URL Base Endpoint
 RELATIVE_PATH = '.' # NOTE: Change this 
 DB_PATH = f'{RELATIVE_PATH}/server/class_c.db'
 SETUP_FOLDER_PATH = f'{RELATIVE_PATH}/setup'
@@ -29,29 +29,27 @@ class RecommendationRequest(BaseModel):
 
 # Compute cosine similarity between input tags and course tags
 def recommend_courses(input_tags: List[str], courses: List[Dict]) -> List[str]:
-    with open(COURSE_PATH, 'r') as courses_file:
-        courses = json.load(courses_file) # [{code, name, subject, description}]
-        user = {"major": "Computer Science", "minor": "Mathematics", "year": 2025, "tags": ["Machine Learning", "Artificial Intelligence"]}
-        input_embedding = similarity_model(" ".join(input_tags))[0]
-        recommendations = []
+    input_embedding = similarity_model(" ".join(input_tags))[0]
+    recommendations = []
 
-        for course in courses:
-            course_tags = course["tags"].split(", ")
-            course_embedding = similarity_model(" ".join(course_tags))[0]
+    for course in courses:
+        course_tags = course["name"].split(" ")
+        print(len(course_tags))
+        course_embedding = similarity_model(" ".join(course_tags))[0]
 
-            # Calculate cosine similarity
-            cosine_similarity = sum(a * b for a, b in zip(input_embedding, course_embedding))
-            
-            if cosine_similarity > 0.7:  # Threshold for recommendation
-                recommendations.append(course["title"])
+        # Calculate cosine similarity
+        cosine_similarity = sum(a * b for a, b in zip(input_embedding, course_embedding))
+        
+        if cosine_similarity > 0.7:  # Threshold for recommendation
+            recommendations.append(course["title"])
 
-        return recommendations
+    return recommendations
 
 # Get user data from database
-@app.get("/{user_name}")
+@app.get("/{user_id}")
 def get_user_data(user_name):
-    user_profile_url = url + "/private/users/{user_name}"
-    response = requests.get(user_profile_url)
+    user_url = url + "/users/{user_id}"
+    response = requests.get(user_url)
     # Check if the request was successful
     if response.status_code == 200:
         # Parse the JSON response
@@ -75,3 +73,8 @@ def get_user_data(user_name):
         return data
     else:
         print(f"Request failed with status code: {response.status_code}")
+
+with open("../rmp/courses.json", 'r') as courses_file:
+    courses = json.load(courses_file) # [{code, name, subject, description}]
+    user = {"major": "Computer Science", "minor": "Mathematics", "year": 2025, "tags": ["Machine Learning", "Artificial Intelligence"]}
+    recommend_courses(user["tags"], courses)

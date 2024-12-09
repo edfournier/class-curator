@@ -1,5 +1,5 @@
 from typing import List, Tuple
-from domain_helpers import determine_session, is_valid_course_code, standardize_course_code
+from utils.domain_helpers import determine_session, is_valid_course_code, standardize_course_code
 
 def preprocess_course_data(raw_data_courses: List[object]) -> List[Tuple[str, str, str, str]]:
     data_courses = []
