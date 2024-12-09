@@ -24,9 +24,10 @@ function AuthProvider({ children }) {
 
         try {
             // Check cache first for user details
-            const cached = await chrome.storage.local.get(["user", "expiry"]);
-            let user = cached.user;
-            if (!user || cached.expiry < Date.now()) {
+            const cached = await chrome.storage.local.get([token]);
+            let user;
+            if (cached[token] === undefined || cached[token].expiry < Date.now()) {
+                console.log("Not using cache");
                 // Fetch user details
                 const res = await axios.get("https://www.googleapis.com/oauth2/v3/userinfo", {
                     headers: { Authorization: `Bearer ${token}` }
@@ -34,9 +35,16 @@ function AuthProvider({ children }) {
                 user = res.data;
 
                 // Cache valid for 1 day
-                await chrome.storage.local.set({ user, expiry: Date.now() + 86400000 }); 
+                await chrome.storage.local.set({
+                    [token]: { user, expiry: Date.now() + 86400000 }
+                }); 
+            }
+            else {
+                console.log("Using cache");
+                user = cached[token].user;
             }
             setUser(user);
+            console.log(user);
 
             // Check if we're redirecting to course page from SPIRE
             const { redirect } = await chrome.storage.session.get("redirect");
