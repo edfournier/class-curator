@@ -40,22 +40,24 @@ public class CourseInsights {
         public ProfRatings(List<AggrRating> aggrRatings) {
             Map<String, Float> profRatings = new HashMap<>();
 
+            // For each unique professor, prepare an aggregate rating
             aggrRatings.forEach(aggrRating -> {
                 String prof = aggrRating.getUniClass().getProf();
                 float difficulty = aggrRating.getRate_rmp_difficulty();
                 float helpfulness = aggrRating.getRate_rmp_helpfulness();
 
-                float weightedScore = ((DomainMapper.MAX_RMP_DIFFICULTY - difficulty) + helpfulness) / 2; // Take
-                                                                                                          // average of
-                                                                                                          // both scores
+                // Take average of both scores
+                float weightedScore = ((DomainMapper.MAX_RMP_DIFFICULTY - difficulty) + helpfulness) / 2;
 
                 if (profRatings.get(prof) == null) {
                     profRatings.put(prof, weightedScore);
                 } else {
-                    profRatings.put(prof, profRatings.get(prof) / 1.5f + weightedScore); // Damped aggregate score
+                    // Damped aggregate score
+                    profRatings.put(prof, profRatings.get(prof) / 0.5f + weightedScore);
                 }
             });
 
+            // Sort professors by scores
             sortedRatings = profRatings.entrySet()
                     .stream()
                     .sorted((i1, i2) -> i2.getValue().compareTo(i1.getValue()))
