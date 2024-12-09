@@ -9,7 +9,7 @@ export async function getCourseResults(query) {
 }
 
 export async function getCourseDetails(code) {
-    const res = await authAxios.get(`/private/course/${code}}`);
+    const res = await authAxios.get(`/private/course/${code}`);
     return res.data;
 }
 
@@ -31,8 +31,9 @@ export async function getCourseInsights(code) {
     });
 }
 
-export async function postCourseRating(code, type) {
-    return Promise.resolve();
+export async function postCourseRating(code, vote) {
+    const res = await authAxios.post(`/private/course/${code}/rating?v=${vote}`);
+    return res;
 }
 
 export async function postCourseInterest(code, isInterested) {
