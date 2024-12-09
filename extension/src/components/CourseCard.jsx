@@ -57,7 +57,7 @@ function CourseCard({ course, onClose }) {
         <div className="card">
             <div className="flex justify-between">
                 <p className="text-xs text-gray-400">{course.code}</p>
-                <FaTimes onClick={onClose} className="cursor-pointer hover:text-indigo-600" />
+                <FaTimes aria-label="close" onClick={onClose} className="cursor-pointer hover:text-indigo-600" />
             </div>
             <h2 className="mb-3 mt-2">{course.name}</h2>
             <div className="mb-2 flex items-center space-x-3">

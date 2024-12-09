@@ -1,4 +1,4 @@
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Legend } from "recharts";
 
 const CourseRatingChart = ({ data }) => {
     if (data) {
@@ -20,19 +20,17 @@ const CourseRatingChart = ({ data }) => {
     }
 
     return (
-        <ResponsiveContainer width={250} height={200}>
-            <LineChart data={data}>
-                <CartesianGrid />
-                <XAxis
-                    dataKey="key"
-                    tick={{ angle: -45, textAnchor: "end" }}
-                />
-                <YAxis domain={[0, 5]} />
-                <Legend />
-                <Line type="monotone" dataKey="helpfulness" stroke="#4caf50" name="Quality" dot={false} />
-                <Line type="monotone" dataKey="difficulty" stroke="#f44336" name="Difficulty" dot={false} />
-            </LineChart>
-        </ResponsiveContainer>
+        <LineChart data={data} width={250} height={200}>
+            <CartesianGrid />
+            <XAxis
+                dataKey="key"
+                tick={{ angle: -45, textAnchor: "end" }}
+            />
+            <YAxis domain={[0, 5]} />
+            <Legend />
+            <Line type="monotone" dataKey="helpfulness" stroke="#4caf50" name="Quality" dot={false} />
+            <Line type="monotone" dataKey="difficulty" stroke="#f44336" name="Difficulty" dot={false} />
+        </LineChart>
     );
 };
 
