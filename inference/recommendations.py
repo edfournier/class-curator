@@ -40,7 +40,7 @@ def recommend_courses(input_tags: List[str], courses: List[Dict]) -> List[str]:
 
     return [course_dict[recommendation] for recommendation in recommendations][:5]
 
-@app.post("/recommend/{user_id}")
+@app.get("/recommend/{user_id}")
 def get_recommendations():
     query = "SELECT * FROM USER WHERE ID = {user_id};"
     user = cursor.execute(query).fetchone()
