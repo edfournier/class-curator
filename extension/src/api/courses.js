@@ -1,8 +1,11 @@
+import axios from "axios";
+
+axios.defaults.baseURL = import.meta.env.VITE_BACKEND_URL;
+
 export async function getCourseResults(query) {
-    return Promise.resolve([
-        { name: "Data Structures", code: "CS121", id: 1 },
-        { name: "Basic Math", code: "MATH101", id: 2 }
-    ]);
+    const res = await axios.get(`/course?course_code_query?${query}`);
+    console.log(res);
+    return res.data;
 }
 
 export async function getCourseDetails(id) {
