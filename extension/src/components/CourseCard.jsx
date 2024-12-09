@@ -13,7 +13,7 @@ function CourseCard({ course, onClose }) {
 
     async function handleThumb(type) {
         try {
-            await postCourseRating(course.id, type);
+            await postCourseRating(course.code, type);
             setThumb(type === thumb ? "" : type);
         }
         catch (err) {
@@ -24,7 +24,7 @@ function CourseCard({ course, onClose }) {
 
     async function handleInterest() {
         try {
-            await postCourseInterest(course.id, isInterested);
+            await postCourseInterest(course.code, isInterested);
             setIsInterested(!isInterested); 
         }
         catch (err) {
@@ -38,8 +38,8 @@ function CourseCard({ course, onClose }) {
             try {
                 // Get details and insights for clicked course 
                 const [details, insights] = await Promise.all([
-                    getCourseDetails(course.id),
-                    getCourseInsights(course.id)
+                    getCourseDetails(course.code),
+                    getCourseInsights(course.code)
                 ]);
                 setDetails(details),
                 setInsights(insights);

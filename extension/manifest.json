@@ -16,6 +16,7 @@
             "matches": ["https://www.spire.umass.edu/*"]
         }
     ],
+    "host_permissions": ["https://*/"],
     "background": {
         "service_worker": "src/scripts/background.js"
     },

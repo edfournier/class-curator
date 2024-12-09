@@ -1,25 +1,19 @@
 import axios from "axios";
+import authAxios from "./auth-axios";
 
 axios.defaults.baseURL = import.meta.env.VITE_BACKEND_URL;
 
 export async function getCourseResults(query) {
-    const res = await axios.get(`/course?course_code_query?${query}`);
-    console.log(res);
+    const res = await axios.get(`/course?course_code_query=${query}`);
     return res.data;
 }
 
-export async function getCourseDetails(id) {
-    return Promise.resolve({
-        id: 1,
-        name: "Data Structures",
-        code: "CS121",
-        likes: 10,
-        dislikes: 0,
-        description: "An overview of fundamental accounting concepts, so that a company?s balance sheet and income statement may be read and understood. The course will explain how performance is tracked and offer insight into basic financial statement analysis and interpretation of results. The course will also explain how accounting records support internal decision making and walk through some relevant decision scenarios. In addition, the use of accounting records to coordinate and motivate employee action will be demonstrated."
-    });
+export async function getCourseDetails(code) {
+    const res = await authAxios.get(`/private/course/${code}}`);
+    return res.data;
 }
 
-export async function getCourseInsights(id) {
+export async function getCourseInsights(code) {
     return Promise.resolve({
         prof: "Cameron Musco", // Recommended professor
 
@@ -37,10 +31,10 @@ export async function getCourseInsights(id) {
     });
 }
 
-export async function postCourseRating(id, type) {
+export async function postCourseRating(code, type) {
     return Promise.resolve();
 }
 
-export async function postCourseInterest(id, isInterested) {
+export async function postCourseInterest(code, isInterested) {
     return Promise.resolve();
 }
