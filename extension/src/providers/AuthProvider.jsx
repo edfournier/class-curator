@@ -20,6 +20,7 @@ function AuthProvider({ children }) {
     async function login(details) {
         // Retrieve token from Chrome's cache
         const { token }  = await chrome.identity.getAuthToken(details); 
+        console.log(token);
 
         try {
             // Check cache first for user details
@@ -35,7 +36,6 @@ function AuthProvider({ children }) {
                 // Cache valid for 1 day
                 await chrome.storage.local.set({ user, expiry: Date.now() + 86400000 }); 
             }
-            console.log(user);
             setUser(user);
 
             // Check if we're redirecting to course page from SPIRE
