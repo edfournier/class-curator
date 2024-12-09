@@ -1,7 +1,6 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from typing import List, Dict
-from transformers import pipeline
 from sentence_transformers import SentenceTransformer, util
 import sqlite3
 import json
