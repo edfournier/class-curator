@@ -9,7 +9,7 @@ import jakarta.persistence.Id;
 @Entity
 public class Course {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     private String code;
@@ -44,9 +44,5 @@ public class Course {
 
     public String getDescription() {
         return description;
-    }
-
-    public long getId() {
-        return id;
     }
 }

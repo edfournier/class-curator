@@ -12,7 +12,7 @@ import jakarta.persistence.ManyToOne;
 @Entity
 public class FriendRequest {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne

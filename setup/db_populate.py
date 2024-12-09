@@ -48,6 +48,7 @@ with open(SETUP_QUERIES_PATH) as queries:
     cursor.execute(queries['create_table_uni_class'])
     cursor.execute(queries['create_table_aggr_rating'])
     cursor.execute(queries['create_table_user_rating'])
+    cursor.execute(queries['create_table_user_interest'])
     cursor.execute(queries['create_table_friendship'])
     cursor.execute(queries['create_table_friend_request'])
     db_connection.commit()

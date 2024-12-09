@@ -30,6 +30,8 @@ public class User {
     private UniversitySession grad_session;
 
     private String major; // Not Null
+    private String minor;
+    private String tags;
 
     public User() {
     }
@@ -53,6 +55,10 @@ public class User {
         return display_name;
     }
 
+    public void setDisplayName(String displayName) {
+        this.display_name = displayName;
+    }
+
     public UniversitySession getGradSession() {
         return grad_session;
     }
@@ -65,11 +71,23 @@ public class User {
         return major;
     }
 
-    public void setDisplayName(String displayName) {
-        this.display_name = displayName;
-    }
-
     public void setMajor(String major) {
         this.major = major;
+    }
+
+    public String getMinor() {
+        return minor;
+    }
+
+    public void setMinor(String minor) {
+        this.minor = minor;
+    }
+
+    public String getTags() {
+        return tags;
+    }
+
+    public void setTags(String tags) {
+        this.tags = tags;
     }
 }

@@ -18,8 +18,6 @@ public class AggrRating {
     @JoinColumn(name = "course_id", referencedColumnName = "id")
     private Course course;
 
-    private float rate_user_avg;
-
     private float rate_rmp_helpfulness;
 
     private float rate_rmp_difficulty;
@@ -30,7 +28,6 @@ public class AggrRating {
     public AggrRating(UniClass uniClass) {
         this.uniClass = uniClass;
         this.course = uniClass.getCourse();
-        this.rate_user_avg = -1.0f;
         this.rate_rmp_helpfulness = -1.0f;
         this.rate_rmp_difficulty = -1.0f;
     }
@@ -39,7 +36,6 @@ public class AggrRating {
             float rate_rmp_difficulty) {
         this.uniClass = uniClass;
         this.course = uniClass.getCourse();
-        this.rate_user_avg = rate_user_avg;
         this.rate_rmp_helpfulness = rate_rmp_helpfulness;
         this.rate_rmp_difficulty = rate_rmp_difficulty;
     }
@@ -50,10 +46,6 @@ public class AggrRating {
 
     public UniClass getUniClass() {
         return uniClass;
-    }
-
-    public float getRate_user_avg() {
-        return rate_user_avg;
     }
 
     public float getRate_rmp_helpfulness() {
