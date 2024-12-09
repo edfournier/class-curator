@@ -6,19 +6,19 @@ import CourseRatingChart from "./CourseRatingChart";
 
 function CourseCard({ course, onClose }) {
     const alerts = useAlerts();
-    const [thumb, setThumb] = useState("");
+    const [vote, setVote] = useState(0); // -1 for down, 1 for up, 0 for undecided
     const [isInterested, setIsInterested] = useState(false);  
     const [details, setDetails] = useState({});
     const [insights, setInsights] = useState({});
 
-    async function handleThumb(type) {
+    async function handleVote(value) {
         try {
-            await postCourseRating(course.code, type);
-            setThumb(type === thumb ? "" : type);
+            await postCourseRating(course.code, value);
+            setVote(value === vote ? 0 : value);
         }
         catch (err) {
             console.error(err);
-            alerts.err("Failed to register rating, please try again");
+            alerts.error("Failed to register rating, please try again");
         }
     }
 
@@ -29,7 +29,7 @@ function CourseCard({ course, onClose }) {
         }
         catch (err) {
             console.error(err);
-            alerts.err("Failed to register interest, please try again");
+            alerts.error("Failed to register interest, please try again");
         }
     }
 
@@ -41,7 +41,7 @@ function CourseCard({ course, onClose }) {
                     getCourseDetails(course.code),
                     getCourseInsights(course.code)
                 ]);
-                setDetails(details),
+                setDetails(details);
                 setInsights(insights);
             }
             catch (err) {
@@ -62,16 +62,16 @@ function CourseCard({ course, onClose }) {
             <h2 className="mb-3 mt-2">{course.name}</h2>
             <div className="mb-2 flex items-center space-x-3">
                 <div className="flex items-center space-x-1">
-                    <button className="p-1" onClick={() => handleThumb("up")}>
-                        {thumb === "up" ? <FaThumbsUp /> : <FaRegThumbsUp />}
+                    <button className="p-1" onClick={() => handleVote(1)}>
+                        {vote === 1 ? <FaThumbsUp /> : <FaRegThumbsUp />}
                     </button>
-                    <span>{details.likes}</span>
+                    <span>{details.upvotes}</span>
                 </div>
                 <div className="flex items-center space-x-1">
-                    <button className="p-1" onClick={() => handleThumb("down")}>
-                        {thumb === "down" ? <FaThumbsDown /> : <FaRegThumbsDown />}
+                    <button className="p-1" onClick={() => handleVote(-1)}>
+                        {vote === -1 ? <FaThumbsDown /> : <FaRegThumbsDown />}
                     </button>
-                    <span>{details.dislikes}</span>
+                    <span>{details.downvotes}</span>
                 </div>
             </div>
             <p className="flex-grow mb-2">{details.description}</p>

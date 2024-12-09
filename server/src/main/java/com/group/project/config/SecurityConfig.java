@@ -25,6 +25,8 @@ public class SecurityConfig {
             source.registerCorsConfiguration("/**", configuration);
             cors.configurationSource(source);
         })
-                .build();
+        .csrf(csrf -> csrf.disable())
+        .authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
+        .build();
     }
 }
