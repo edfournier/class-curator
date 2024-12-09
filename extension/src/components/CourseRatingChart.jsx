@@ -6,16 +6,16 @@ const CourseRatingChart = ({ data }) => {
             // Create key from semester and year
             return {
                 ...item,
-                key: `${item.semester.charAt(0)}-${item.year % 100}`,
+                key: `${item.session.semester.charAt(0)}-${item.session.year % 100}`,
             };
         });
 
         data = data.toSorted((a, b) => {
             // Sort by increasing year, then season
-            if (a.year === b.year) {
-                return a.semester === "SPRING" ? -1 : 1;
+            if (a.session.year === b.session.year) {
+                return a.session.semester === "SPRING" ? -1 : 1;
             }
-            return a.year - b.year;
+            return a.session.year - b.session.year;
         });
     }
 

@@ -20,6 +20,7 @@ function Courses() {
             // Fetch top results from user query
             const courses = await getCourseResults(query);
             setResults(courses);
+            setCourse(null);
         }
         catch (err) {
             console.error(err);

@@ -12,9 +12,15 @@ function CourseCard({ course, onClose }) {
     const [insights, setInsights] = useState({});
 
     async function handleVote(value) {
-        try {
-            await postCourseRating(course.code, value);
-            setVote(value === vote ? 0 : value);
+        try {   
+            const newVote = value === vote ? 0 : value;
+            await postCourseRating(course.code, newVote);
+            setDetails({
+                ...details,
+                upvotes: details.upvotes + (vote === 1 ? -1 : 0) + (newVote === 1 ? 1 : 0),
+                downvotes: details.downvotes + (vote === -1 ? -1 : 0) + (newVote === -1 ? 1 : 0)
+            });
+            setVote(newVote);
         }
         catch (err) {
             console.error(err);
@@ -41,6 +47,7 @@ function CourseCard({ course, onClose }) {
                     getCourseDetails(course.code),
                     getCourseInsights(course.code)
                 ]);
+                setVote(details.userRating);
                 setDetails(details);
                 setInsights(insights);
             }
@@ -74,12 +81,27 @@ function CourseCard({ course, onClose }) {
                     <span>{details.downvotes}</span>
                 </div>
             </div>
-            <p className="flex-grow mb-2">{details.description}</p>
-            <CourseRatingChart data={insights.data} />  
-            {insights.prof && 
-                <><span>Best Professor:</span> <span className="text-indigo-200">{insights.prof}</span></> 
-            }
-            <div className="mt-3 flex justify-center">
+            <p className="flex-grow mb-2">{details.course?.description}</p>
+
+            <h2 className="mb-3 mt-2">Historical Data</h2>
+            <CourseRatingChart data={insights.ratingHistory} /> 
+
+            <h2 className="mb-3 mt-2">Professor Rankings</h2>
+            <ul>
+                {insights.profRatings && Object.keys(insights.profRatings).length > 0
+                    ? Object.keys(insights.profRatings).map(prof => {
+                        const quality = insights.profRatings[prof];
+                        return <>
+                            <li key={prof}>
+                                <span className={"font-semibold text-indigo-500"}>{prof}</span>
+                                <span className="text-gray-400"> {quality}</span>
+                            </li>
+                        </>
+                    })
+                    : <span className="font-semibold text-indigo-200">No professor rankings yet!</span>
+                }
+            </ul>
+            <div className="mt-4 flex justify-center">
                 <button
                     onClick={handleInterest}
                     className={isInterested ? "py-1" : "py-1 bg-gray-600 text-gray-300 hover:bg-gray-500"}
