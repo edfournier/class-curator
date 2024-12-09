@@ -19,5 +19,5 @@ public interface UserInterestRepository extends JpaRepository<UserInterest, Long
     Optional<UserInterest> findByUserAndCourse(User user, Course course);
 
     @Transactional
-    int deleteByUserAndCourse(User user, Course course);
+    Long removeByUserAndCourse(User user, Course course);
 }

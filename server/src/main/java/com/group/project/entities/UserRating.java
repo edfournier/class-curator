@@ -28,7 +28,7 @@ public class UserRating {
     public UserRating(User user, Course course) {
         this.user = user;
         this.course = course;
-        rating = 0;
+        rating = DomainMapper.BLANK_VOTE;
     }
 
     public UserRating(User user, Course course, int rating) throws Exception {

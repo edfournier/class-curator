@@ -1,7 +1,6 @@
 package com.group.project.controller;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,26 +39,26 @@ public class UserController {
     public class PublicUserController {
         @GetMapping("/{userId}")
         public ResponseEntity<Object> getUserDetails(@PathVariable int userId) {
-            Optional<User> user = userRepository.findById(userId);
+            User user = userRepository.findById(userId).orElse(null);
 
             // Return 404 if user does not exist
-            if (!user.isPresent()) {
+            if (user == null) {
                 return ResponseEntity.notFound().build();
             }
-            return ResponseEntity.ok(user.get());
+            return ResponseEntity.ok(user);
         }
 
         @GetMapping("/{userId}/interests")
         public ResponseEntity<Object> getUserInterest(@PathVariable int userId) {
-            Optional<User> user = userRepository.findById(userId);
+            User user = userRepository.findById(userId).orElse(null);
 
             // Return 404 if user does not exist
-            if (!user.isPresent()) {
+            if (user == null) {
                 return ResponseEntity.notFound().build();
             }
 
             // Fetch list of course where user has marked "interested"
-            List<UserInterest> userInterests = userInterestRepository.findByUser(user.get());
+            List<UserInterest> userInterests = userInterestRepository.findByUser(user);
             List<Course> courses = userInterests.stream().flatMap(userInterest -> Stream.of(userInterest.getCourse()))
                     .toList();
             return ResponseEntity.ok(courses);
