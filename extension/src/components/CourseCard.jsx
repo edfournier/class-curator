@@ -74,14 +74,12 @@ function CourseCard({ course, onClose }) {
                     <span>{details.dislikes}</span>
                 </div>
             </div>
-            <p className="flex-grow">{details.description}</p>
+            <p className="flex-grow mb-2">{details.description}</p>
+            <CourseRatingChart data={insights.data} />  
             {insights.prof && 
                 <><span>Best Professor:</span> <span className="text-indigo-200">{insights.prof}</span></> 
             }
-            <div className="mt-2">
-            <CourseRatingChart data={insights.data} />  
-            </div>
-            <div className="mt-2 flex justify-center">
+            <div className="mt-3 flex justify-center">
                 <button
                     onClick={handleInterest}
                     className={isInterested ? "py-1" : "py-1 bg-gray-600 text-gray-300 hover:bg-gray-500"}
