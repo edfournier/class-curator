@@ -13,15 +13,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.group.project.entities.AggrRating;
 import com.group.project.entities.Course;
 import com.group.project.entities.User;
 import com.group.project.entities.UserInterest;
 import com.group.project.entities.UserRating;
+import com.group.project.repositories.AggrRatingRepository;
 import com.group.project.repositories.CourseRepository;
 import com.group.project.repositories.UserInterestRepository;
 import com.group.project.repositories.UserRatingRepository;
 import com.group.project.utils.domain.DomainMapper;
 import com.group.project.utils.domain.UniversityStrings;
+import com.group.project.types.presentation.CourseInsights;
 import com.group.project.types.presentation.PrivateCourseDetails;
 import com.group.project.types.presentation.PublicCourseDetails;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -38,11 +41,15 @@ public class CourseController {
     @Autowired
     private final UserInterestRepository userInterestRepository;
 
+    @Autowired
+    private final AggrRatingRepository aggrRatingRepository;
+
     public CourseController(CourseRepository courseRepository, UserRatingRepository userRatingRepository,
-            UserInterestRepository userInterestRepository) {
+            UserInterestRepository userInterestRepository, AggrRatingRepository aggrRatingRepository) {
         this.courseRepository = courseRepository;
         this.userRatingRepository = userRatingRepository;
         this.userInterestRepository = userInterestRepository;
+        this.aggrRatingRepository = aggrRatingRepository;
     }
 
     @RestController
@@ -68,6 +75,7 @@ public class CourseController {
             for (String courseCode : splitCourseCodes) {
                 courseCode = UniversityStrings.standardizeCourseCode(courseCode);
                 Course course = courseRepository.findByCode(courseCode).orElse(null);
+                // Skip fetching details if course doesn't exist
                 if (course != null) {
                     // Count upvotes and downvotes for course
                     int upvotes = userRatingRepository.countByCourseAndRatingEquals(course, DomainMapper.UPVOTE);
@@ -79,6 +87,22 @@ public class CourseController {
 
             return ResponseEntity.ok(coursesDetails);
         }
+
+        @GetMapping("/{courseCode}/insights")
+        public ResponseEntity<Object> getCourseInsights(@PathVariable String courseCode) {
+            courseCode = UniversityStrings.standardizeCourseCode(courseCode);
+            Course course = courseRepository.findByCode(courseCode).orElse(null);
+
+            // Return 404 if course not found
+            if (course == null)
+                return ResponseEntity.notFound().build();
+
+            List<AggrRating> aggrRatings = aggrRatingRepository.findByCourse(course);
+            CourseInsights insights = new CourseInsights(aggrRatings);
+
+            return ResponseEntity.ok(insights);
+        }
+
     }
 
     @RestController
