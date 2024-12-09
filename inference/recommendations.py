@@ -3,9 +3,17 @@ from pydantic import BaseModel
 from typing import List, Dict
 from transformers import pipeline
 from sentence_transformers import SentenceTransformer, util
+import sqlite3
 import json
 
+
 app = FastAPI()
+
+# Open 
+con = sqlite3.connect('../server/class_c.db')
+cursor = con.cursor()
+query = "SELECT * from COURSE;"
+courses = cursor.execute(query).fetchall()
 
 # Initialize the model for sentence embeddings
 model = SentenceTransformer('all-MiniLM-L6-v2')
