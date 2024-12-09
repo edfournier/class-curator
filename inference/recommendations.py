@@ -1,5 +1,4 @@
 from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel
 from typing import List, Dict
 from sentence_transformers import SentenceTransformer, util
 import sqlite3
@@ -15,14 +14,10 @@ cursor = con.cursor()
 # Initialize the model for sentence embeddings
 model = SentenceTransformer('all-MiniLM-L6-v2')
 
-# Sample payload structure for incoming requests
-class RecommendationRequest(BaseModel):
-    tags: List[str]
-
 # Load course data
 query = "SELECT * from COURSE;"
 courses = cursor.execute(query).fetchall()
-print(courses[0])
+course_dict = {course[2]: course[1] for course in courses}
 
 # Function to recommend courses based on semantic search
 def recommend_courses(input_tags: List[str], courses: List[Dict]) -> List[str]:
@@ -30,7 +25,7 @@ def recommend_courses(input_tags: List[str], courses: List[Dict]) -> List[str]:
     input_embedding = model.encode(input_text, convert_to_tensor=True)
 
     # Prepare course titles and descriptions, handling null descriptions
-    course_titles = [course[3] for course in courses]
+    course_titles = [course[2] for course in courses]
     course_descriptions = [course[4] if course[4] else "" for course in courses]
 
     # Encode course descriptions
@@ -41,14 +36,12 @@ def recommend_courses(input_tags: List[str], courses: List[Dict]) -> List[str]:
 
     recommendations = [course_titles[hit['corpus_id']] for hit in hits]
 
-    return recommendations
+    return [course_dict[recommendation] for recommendation in recommendations]
 
-@app.post("/recommend")
-def get_recommendations(request: RecommendationRequest):
-    recommendations = recommend_courses(request.tags, courses)
+@app.post("/recommend/{user_id}")
+def get_recommendations():
+    query = "SELECT * FROM USER WHERE ID = {user_id};"
+    user = cursor.execute(query).fetchone()
+    tags = user[3]
+    recommendations = recommend_courses(tags, courses)
     return {"recommended_courses": recommendations}
-
-# Example usage
-if __name__ == "__main__":
-    user = {"tags": ["Machine Learning", "Artificial Intelligence"]}
-    print(recommend_courses(user["tags"], courses))
