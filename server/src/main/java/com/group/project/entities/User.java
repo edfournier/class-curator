@@ -31,6 +31,7 @@ public class User {
 
     private String major; // Not Null
     private String minor;
+    private String tags;
 
     public User() {
     }
@@ -80,5 +81,13 @@ public class User {
 
     public void setMinor(String minor) {
         this.minor = minor;
+    }
+
+    public String getTags() {
+        return tags;
+    }
+
+    public void setTags(String tags) {
+        this.tags = tags;
     }
 }

@@ -13,7 +13,7 @@ import jakarta.persistence.ManyToOne;
 @Entity
 public class UniClass {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @ManyToOne
