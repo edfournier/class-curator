@@ -70,7 +70,6 @@ public class AuthFilter extends OncePerRequestFilter {
             }
 
             request.setAttribute("currentUser", user);
-            request.setAttribute("username", user.getUsername()); // TODO: Remove this!
             filterChain.doFilter(request, response);
         } catch (Exception e) {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid token");
