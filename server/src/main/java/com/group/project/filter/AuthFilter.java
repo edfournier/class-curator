@@ -62,11 +62,11 @@ public class AuthFilter extends OncePerRequestFilter {
             Optional<Session> session = sessionRepository.findByToken(token);
             User user = null;
 
-            // if cannot use cached session for any reason -> create user and session
-            if (!session.isPresent() || (new Date()).after(session.get().getExpires_at())) {
-                user = createUserAndRefreshSession(token);
-            } else {
+            // use cached session is valid, else create user and session
+            if (session.isPresent() && (new Date()).before(session.get().getExpires_at())) {
                 user = session.get().getUser();
+            } else {
+                user = createUserAndRefreshSession(token);
             }
 
             request.setAttribute("user", user);
