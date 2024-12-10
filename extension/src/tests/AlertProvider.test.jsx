@@ -4,7 +4,6 @@ import AlertProvider, { useAlerts } from "../providers/AlertProvider";
 // Helper component to trigger alerts
 function TestComponent() {
     const alerts = useAlerts();
-
     return (
         <div>
             <button onClick={() => alerts.error("This is an error!")}>Show Error</button>

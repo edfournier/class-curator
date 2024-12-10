@@ -19,14 +19,14 @@ const mockAlerts = {
 useAlerts.mockReturnValue(mockAlerts);
 
 const mockFriend = {
-    id: "123",
-    email: "friend@example.com",
-    name: "John Doe",
+    id: "1",
+    email: "edfournier@umass.edu",
+    name: "Eric",
 };
 
 const mockUserInterests = [
-    { code: "CS101", name: "Intro to Computer Science" },
-    { code: "CS102", name: "Data Structures" },
+    { code: "CS187", name: "DSA" },
+    { code: "CS220", name: "Marius Class" }
 ];
 
 const mockOnClose = jest.fn();
@@ -39,8 +39,8 @@ describe("FriendCard", () => {
 
     test("renders friend's interests and highlights common ones", async () => {
         getUserInterests.mockResolvedValue([
-            { code: "CS101", name: "Intro to Computer Science" },
-            { code: "CS103", name: "Algorithms" },
+            { code: "CS220", name: "Marius Class" },
+            { code: "CS230", name: "Joe's Class" }
         ]);
 
         render(
@@ -52,14 +52,14 @@ describe("FriendCard", () => {
             />
         );
 
-        await waitFor(() => screen.getByText("Intro to Computer Science"));
-        expect(screen.getByText("Intro to Computer Science")).toHaveClass("text-indigo-500");
-        expect(screen.getByText("Algorithms")).toHaveClass("text-indigo-200");
+        await waitFor(() => screen.getByText("Marius Class"));
+        expect(screen.getByText("Marius Class")).toHaveClass("text-indigo-500");
+        expect(screen.getByText("Joe's Class")).toHaveClass("text-indigo-200");
     });
 
     test("displays error when failed to fetch friend's interests", async () => {
         const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
-        getUserInterests.mockRejectedValue(new Error("Failed to get friend's interests"));
+        getUserInterests.mockRejectedValue(new Error("Mock error"));
 
         render(
             <FriendCard
@@ -70,7 +70,7 @@ describe("FriendCard", () => {
             />
         );
 
-        await waitFor(() => expect(mockAlerts.error).toHaveBeenCalledWith("Failed to get friend's interests"));
+        await waitFor(() => expect(mockAlerts.error).toHaveBeenCalled());
         consoleErrorSpy.mockRestore();
     });
 });

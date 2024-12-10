@@ -4,26 +4,6 @@ import { getUserDetails, putUserDetails } from "../api/user";
 import { getRecommendations } from "../api/recommendations";
 import { useAlerts } from "../providers/AlertProvider";
 
-jest.mock("../api/user", () => ({
-    getUserDetails: jest.fn(),
-    putUserDetails: jest.fn(),
-}));
-
-jest.mock("../api/recommendations", () => ({
-    getRecommendations: jest.fn(),
-}));
-
-jest.mock("../providers/AlertProvider", () => ({
-    useAlerts: jest.fn(),
-}));
-
-const mockAlerts = { 
-    error: jest.fn(), 
-    info: jest.fn() 
-};
-
-useAlerts.mockReturnValue(mockAlerts);
-
 const mockUserDetails = {
     major: "Computer Science",
     minor: "Linguistics",
@@ -36,6 +16,26 @@ const mockRecommendations = {
     friends: [{ course: { code: "COMPSCI 589" }, networkCount: 1 }],
     peers: [{ course: { code: "COMPSCI 687" }, networkCount: 2 }]
 };
+
+const mockAlerts = { 
+    error: jest.fn(), 
+    info: jest.fn() 
+};
+
+useAlerts.mockReturnValue(mockAlerts);
+
+jest.mock("../api/user", () => ({
+    getUserDetails: jest.fn(),
+    putUserDetails: jest.fn(),
+}));
+
+jest.mock("../api/recommendations", () => ({
+    getRecommendations: jest.fn(),
+}));
+
+jest.mock("../providers/AlertProvider", () => ({
+    useAlerts: jest.fn(),
+}));
 
 describe("Home", () => {
     beforeEach(() => {

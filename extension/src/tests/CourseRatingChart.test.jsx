@@ -13,12 +13,10 @@ describe("CourseRatingChart", () => {
     test("renders the LineChart with correct data", () => {
         render(<CourseRatingChart data={mockData} />);
 
-        // Check if key labels are correctly created and sorted
+        // Check if the chart has the correct keys
         const xAxisKeys = screen.getAllByText(/S-\d{2}|F-\d{2}/);
         expect(xAxisKeys.length).toBe(4);
-        expect(xAxisKeys.map((el) => el.textContent)).toEqual(["S-21", "F-21", "S-22", "F-22"]);
-
-        // Check if the chart is rendered
+        expect(xAxisKeys.map((e) => e.textContent)).toEqual(["S-21", "F-21", "S-22", "F-22"]);
         expect(screen.getByText("Quality")).toBeInTheDocument();
         expect(screen.getByText("Difficulty")).toBeInTheDocument();
     });
@@ -26,11 +24,9 @@ describe("CourseRatingChart", () => {
     test("handles empty data gracefully", () => {
         render(<CourseRatingChart data={[]} />);
 
-        // No X-axis keys should be displayed
+        // Check the graph is empty
         const xAxisKeys = screen.queryAllByText(/S-\d{2}|F-\d{2}/);
         expect(xAxisKeys.length).toBe(0);
-
-        // Chart components should still be rendered
         expect(screen.getByText("Quality")).toBeInTheDocument();
         expect(screen.getByText("Difficulty")).toBeInTheDocument();
     });

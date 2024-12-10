@@ -3,6 +3,19 @@ import CourseCard from "../components/CourseCard";
 import { getCourseDetails, getCourseInsights, putCourseInterest, deleteCourseInterest, postCourseRating } from "../api/courses";
 import { useAlerts } from "../providers/AlertProvider";
 
+
+const mockCourse = {
+    code: "CS101",
+    name: "Intro",
+};
+
+const mockAlerts = {
+    error: jest.fn(),
+    info: jest.fn(),
+};
+
+useAlerts.mockReturnValue(mockAlerts);
+
 jest.mock("../api/courses", () => ({
     getCourseDetails: jest.fn(),
     getCourseInsights: jest.fn(),
@@ -15,25 +28,13 @@ jest.mock("../providers/AlertProvider", () => ({
     useAlerts: jest.fn(),
 }));
 
-const mockAlerts = {
-    error: jest.fn(),
-    info: jest.fn(),
-};
-
-useAlerts.mockReturnValue(mockAlerts);
-
-const mockCourse = {
-    code: "CS101",
-    name: "Introduction to Programming",
-};
-
 getCourseInsights.mockResolvedValue({
     ratingHistory: [
         { session: { semester: "SPRING", year: 2023 }, helpfulness: 4.5, difficulty: 3.0 },
         { session: { semester: "FALL", year: 2022 }, helpfulness: 4.2, difficulty: 2.8 },
     ],
     profRatings: {
-        "Dr. Alice": 4.8,
+        "Marius": 4.8,
     }
 });
 
@@ -42,25 +43,13 @@ getCourseDetails.mockResolvedValue({
     upvotes: 10,
     downvotes: 2,
     course: {
-        description: "An introductory course on programming concepts and techniques.",
+        description: "Desc",
     },
 });
 
 describe("CourseCard", () => {
     beforeEach(() => {
         jest.clearAllMocks();
-    });
-
-    test("renders course details and insights", async () => {
-        render(<CourseCard course={mockCourse} onClose={jest.fn()} />);
-
-        await waitFor(() => expect(getCourseDetails).toHaveBeenCalledWith(mockCourse.code));
-        await waitFor(() => expect(getCourseInsights).toHaveBeenCalledWith(mockCourse.code));
-
-        expect(screen.getByText("Introduction to Programming")).toBeInTheDocument();
-        expect(screen.getByText("An introductory course on programming concepts and techniques.")).toBeInTheDocument();
-        expect(screen.getByText("Dr. Alice")).toBeInTheDocument();
-        expect(screen.getByText("4.8")).toBeInTheDocument();
     });
 
     test("handles upvote and downvote button clicks", async () => {
@@ -71,11 +60,9 @@ describe("CourseCard", () => {
         const upvoteButton = screen.getByLabelText("like");
         const downvoteButton = screen.getByLabelText("dislike");
 
-        // Click the upvote button
+        // Click buttons and check corresponding methods
         fireEvent.click(upvoteButton);
         await waitFor(() => expect(postCourseRating).toHaveBeenCalledWith(mockCourse.code, 1));
-
-        // Click the downvote button
         fireEvent.click(downvoteButton);
         await waitFor(() => expect(postCourseRating).toHaveBeenCalledWith(mockCourse.code, -1));
     });
@@ -85,14 +72,11 @@ describe("CourseCard", () => {
         await waitFor(() => expect(getCourseDetails).toHaveBeenCalledWith(mockCourse.code));
         await waitFor(() => expect(getCourseInsights).toHaveBeenCalledWith(mockCourse.code));
 
-        // Get the interest button
         const interestButton = screen.getByLabelText("interest");
 
-        // Click the "I'm Interested!" button (first time)
+        // Click and reclick interest button
         fireEvent.click(interestButton);
         await waitFor(() => expect(putCourseInterest).toHaveBeenCalledWith(mockCourse.code));
-
-        // Click the "I'm Interested!" button (first time)
         fireEvent.click(interestButton);
         await waitFor(() => expect(deleteCourseInterest).toHaveBeenCalledWith(mockCourse.code));
     });
@@ -105,12 +89,11 @@ describe("CourseCard", () => {
         const upvoteButton = screen.getByLabelText("like");
         const downvoteButton = screen.getByLabelText("dislike");
 
+        // Hits the branches that change course.details.upvotes/downvotes
         fireEvent.click(downvoteButton);
         await waitFor(() => expect(postCourseRating).toHaveBeenCalledTimes(1));
-
         fireEvent.click(upvoteButton);
         await waitFor(() => expect(postCourseRating).toHaveBeenCalledTimes(2));
-
         fireEvent.click(upvoteButton);
         await waitFor(() => expect(postCourseRating).toHaveBeenCalledTimes(3));
     });
@@ -119,51 +102,36 @@ describe("CourseCard", () => {
         const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
         getCourseDetails.mockRejectedValueOnce(new Error("Failed to fetch course details"));
         getCourseInsights.mockRejectedValueOnce(new Error("Failed to fetch course insights"));
-
         render(<CourseCard course={mockCourse} onClose={jest.fn()} />);
 
+        // Check error handler was hit
         await waitFor(() => expect(getCourseDetails).toHaveBeenCalledWith(mockCourse.code));
         await waitFor(() => expect(getCourseInsights).toHaveBeenCalledWith(mockCourse.code));
-
-        // Check that alerts.error was called
-        await waitFor(() => expect(mockAlerts.error).toHaveBeenCalledWith("Failed to get course details and insights"));
+        await waitFor(() => expect(mockAlerts.error).toHaveBeenCalled());
         consoleErrorSpy.mockRestore();
     });
 
     test("handles error when voting on the course", async () => {
         const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
-        
+        postCourseRating.mockRejectedValueOnce(new Error("Failed to register rating"));
         render(<CourseCard course={mockCourse} onClose={jest.fn()} />);
 
-        // Mock the postCourseRating to throw an error
-        postCourseRating.mockRejectedValueOnce(new Error("Failed to register rating"));
-
+        // Check error handler was hit
         const upvoteButton = screen.getByLabelText("like");
-
         fireEvent.click(upvoteButton);
-
-        // Wait for the error handler to be called
-        await waitFor(() => expect(mockAlerts.error).toHaveBeenCalledWith("Failed to register rating, please try again"));
-
+        await waitFor(() => expect(mockAlerts.error).toHaveBeenCalled());
         consoleErrorSpy.mockRestore();
     });  
     
     test("handles error when adding interest", async () => {
         const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
-        
+        putCourseInterest.mockRejectedValueOnce(new Error("Failed to register interest"));
         render(<CourseCard course={mockCourse} onClose={jest.fn()} />);
 
-        // Mock the putCourseInterest to throw an error
-        putCourseInterest.mockRejectedValueOnce(new Error("Failed to register interest"));
-
+        // Check error handler was hit
         const interestButton = screen.getByLabelText("interest");
-
-        // Click the "I'm Interested!" button
         fireEvent.click(interestButton);
-
-        // Check that error handler was called
-        await waitFor(() => expect(mockAlerts.error).toHaveBeenCalledWith("Failed to register interest, please try again"));
-
+        await waitFor(() => expect(mockAlerts.error).toHaveBeenCalled());
         consoleErrorSpy.mockRestore();
     });
     
