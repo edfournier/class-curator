@@ -19,6 +19,7 @@ import com.group.project.entities.User;
 import com.group.project.repositories.FriendRequestRepository;
 import com.group.project.repositories.FriendshipRepository;
 import com.group.project.repositories.UserRepository;
+import com.group.project.utils.PeopleUtils;
 
 @RestController
 @RequestMapping("/private/friend")
@@ -40,25 +41,9 @@ public class FriendController {
         this.friendRequestRepository = friendRequestRepository;
     }
 
-    private Friendship getExistingFriendship(User user1, User user2) {
-        // Because friendship is an undirected graph
-        if (user1.getId() > user2.getId()) {
-            User temp = user1;
-            user1 = user2;
-            user2 = temp;
-        }
-        return friendshipRepository.findByUser1AndUser2(user1, user2).orElse(null);
-    }
-
     @GetMapping
     public ResponseEntity<Object> getFriends(@RequestAttribute User currentUser) {
-        // Friendships are a undirected graph, so need two queries to get full list
-        List<Friendship> leftHalf = friendshipRepository.findByUser1(currentUser);
-        List<Friendship> rightHalf = friendshipRepository.findByUser2(currentUser);
-        Stream<User> leftHalfFriends = leftHalf.stream().flatMap(friendship -> Stream.of(friendship.getUser2()));
-        Stream<User> rightHalfFriends = rightHalf.stream().flatMap(friendship -> Stream.of(friendship.getUser1()));
-        Stream<User> friendsStream = Stream.concat(leftHalfFriends, rightHalfFriends);
-        return ResponseEntity.ok(friendsStream.toList());
+        return ResponseEntity.ok(PeopleUtils.getAllFriends(friendshipRepository, currentUser));
     }
 
     @DeleteMapping("/{friendId}")
@@ -69,10 +54,11 @@ public class FriendController {
         if (friend == null)
             return ResponseEntity.notFound().build();
 
-        Friendship friendship = getExistingFriendship(currentUser, friend);
-        
+        Friendship friendship = PeopleUtils.getExistingFriendship(friendshipRepository, currentUser, friend);
+
         // Return 404 if friendship does not exist
-        if (friendship == null) return ResponseEntity.notFound().build();
+        if (friendship == null)
+            return ResponseEntity.notFound().build();
 
         friendshipRepository.delete(friendship);
         return ResponseEntity.ok().build();
@@ -87,7 +73,8 @@ public class FriendController {
     }
 
     @PostMapping("/request/{senderId}/accept")
-    public ResponseEntity<Object> acceptReceivedFriendRequest(@RequestAttribute User currentUser, @PathVariable long senderId) {
+    public ResponseEntity<Object> acceptReceivedFriendRequest(@RequestAttribute User currentUser,
+            @PathVariable long senderId) {
         User sender = userRepository.findById(senderId).orElse(null);
 
         // Return 404 if sender does not exist
@@ -95,7 +82,7 @@ public class FriendController {
             return ResponseEntity.notFound().build();
 
         // Return 400 if friendship exists
-        if (getExistingFriendship(currentUser, sender) != null)
+        if (PeopleUtils.getExistingFriendship(friendshipRepository, currentUser, sender) != null)
             return ResponseEntity.badRequest().body("Friendship already exists!");
 
         // Return 404 if friendRequest does not exist
@@ -117,14 +104,14 @@ public class FriendController {
             return ResponseEntity.notFound().build();
 
         // Return 400 if friendship exists
-        if (getExistingFriendship(currentUser, targetUser) != null)
+        if (PeopleUtils.getExistingFriendship(friendshipRepository, currentUser, targetUser) != null)
             return ResponseEntity.badRequest().body("Friendship already exists!");
 
         // Return 200 if friend request had already been sent
         if (friendRequestRepository.findBySenderAndReceiver(currentUser, targetUser).isPresent())
             return ResponseEntity.ok().build();
 
-        // Create friendship if friend request from target already exists 
+        // Create friendship if friend request from target already exists
         // (think: handshake)
         if (friendRequestRepository.findBySenderAndReceiver(targetUser, currentUser).isPresent()) {
             return acceptReceivedFriendRequest(targetUser, currentUser.getId());
@@ -137,7 +124,8 @@ public class FriendController {
     }
 
     @DeleteMapping("/request/{senderId}")
-    public ResponseEntity<Object> deleteReceivedFriendRequest(@RequestAttribute User currentUser, @PathVariable long senderId) {
+    public ResponseEntity<Object> deleteReceivedFriendRequest(@RequestAttribute User currentUser,
+            @PathVariable long senderId) {
         User sender = userRepository.findById(senderId).orElse(null);
 
         // Return 404 if sender does not exist
@@ -145,9 +133,10 @@ public class FriendController {
             return ResponseEntity.notFound().build();
 
         FriendRequest friendRequest = friendRequestRepository.findBySenderAndReceiver(sender, currentUser).orElse(null);
-        
+
         // Return 404 if friend request does not exist
-        if (friendRequest == null) return ResponseEntity.notFound().build();
+        if (friendRequest == null)
+            return ResponseEntity.notFound().build();
 
         friendRequestRepository.delete(friendRequest);
         return ResponseEntity.ok().build();

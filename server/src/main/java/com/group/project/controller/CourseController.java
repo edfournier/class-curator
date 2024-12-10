@@ -1,13 +1,21 @@
 package com.group.project.controller;
 
+import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,15 +28,18 @@ import com.group.project.entities.UserInterest;
 import com.group.project.entities.UserRating;
 import com.group.project.repositories.AggrRatingRepository;
 import com.group.project.repositories.CourseRepository;
+import com.group.project.repositories.FriendshipRepository;
 import com.group.project.repositories.UserInterestRepository;
 import com.group.project.repositories.UserRatingRepository;
+import com.group.project.repositories.UserRepository;
+import com.group.project.utils.PeopleUtils;
+import com.group.project.utils.RecommendationUtils;
 import com.group.project.utils.domain.DomainMapper;
 import com.group.project.utils.domain.UniversityStrings;
 import com.group.project.types.presentation.CourseInsights;
 import com.group.project.types.presentation.PrivateCourseDetails;
 import com.group.project.types.presentation.PublicCourseDetails;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
+import com.group.project.types.presentation.Recommendations;
 
 @RestController
 public class CourseController {
@@ -44,12 +55,21 @@ public class CourseController {
     @Autowired
     private final AggrRatingRepository aggrRatingRepository;
 
+    @Autowired
+    private final FriendshipRepository friendshipRepository;
+
+    @Autowired
+    private final UserRepository userRepository;
+
     public CourseController(CourseRepository courseRepository, UserRatingRepository userRatingRepository,
-            UserInterestRepository userInterestRepository, AggrRatingRepository aggrRatingRepository) {
+            UserInterestRepository userInterestRepository, AggrRatingRepository aggrRatingRepository,
+            FriendshipRepository friendshipRepository, UserRepository userRepository) {
         this.courseRepository = courseRepository;
         this.userRatingRepository = userRatingRepository;
         this.userInterestRepository = userInterestRepository;
         this.aggrRatingRepository = aggrRatingRepository;
+        this.friendshipRepository = friendshipRepository;
+        this.userRepository = userRepository;
     }
 
     @RestController
@@ -102,7 +122,6 @@ public class CourseController {
 
             return ResponseEntity.ok(insights);
         }
-
     }
 
     @RestController
@@ -193,6 +212,41 @@ public class CourseController {
 
             userRatingRepository.save(userRating);
             return ResponseEntity.ok().build();
+        }
+
+        @GetMapping("/recommendations")
+        public ResponseEntity<Object> getRecommendation(@RequestAttribute User currentUser) {
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create("http://localhost:8000/recommend/" + currentUser.getId()))
+                    .method("GET", HttpRequest.BodyPublishers.noBody())
+                    .build();
+
+            // Fetch recommendations based off user tags from inference server
+            String rawTagRecsResponseString = "";
+            try {
+                HttpResponse<String> response = HttpClient.newHttpClient().send(request,
+                        HttpResponse.BodyHandlers.ofString());
+                // Handle non-200s
+                rawTagRecsResponseString = response.body();
+            } catch (IOException | InterruptedException e) {
+                rawTagRecsResponseString = "";
+            }
+
+            // Get currentUsers' friends
+            List<User> friends = PeopleUtils.getAllFriends(friendshipRepository, currentUser);
+            // Find frequency of courses amongst friends' interests, sort and select top 5
+            Map<Course, Integer> courseInterestCounts = RecommendationUtils
+                    .getCourseInterestCountsForUsers(userInterestRepository, friends);
+            List<Map.Entry<Course, Integer>> friendRecs = RecommendationUtils.getSortedList(courseInterestCounts, 5);
+
+            // Get currentUsers' peers
+            List<User> peers = userRepository.findByGradSession(currentUser.getGradSession());
+            // Find frequency of courses amongst peers' interests, sort and select top 5
+            courseInterestCounts = RecommendationUtils.getCourseInterestCountsForUsers(userInterestRepository, peers);
+            List<Map.Entry<Course, Integer>> peerRecs = RecommendationUtils.getSortedList(courseInterestCounts, 5);
+
+            Recommendations recs = new Recommendations(rawTagRecsResponseString, friendRecs, peerRecs);
+            return ResponseEntity.ok(recs);
         }
 
     }

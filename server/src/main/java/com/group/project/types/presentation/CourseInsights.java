@@ -60,7 +60,7 @@ public class CourseInsights {
             // Sort professors by scores
             sortedRatings = profRatings.entrySet()
                     .stream()
-                    .sorted((i1, i2) -> i2.getValue().compareTo(i1.getValue()))
+                    .sorted((i1, i2) -> i2.getValue().compareTo(i1.getValue())) // descending sort
                     .collect(Collectors.toMap(
                             Map.Entry::getKey,
                             Map.Entry::getValue,

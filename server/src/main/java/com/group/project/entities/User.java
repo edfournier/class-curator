@@ -27,7 +27,7 @@ public class User {
             @AttributeOverride(name = "year", column = @Column(name = "grad_year")),
             @AttributeOverride(name = "semester", column = @Column(name = "grad_semester"))
     })
-    private UniversitySession grad_session;
+    private UniversitySession gradSession;
 
     private String major; // Not Null
     private String minor;
@@ -36,10 +36,10 @@ public class User {
     public User() {
     }
 
-    public User(String username, String display_name, UniversitySession grad_session, String major) {
+    public User(String username, String display_name, UniversitySession gradSession, String major) {
         this.username = username;
         this.display_name = display_name;
-        this.grad_session = grad_session;
+        this.gradSession = gradSession;
         this.major = major;
     }
 
@@ -60,11 +60,11 @@ public class User {
     }
 
     public UniversitySession getGradSession() {
-        return grad_session;
+        return gradSession;
     }
 
-    public void setGradSession(UniversitySession grad_session) {
-        this.grad_session = grad_session;
+    public void setGradSession(UniversitySession gradSession) {
+        this.gradSession = gradSession;
     }
 
     public String getMajor() {
