@@ -15,7 +15,6 @@ export async function putUserDetails(details) {
 
 export async function getCurrentUserInterests() {
     const res = await authAxios.get(`/private/user/interests`);
-    console.log(res.data);
     return res.data;
 }
 

@@ -7,7 +7,6 @@ import PagableList from "../components/PagableList";
 import { useAlerts } from "../providers/AlertProvider";
 import { deleteFriend, getFriends, getIncomingRequests, postFriendRequest, postRequestDecision } from "../api/friends";
 import { getCurrentUserInterests } from "../api/user";
-import { useAuth } from "../providers/AuthProvider";
 
 function Friends() {
     const alerts = useAlerts();
@@ -16,7 +15,6 @@ function Friends() {
     const [email, setEmail] = useState("");                 // Target of friend request
     const [requests, setRequests] = useState([]);           // Incoming friend requests
     const [userInterests, setUserInterests] = useState([]); // Interests of logged in user
-    const { user } = useAuth();
 
     async function handleSendRequest() {
         try {

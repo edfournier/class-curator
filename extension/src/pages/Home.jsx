@@ -108,7 +108,14 @@ function Home() {
                 <FormField value={formData.major} label="major" placeholder={"E.g. Computer Science"} onChange={handleFormChange} />
                 <FormField value={formData.minor} label="minor" placeholder={"E.g. Linguistics"} onChange={handleFormChange}/>
                 <FormField value={formData.year} label="year"  type={"number"} placeholder={"E.g. 2025"} onChange={handleFormChange}/>
-                <FormField value={formData.semester} label="semester" type={"text"} placeholder={"E.g. SPRING"} onChange={handleFormChange}/>
+                <div className="flex items-center space-x-4">
+                    <label htmlFor="semester" className="text-sm font-medium text-center w-20">Semester</label>
+                    <select value={formData.semester || ""} onChange={handleFormChange} className="w-full" id="semester" name="semester">
+                        <option value="" disabled></option>
+                        <option value="FALL">Fall</option>
+                        <option value="SPRING">Spring</option>
+                    </select>
+                </div>
                 <SubmitBox 
                     value={tag}
                     onChange={(e) => setTag(e.target.value)}
