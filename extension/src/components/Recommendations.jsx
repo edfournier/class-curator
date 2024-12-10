@@ -1,3 +1,4 @@
+// RecBubble component displays a course recommendation bubble with a tooltip explaining the reason for the recommendation.
 function RecBubble({ code, reason }) {
     return (
         <div className="px-3 py-1 text-black rounded-full bg-indigo-200 flex items-center space-x-2" title={reason}>
@@ -17,6 +18,8 @@ function Recommendations({ recs }) {
 
     // Flatten 2D array for rendering
     const flat = bubbles.flat();
+
+     // If no recommendations are available, display a fallback message
     if (flat.length == 0) {
         return <p className="mt-4 font-semibold text-indigo-200">We don't have enough info to recommend a course yet. Explore the app more and check back soon!</p>
     }
