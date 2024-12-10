@@ -27,17 +27,18 @@ getCourseResults.mockResolvedValue([
 ]);
 
 getCourseDetails.mockResolvedValue({
-    id: 1,
-    name: "Data Structures",
-    code: "CS121",
-    likes: 10,
+    details: {
+        id: 1,
+        name: "Data Structures",
+        code: "CS121",
+        description: "Learn about data organization, algorithms, and efficiency."
+    },
+    upvotes: 10,
     dislikes: 0,
-    description: "Learn about data organization, algorithms, and efficiency."
 });
 
 getCourseInsights.mockResolvedValue({
-    prof: "Cameron Musco", 
-    data: [{ semester: "FALL", year: 2019, helpfulness: 1.2, difficulty: 2.2 }]
+    ratingsHistory: [{ semester: "FALL", year: 2019, helpfulness: 1.2, difficulty: 2.2 }]
 });
 
 describe("Courses", () => {

@@ -62,7 +62,7 @@ describe("AuthProvider", () => {
     test("logs in successfully and navigates correctly with redirect", async () => {
         axios.get.mockResolvedValue({ data: { name: "John Doe", email: "john@example.com" } });
         chrome.identity.getAuthToken.mockResolvedValue({ token: "mockToken" });
-        chrome.storage.local.get.mockResolvedValue({ user: null, expiry: 0 });
+        chrome.storage.local.get.mockResolvedValue({ mockToken: { user: null, expiry: 0 } });
         chrome.storage.session.get.mockResolvedValue({ redirect: "/courses/123" });
 
         const button = screen.getByText("Login");
@@ -77,7 +77,7 @@ describe("AuthProvider", () => {
     test("logs in successfully and navigates correctly without redirect", async () => {
         axios.get.mockResolvedValue({ data: { name: "John Doe", email: "john@example.com" } });
         chrome.identity.getAuthToken.mockResolvedValue({ token: "mockToken" });
-        chrome.storage.local.get.mockResolvedValue({ user: true, expiry: Date.now() + 1 });
+        chrome.storage.local.get.mockResolvedValue({ mockToken: { user: true, expiry: Date.now() + 1 } });
         chrome.storage.session.get.mockResolvedValue({});
 
         const button = screen.getByText("Login");
@@ -88,7 +88,7 @@ describe("AuthProvider", () => {
     test("handles user info retrieval failure and shows error alert", async () => {
         const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
         chrome.identity.getAuthToken.mockResolvedValue({ token: "mockToken" });
-        chrome.storage.local.get.mockResolvedValue({ user: null, expiry: 0 });
+        chrome.storage.local.get.mockResolvedValue({ mockToken: { user: null, expiry: 0 } });
     
         axios.get.mockRejectedValue(new Error("Mock API error"));
 

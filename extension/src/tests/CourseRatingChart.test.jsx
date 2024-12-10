@@ -2,10 +2,10 @@ import { render, screen } from "@testing-library/react";
 import CourseRatingChart from "../components/CourseRatingChart";
 
 const mockData = [
-    { semester: "SPRING", year: 2022, helpfulness: 4.5, difficulty: 3.2 },
-    { semester: "FALL", year: 2021, helpfulness: 4.8, difficulty: 3.0 },
-    { semester: "SPRING", year: 2021, helpfulness: 4.1, difficulty: 2.8 },
-    { semester: "FALL", year: 2022, helpfulness: 4.8, difficulty: 3.0 },
+    { session: { semester: "SPRING", year: 2022 }, helpfulness: 4.5, difficulty: 3.2 },
+    { session: { semester: "FALL", year: 2021 }, helpfulness: 4.8, difficulty: 3.0 },
+    { session: { semester: "SPRING", year: 2021 }, helpfulness: 4.1, difficulty: 2.8 },
+    { session: { semester: "FALL", year: 2022 }, helpfulness: 4.8, difficulty: 3.0 },
 ];
 
 describe("CourseRatingChart", () => {
