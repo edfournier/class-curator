@@ -18,14 +18,12 @@ function Recommendations({ recs }) {
     // Flatten 2D array for rendering
     const flat = bubbles.flat();
     if (flat.length == 0) {
-        return <p className="mt-4">We don't have enough info to recommend a course yet. Explore the app more and check back soon!</p>
+        return <p className="mt-4 font-semibold text-indigo-200">We don't have enough info to recommend a course yet. Explore the app more and check back soon!</p>
     }
 
     return (
         <>  
-            <div className="flex justify-center">
-                <p className="mt-4">We think you'd love these courses! Hover to see why.</p>
-            </div>
+            <p className="mt-4 font-semibold text-indigo-200">We think you'd love these courses! Hover to see why.</p>
             <div className="flex justify-center flex-wrap gap-1 pt-2 mt-2">
                 {flat}
             </div>
