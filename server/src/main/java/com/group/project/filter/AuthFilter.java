@@ -63,12 +63,12 @@ public class AuthFilter extends OncePerRequestFilter {
 
         try {
             String token = authHeader.substring(7); // Omit "Bearer " from header value
-            Optional<Session> session = sessionRepository.findByToken(token);
+            Session session = sessionRepository.findByToken(token).orElse(null);
             User user = null;
 
             // use cached session is valid, else create user and session
-            if (session.isPresent() && (new Date()).before(session.get().getExpires_at())) {
-                user = session.get().getUser();
+            if (session != null && (new Date()).before(session.getExpires_at())) {
+                user = session.getUser();
             } else {
                 user = createUserAndRefreshSession(token);
             }
@@ -82,16 +82,14 @@ public class AuthFilter extends OncePerRequestFilter {
     }
 
     private User createUserAndRefreshSession(String token) throws IOException, ParseException, Exception {
-        User user = null;
         JsonNode userInfo = getUserInfo(token);
         String email = userInfo.get("email").asText();
         String name = userInfo.get("name").asText();
 
         // Check if user exists in DB, else create new user
-        Optional<User> userQueryResult = userRepository.findByUsername(email);
-        if (userQueryResult.isPresent()) {
-            user = userQueryResult.get();
-        } else {
+        User user = userRepository.findByUsername(email).orElse(null);
+        
+        if (user == null) {
             // TODO: Can check if user is Umass student
             String displayName = name;
             int defaultGradYear = Year.now().getValue() + 4;
@@ -103,10 +101,11 @@ public class AuthFilter extends OncePerRequestFilter {
         // Remove any pre-existing sessions
         sessionRepository.removeByUser(user);
 
-        Session session = new Session(token, user, new Date(new Date().getTime() + 1)); // Default token expiry is 1
-                                                                                        // hour
-        session = sessionRepository.save(session);
-
+        // Default token expiry is 1 hour
+        Session session = new Session(token, user, new Date(new Date().getTime() + 1 * 3600 * 1000));
+        
+        // 'Cache' session
+        sessionRepository.save(session);
         return user;
     }
 

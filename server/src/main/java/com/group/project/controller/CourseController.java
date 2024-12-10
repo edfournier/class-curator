@@ -152,8 +152,12 @@ public class CourseController {
             // Get currentUser's interest in course
             boolean interested = userInterestRepository.findByUserAndCourse(currentUser, course).isPresent();
 
-            return ResponseEntity
-                    .ok(new PrivateCourseDetails(course, upvotes, downvotes, user_rating_value, interested));
+            try {
+                return ResponseEntity
+                        .ok(new PrivateCourseDetails(course, upvotes, downvotes, user_rating_value, interested));
+            } catch (Exception e) {
+                return ResponseEntity.internalServerError().build();
+            }
         }
 
         @PutMapping("/{courseCode}/interest")
@@ -220,21 +224,20 @@ public class CourseController {
 
         @GetMapping("/recommendations")
         public ResponseEntity<Object> getRecommendation(@RequestAttribute User currentUser) {
-            HttpRequest request = HttpRequest.newBuilder()
+            // Fetch recommendations based off user tags from inference server
+            List<Course> tagRecs = List.of();
+            try {
+                HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create("http://localhost:8000/recommend/" + currentUser.getId()))
                     .method("GET", HttpRequest.BodyPublishers.noBody())
                     .build();
 
-            // Fetch recommendations based off user tags from inference server
-            String rawTagRecsResponseString = "";
-            try {
                 HttpResponse<String> response = HttpClient.newHttpClient().send(request,
                         HttpResponse.BodyHandlers.ofString());
-                // Handle non-200s
-                rawTagRecsResponseString = response.body();
-            } catch (IOException | InterruptedException e) {
-                rawTagRecsResponseString = "";
-            }
+
+                tagRecs = RecommendationUtils.getCoursesFromTagRecommendationsResponse(courseRepository,
+                        response.body());
+            } catch (IOException | InterruptedException e) {}
 
             // Get currentUsers' friends
             List<User> friends = PeopleUtils.getAllFriends(friendshipRepository, currentUser);
@@ -249,7 +252,7 @@ public class CourseController {
             courseInterestCounts = RecommendationUtils.getCourseInterestCountsForUsers(userInterestRepository, peers);
             List<Map.Entry<Course, Integer>> peerRecs = RecommendationUtils.getSortedList(courseInterestCounts, 5);
 
-            Recommendations recs = new Recommendations(rawTagRecsResponseString, friendRecs, peerRecs);
+            Recommendations recs = new Recommendations(tagRecs, friendRecs, peerRecs);
             return ResponseEntity.ok(recs);
         }
 

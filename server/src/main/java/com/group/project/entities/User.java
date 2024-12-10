@@ -41,10 +41,16 @@ public class User {
         this.display_name = display_name;
         this.gradSession = gradSession;
         this.major = major;
+        this.minor = "";
+        this.tags = "";
     }
 
     public Long getId() {
         return id;
+    }
+
+    public void _setId(long id) {
+        this.id = id;
     }
 
     public String getUsername() {

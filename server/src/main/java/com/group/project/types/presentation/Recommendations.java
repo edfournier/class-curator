@@ -4,64 +4,36 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.group.project.entities.Course;
-import com.group.project.repositories.CourseRepository;
 
 public class Recommendations {
     final public List<Recommendation> tags;
-    final public List<PopularRecommendation> friends;
-    final public List<PopularRecommendation> peers;
+    final public List<NetworkRecommendation> friends;
+    final public List<NetworkRecommendation> peers;
 
-    @Autowired
-    CourseRepository courseRepository;
-
-    public Recommendations(String rawTagRecServerResponse, List<Map.Entry<Course, Integer>> friendsRecs,
-            List<Map.Entry<Course, Integer>> peersRecs) {
-        List<String> tags = List.of();
-        try {
-            ObjectMapper mapper = new ObjectMapper();
-            TagRecommendations tagsRecs = mapper.readValue(rawTagRecServerResponse, TagRecommendations.class);
-            tags = tagsRecs.recommended_courses;
-        } catch (JsonProcessingException e) {
-            System.out.println("Error parsing tags rec string");
-        }
-
-        this.tags = tags.stream()
-                .flatMap(tag -> Stream.of(new Recommendation(courseRepository.findByCode(tag).orElse(null)))).toList();
-        this.friends = friendsRecs.stream()
-                .flatMap(friendsRec -> Stream.of(new PopularRecommendation(friendsRec.getKey(), friendsRec.getValue())))
-                .toList();
-        this.peers = peersRecs.stream()
-                .flatMap(peersRec -> Stream.of(new PopularRecommendation(peersRec.getKey(), peersRec.getValue())))
-                .toList();
+    public Recommendations(List<Course> tagRecs, List<Map.Entry<Course, Integer>> friendRecs,
+            List<Map.Entry<Course, Integer>> peerRecs) {
+        this.tags = packRecs(tagRecs);
+        this.friends = packNetworkRecs(friendRecs);
+        this.peers = packNetworkRecs(peerRecs);
     }
 
-    public static class TagRecommendations {
-        private List<String> recommended_courses;
-
-        public TagRecommendations() {}
-
-        public TagRecommendations(List<String> recommended_courses) {
-            this.recommended_courses = recommended_courses;
-        }
-
-        public List<String> getRecommended_courses() {
-            return recommended_courses;
-        }
-
-        public void setRecommended_courses(List<String> recommended_courses) {
-            this.recommended_courses = recommended_courses;
-        }
+    List<NetworkRecommendation> packNetworkRecs(List<Map.Entry<Course, Integer>> recs) {
+        return recs.stream()
+        .flatMap(rec -> Stream.of(new NetworkRecommendation(rec.getKey(), rec.getValue())))
+        .toList();
     }
 
-    class PopularRecommendation extends Recommendation {
+    List<Recommendation> packRecs(List<Course> recs) {
+        return recs.stream()
+        .flatMap(rec -> Stream.of(new Recommendation(rec)))
+        .toList();
+    }
+
+    class NetworkRecommendation extends Recommendation {
         public int networkCount;
 
-        public PopularRecommendation(Course course, int networkCount) {
+        public NetworkRecommendation(Course course, int networkCount) {
             super(course);
             this.networkCount = networkCount;
         }

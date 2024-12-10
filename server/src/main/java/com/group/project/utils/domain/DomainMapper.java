@@ -2,7 +2,7 @@ package com.group.project.utils.domain;
 
 import java.util.List;
 
-public class DomainMapper {
+public interface DomainMapper {
     static public int UPVOTE = 1;
     static public int DOWNVOTE = -1;
     static public int BLANK_VOTE = 0;
