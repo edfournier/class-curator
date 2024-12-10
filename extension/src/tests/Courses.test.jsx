@@ -51,7 +51,7 @@ describe("Courses", () => {
     });
 
     test("shows course details and closes on close button click", async () => {
-        const searchInput = screen.getByPlaceholderText("Search a course by code or name...");
+        const searchInput = screen.getByPlaceholderText("Search a course by code...");
         fireEvent.change(searchInput, { target: { value: "CS" } });
 
         // Fuzzy search should work
@@ -74,7 +74,7 @@ describe("Courses", () => {
         const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
         getCourseResults.mockRejectedValue(new Error("Mock error"));
 
-        const searchInput = screen.getByPlaceholderText("Search a course by code or name...");
+        const searchInput = screen.getByPlaceholderText("Search a course by code...");
         fireEvent.change(searchInput, { target: { value: "CS" } });
         
         // Check the error handler was hit

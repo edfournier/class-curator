@@ -44,7 +44,7 @@ function Courses() {
                 onChange={(e) => setQuery(e.target.value)}
                 onClick={search}
                 icon={<FaSearch />}
-                hint={"Search a course by code or name..."}
+                hint={"Search a course by code..."}
             />
             {results && (course 
                 // Either render the search results or the selected course's page
