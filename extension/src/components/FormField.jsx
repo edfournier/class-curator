@@ -1,3 +1,6 @@
+// FormField is a reusable form input component.
+// It renders a labeled input field with customizable attributes for value, type, placeholder, and change handler.
+
 function FormField({ value, label, type="text", placeholder, onChange }) {
     return (
         <div className="flex items-center space-x-4">
