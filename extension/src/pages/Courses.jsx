@@ -57,7 +57,6 @@ function Courses() {
                     <PagableList 
                         entries={results}
                         onClick={setCourse}
-                        emptyMessage={"No matching results found!"}
                         mainKey={"name"}
                         subKey={"code"}
                     />

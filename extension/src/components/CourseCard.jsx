@@ -96,9 +96,9 @@ function CourseCard({ course, onClose }) {
             <h2 className="mb-3 mt-2">Historical Data</h2>
             <CourseRatingChart data={insights.ratingHistory} /> 
 
-            <h2 className="mb-3 mt-2">Professor Rankings</h2>
-            <h1>(Ratings are out of 10 to reward those with consistently high scores across multiple sessions.)</h1>
-            <ul>
+            <h2 className="mt-2">Professor Rankings</h2>
+            <em className="mt-1">(Ratings out of 10, reward those with consistently high scores across multiple sessions)</em>
+            <ul className="mt-1">
                 {insights.profRatings && Object.keys(insights.profRatings).length > 0
                     ? Object.keys(insights.profRatings).map(prof => {
                         const quality = insights.profRatings[prof];

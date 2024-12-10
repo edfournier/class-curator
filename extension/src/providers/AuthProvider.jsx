@@ -20,7 +20,6 @@ function AuthProvider({ children }) {
     async function login(details) {
         // Retrieve token from Chrome's cache
         const { token }  = await chrome.identity.getAuthToken(details); 
-        console.log(token);
 
         try {
             // Check cache first for user details

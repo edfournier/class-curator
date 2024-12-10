@@ -76,7 +76,6 @@ function Friends() {
                 );
                 setFriends(friends);
                 setRequests(requests);
-                console.log(requests);
                 setUserInterests(userInterests);
             }
             catch (err) {

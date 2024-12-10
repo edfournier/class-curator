@@ -17,7 +17,7 @@ function Login() {
         }
         catch (err) {
             // Triggers if auto-login fails (i.e. new user) or user doesn't approve access
-            console.error(err); 
+            console.log(err); 
         }
         finally {
             setLoading(false)
