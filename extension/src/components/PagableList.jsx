@@ -17,12 +17,12 @@ function PagableList({ entries, onClick, mainKey, subKey, emptyMessage }) {
             <ul className="space-y-1">
                 {entries.slice(first, last).map((entry) => (
                     <li
-                        key={entry[mainKey]}
+                        key={entry[subKey]}
                         className="flex items-center justify-between p-3 border border-gray-700 hover:bg-gray-700 rounded-lg cursor-pointer"
                         onClick={() => onClick(entry)}
                     >
-                        <span className="text-sm font-medium">{entry[mainKey]}</span>
-                        <span className="text-xs text-gray-400">{entry[subKey]}</span>
+                        <span className="text-sm font-medium mr-1">{entry[mainKey]}</span>
+                        <span className="text-xs text-gray-400 text-right">{entry[subKey]}</span>
                     </li>
                 ))}
             </ul>

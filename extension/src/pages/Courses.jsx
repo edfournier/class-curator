@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FaSearch } from "react-icons/fa"; 
 import { useLocation } from "react-router-dom";
 import { getCourseResults } from "../api/courses";
@@ -10,10 +10,18 @@ import { useAlerts } from "../providers/AlertProvider";
 function Courses() {
     const alerts = useAlerts();
     const location = useLocation();
-    const redirect = location?.state?.course;           // Handle case popup was opened from SPIRE
-    const [course, setCourse] = useState(null);         // Details and insights of the course being shown in card view
-    const [results, setResults] = useState(null);       // Search results from given query
-    const [query, setQuery] = useState(redirect || ""); 
+    const [course, setCourse] = useState(null);    // Details and insights of the course being shown in card view
+    const [results, setResults] = useState(null);  // Search results from given query
+    const [query, setQuery] = useState(""); 
+
+    // Handle case popup was opened from SPIRE
+    const redirect = location?.state?.course;           
+    if (redirect) {
+        location.state.course = null;
+        setCourse(redirect);
+        setQuery(redirect.code);
+        setResults([redirect]);
+    }
 
     async function search() {
         try {
@@ -44,13 +52,18 @@ function Courses() {
                     course={course}  
                     onClose={() => setCourse(null)}
                 />
-                : <PagableList 
-                    entries={results}
-                    onClick={setCourse}
-                    emptyMessage={"No matching results found!"}
-                    mainKey={"name"}
-                    subKey={"code"}
-                />
+                : (<>
+                    <p className={"text-indigo-200 font-semibold mb-2"}>Found {results.length} results!</p>
+                    <PagableList 
+                        entries={results}
+                        onClick={setCourse}
+                        emptyMessage={"No matching results found!"}
+                        mainKey={"name"}
+                        subKey={"code"}
+                    />
+                </>
+
+                )
             )}
         </>
     );

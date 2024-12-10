@@ -9,7 +9,7 @@ function createExtensionButton(course) {
         event.preventDefault();
 
         // Tell background script to open popup with this course
-        chrome.runtime.sendMessage({ type: "open-popup", course: course.title });
+        chrome.runtime.sendMessage({ type: "open-popup", course: { code: course.code, name: course.name }});
     });
     return button;
 }
@@ -50,8 +50,8 @@ async function embed() {
         const results = first.parentElement;
         results.childNodes.forEach((result) => 
             courses.push({ 
-                // Parse course title, removing excess whitespace
-                title: result.querySelector("p[hidden]").textContent.trim().replace(/\s+/g, ' '), 
+                // Parse course code, removing excess whitespace
+                code: result.querySelector("p[hidden]").textContent.trim().replace(/\s+/g, ' '), 
                 element: result.querySelector(".ps-link")
             })
         );
@@ -59,15 +59,19 @@ async function embed() {
 
     try {
         // Fetch upvotes/downvotes for each course
-        const query = courses.map(course => course.title).join(",");
+        const query = courses.map(course => course.code).join(",");
         const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/course/${query}`);
         const courseDetails = res.data;
 
         // Merge fetched data with parsed data
         const merged = courses.map(course => {
-            const courseDetail = courseDetails.find(detail => detail.course.code === course.title);
+            const courseDetail = courseDetails.find(detail => {
+                // Sanitize inputs
+                return detail.course.code.replace(/\s+/g, '') === course.code.replace(/\s+/g, '');
+            });
             return {
                 ...course,
+                name: courseDetail ? courseDetail.course.name : "Unknown Course", // It's possible our data is fully updated
                 upvotes: courseDetail ? courseDetail.upvotes : 0,
                 downvotes: courseDetail ? courseDetail.downvotes : 0
             };
