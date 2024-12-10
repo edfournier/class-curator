@@ -21,11 +21,15 @@ describe("Login Component", () => {
 
 	test("calls handleLogin on component mount for auto-login", async () => {
         render(<Login />);
+
+        // Should do auto-login
 		await waitFor(() => expect(mockLogin).toHaveBeenCalledWith({ interactive: false }));
 	});
 
 	test("calls handleLogin when login button is clicked", async () => {
         render(<Login />);
+
+        // Should attempt consent flow when clciekd
 		await waitFor(() => expect(screen.getByText("Login with Google")).toBeInTheDocument());
         await waitFor(() => fireEvent.click(screen.getByText("Login with Google")))
 		expect(mockLogin).toHaveBeenCalledWith({ interactive: true });
@@ -36,6 +40,7 @@ describe("Login Component", () => {
         mockLogin.mockRejectedValueOnce(new Error("Auto-login failed"));
         render(<Login />);
 
+        // Expect error handler to be called when user didn't accept or hasn't accepted OAuth
         await waitFor(() => expect(mockLogin).toHaveBeenCalledWith({ interactive: false }));
         expect(consoleSpy).toHaveBeenCalledWith(new Error("Auto-login failed"));
         consoleSpy.mockRestore(); 

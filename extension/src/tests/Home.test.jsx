@@ -46,6 +46,8 @@ describe("Home", () => {
     test("shows error when failing to load user details", async () => {
         getUserDetails.mockRejectedValue(new Error("Mock failure"));
         render(<Home />);
+
+        // Expect error handler to be called on server failure
         await waitFor(() => expect(mockAlerts.error).toHaveBeenCalled());
     });
 
@@ -79,6 +81,7 @@ describe("Home", () => {
         fireEvent.click(addButton);
         expect(screen.getByText("Machine Learning")).toBeInTheDocument();
 
+        // Alerts that dupe tags aren't allowed
         fireEvent.change(input, { target: { value: "Machine Learning" } });
         fireEvent.click(addButton);
         expect(mockAlerts.error).toHaveBeenCalled();
@@ -106,6 +109,8 @@ describe("Home", () => {
             tags: "",
         });
         render(<Home />);
+
+        // Alerts that no tags aren't allowed
         await waitFor(() => expect(mockAlerts.error).toHaveBeenCalledTimes(0));
     });
 
@@ -125,7 +130,8 @@ describe("Home", () => {
         const input = screen.getByPlaceholderText("Enter a tag describing your interests...");
         fireEvent.change(input, { target: { value: "New Tag" } });
         fireEvent.click(screen.getByLabelText("add-tag"));
-        
+
+        // Error handler should have fired
         const submitButton = screen.getByText("Save Changes");
         fireEvent.click(submitButton);
         await waitFor(() => expect(mockAlerts.error).toHaveBeenCalled());
@@ -140,6 +146,7 @@ describe("Home", () => {
         fireEvent.change(input, { target: { value: "New Tag" } });
         fireEvent.click(screen.getByLabelText("add-tag"));
         
+        // Error handler should have fired
         const submitButton = screen.getByText("Save Changes");
         fireEvent.click(submitButton);
         await waitFor(() => expect(mockAlerts.error).toHaveBeenCalled());
@@ -158,6 +165,7 @@ describe("Home", () => {
         getRecommendations.mockRejectedValue(new Error("Mock failure"));
         render(<Home />);
 
+        // Error handler should have fired
         const button = screen.getByText("Get Recommendations!");
         fireEvent.click(button);
         await waitFor(() => expect(mockAlerts.error).toHaveBeenCalled());

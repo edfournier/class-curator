@@ -23,6 +23,8 @@ describe("Navbar Component", () => {
 
     test("renders user profile picture", () => {
         render(<MemoryRouter><Navbar /></MemoryRouter>);
+
+        // Renders rrofile picture from useAuth
         const profileImg = screen.getByAltText("Profile");
         expect(profileImg).toBeInTheDocument();
         expect(profileImg).toHaveAttribute("src", "https://via.placeholder.com/150");
@@ -31,6 +33,8 @@ describe("Navbar Component", () => {
     test("applies correct classes to active link", () => {
         render(<MemoryRouter><Navbar /></MemoryRouter>);
         const homeLink = screen.getByText("Home");
+
+        // Active link should be highlighted
         expect(homeLink).toHaveClass("text-lg transition-colors pb-2 hover:text-indigo-500");
     });
 
@@ -40,6 +44,8 @@ describe("Navbar Component", () => {
                 <Navbar />
             </MemoryRouter>
         );
+
+        // Inactive link have no styles
         const homeLink = screen.getByText("Home");
         expect(homeLink).toHaveClass("hover:text-indigo-500");
     });

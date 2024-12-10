@@ -52,6 +52,7 @@ describe("FriendCard", () => {
             />
         );
 
+        // Check for common interests highlighting
         await waitFor(() => screen.getByText("Marius Class"));
         expect(screen.getByText("Marius Class")).toHaveClass("text-indigo-500");
         expect(screen.getByText("Joe's Class")).toHaveClass("text-indigo-200");
@@ -70,6 +71,7 @@ describe("FriendCard", () => {
             />
         );
 
+        // Error handler should be called on server failure
         await waitFor(() => expect(mockAlerts.error).toHaveBeenCalled());
         consoleErrorSpy.mockRestore();
     });
