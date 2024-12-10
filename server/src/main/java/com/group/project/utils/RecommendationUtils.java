@@ -40,13 +40,11 @@ public class RecommendationUtils {
 
         try {
             // Deserialize JSON string
-            System.out.println("Tag Recs: ");
             TagRecommendations tagRecs = mapper.readValue(rawTagRecServerResponse, TagRecommendations.class);
             courseCodes = tagRecs.recommended_courses;
         } catch (JsonProcessingException e) {
             System.out.println("Error: " + e.getMessage()); 
         }
-        System.out.println("Course Codes: " + courseCodes);
         return courseCodes.stream()
                 .flatMap(tag -> Stream.of(courseRepository.findByCode(tag).orElse(null))).toList();
     }
