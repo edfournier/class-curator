@@ -10,7 +10,7 @@ app = FastAPI()
 con = sqlite3.connect('../server/class_c.db', check_same_thread=False)
 cursor = con.cursor()
 
-# Initialize the model for sentence embeddings
+# Initialize the model for sentence embeddings. miniLM - Sentence-transformer model for semantic search and checking sentence similarity.
 model = SentenceTransformer('all-MiniLM-L6-v2')
 
 # Load course data
