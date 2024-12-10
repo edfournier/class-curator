@@ -2,13 +2,12 @@ from fastapi import FastAPI, HTTPException
 from typing import List, Dict
 from sentence_transformers import SentenceTransformer, util
 import sqlite3
-import json
 
 
 app = FastAPI()
 
 # Open connection to database
-con = sqlite3.connect('../server/class_c.db')
+con = sqlite3.connect('../server/class_c.db', check_same_thread=False)
 cursor = con.cursor()
 
 # Initialize the model for sentence embeddings
@@ -41,10 +40,11 @@ def recommend_courses(input_tags: List[str], courses: List[Dict]) -> List[str]:
     return [course_dict[recommendation] for recommendation in recommendations][:5]
 
 @app.get("/recommend/{user_id}")
-def get_recommendations():
-    query = "SELECT * FROM USER WHERE ID = {user_id};"
+async def get_recommendations(user_id):
+    query = f"SELECT * FROM USER WHERE ID = {user_id};"
     user = cursor.execute(query).fetchone()
     tags = user[7]
+    print(tags)
     recommendations = recommend_courses(tags, courses)
     return {"recommended_courses": recommendations}
 

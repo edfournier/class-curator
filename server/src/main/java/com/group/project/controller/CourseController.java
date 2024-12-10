@@ -149,7 +149,11 @@ public class CourseController {
                 user_rating_value = userRating.getRating();
             }
 
-            return ResponseEntity.ok(new PrivateCourseDetails(course, upvotes, downvotes, user_rating_value));
+            // Get currentUser's interest in course
+            boolean interested = userInterestRepository.findByUserAndCourse(currentUser, course).isPresent();
+
+            return ResponseEntity
+                    .ok(new PrivateCourseDetails(course, upvotes, downvotes, user_rating_value, interested));
         }
 
         @PutMapping("/{courseCode}/interest")
