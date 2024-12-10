@@ -38,7 +38,7 @@ function Friends() {
     async function handleDecideRequest(isAccepted) {
         try {
             // Notify backend of accept/deny
-            await postRequestDecision(isAccepted);
+            await postRequestDecision(friend.id, isAccepted);
             if (isAccepted) {
                 alerts.info(`Added ${requests[0].email}!`);
             }
@@ -55,7 +55,7 @@ function Friends() {
     async function handleUnfriend() {
         try {
             // Notify backend to unfriend
-            await deleteFriend(friend.email);
+            await deleteFriend(friend.id);
             setFriends(friends.filter(({ email }) => email !== friend.email));
             setFriend(null);
             alerts.info(`Unfriended ${friend.email}!`);

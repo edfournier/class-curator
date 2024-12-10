@@ -10,7 +10,7 @@ function FriendCard({ friend, userInterests, onClose, onUnfriend }) {
     useEffect(() => {
         async function load() {
             try {
-                const friendInterests = await getUserInterests(friend.email);
+                const friendInterests = await getUserInterests(friend.id);
 
                 // Find intersection of logged-in user and this friend's interests
                 for (const interest of friendInterests) {
