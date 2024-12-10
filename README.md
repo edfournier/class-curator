@@ -21,19 +21,19 @@ Perform each of the following starting the the project root:
 
 1. **Populate the Database**
 ```bash
-python3 ./setup/db_populate.py
+python3 ./db-setup/db_populate.py
 ```
 
 2. **Start the FAST API recommendation service**
 ```bash
-cd ./inference
+cd ./fast-api
 pip install -r requirements.txt
 fastapi run recommendations.py
 ```
 
 2. **Start the Spring Boot backend**
 ```bash
-cd ./server
+cd ./spring-boot
 mvn clean install
 mvn spring-boot:run
 ```

@@ -4,10 +4,10 @@ from utils.sqlite3_ops import construct_query_with_values, open_db_connection, p
 
 ## file paths
 RELATIVE_PATH = '.' # NOTE: Change this 
-DB_PATH = f'{RELATIVE_PATH}/server/class_c.db'
-SETUP_FOLDER_PATH = f'{RELATIVE_PATH}/setup'
-COURSE_PATH = f'{SETUP_FOLDER_PATH}/rmp/courses.json'
-RATINGS_PATH = f'{SETUP_FOLDER_PATH}/rmp/ratings.csv'
+DB_PATH = f'{RELATIVE_PATH}/spring-boot/class_c.db'
+SETUP_FOLDER_PATH = f'{RELATIVE_PATH}/db-setup'
+COURSE_PATH = f'{SETUP_FOLDER_PATH}/scrape/courses.json'
+RATINGS_PATH = f'{SETUP_FOLDER_PATH}/scrape/ratings.csv'
 SETUP_QUERIES_PATH = f'{SETUP_FOLDER_PATH}/queries/setup.json'
 MANAGE_CLASSES_QUERIES_PATH = f'{SETUP_FOLDER_PATH}/queries/manage_classes.json'
 MANAGE_RATINGS_QUERIES_PATH = f'{SETUP_FOLDER_PATH}/queries/manage_ratings.json'
