@@ -40,18 +40,33 @@ public class RecommendationUtils {
 
         try {
             // Deserialize JSON string
+            System.out.println("Tag Recs: ");
             TagRecommendations tagRecs = mapper.readValue(rawTagRecServerResponse, TagRecommendations.class);
             courseCodes = tagRecs.recommended_courses;
-        } catch (JsonProcessingException e) {}
-
+        } catch (JsonProcessingException e) {
+            System.out.println("Error: " + e.getMessage()); 
+        }
+        System.out.println("Course Codes: " + courseCodes);
         return courseCodes.stream()
                 .flatMap(tag -> Stream.of(courseRepository.findByCode(tag).orElse(null))).toList();
     }
 
-    class TagRecommendations {
+
+    // Leave this class as a static inner class with the setters and getters.
+    public static class TagRecommendations {
         List<String> recommended_courses;
 
+        public TagRecommendations() {}
+
         public TagRecommendations(List<String> recommended_courses) {
+            this.recommended_courses = recommended_courses;
+        }
+
+        public List<String> getRecommended_courses() {
+            return recommended_courses;
+        }
+    
+        public void setRecommended_courses(List<String> recommended_courses) {
             this.recommended_courses = recommended_courses;
         }
     }

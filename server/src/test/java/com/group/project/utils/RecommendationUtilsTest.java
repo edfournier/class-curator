@@ -111,10 +111,9 @@ public class RecommendationUtilsTest {
     void tagRecommendationsCheck() {
         // Setup
         List<String> courseCodes = List.of("code1", "code2");
-        RecommendationUtils recUtils = new RecommendationUtils();
         
         // Act
-        TagRecommendations tagRecs = recUtils.new TagRecommendations(courseCodes);
+        TagRecommendations tagRecs = new RecommendationUtils.TagRecommendations(courseCodes);
 
         // Assert
         assertThat(tagRecs.recommended_courses).containsAll(courseCodes);
