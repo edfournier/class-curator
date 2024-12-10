@@ -1,18 +1,17 @@
 function RecBubble({ code, reason }) {
     return (
-        <div key={code} className="px-3 py-1 text-black rounded-full bg-indigo-200 flex items-center space-x-2" title={reason}>
+        <div className="px-3 py-1 text-black rounded-full bg-indigo-200 flex items-center space-x-2" title={reason}>
             <span className="text-sm">{code}</span>
         </div>
     );
-
 }
 
 function Recommendations({ recs }) {   
     // Map courses to bubbles, each with customized tool tip
     const bubbles = [
-        recs.friends.map(entry => <RecBubble code={entry.course.code} reason={`Based on ${entry.networkCount} friends!`}/>),
-        recs.tags.map(entry => <RecBubble code={entry.course.code} reason={`Based on your interests!`}/>),
-        recs.peers.map(entry => <RecBubble code={entry.course.code} reason={`Based on ${entry.networkCount} similar peers!`}/>)
+        recs.friends.map(entry => <RecBubble key={entry.course.code} code={entry.course.code} reason={`Based on ${entry.networkCount} friends!`}/>),
+        recs.tags.map(entry => <RecBubble key={entry.course.code} code={entry.course.code} reason={`Based on your tags!`}/>),
+        recs.peers.map(entry => <RecBubble key={entry.course.code} code={entry.course.code} reason={`Based on ${entry.networkCount} similar peers!`}/>)
     ];
 
     // Flatten 2D array for rendering
@@ -24,8 +23,8 @@ function Recommendations({ recs }) {
     return (
         <>
             <p className="mt-4">We think you'd love these courses! Hover to see why.</p>
-            <div className="flex flex-wrap gap-1 pt-2 pb-2">
-                {bubbles}
+            <div className="flex flex-wrap gap-1 pt-2 mt-2">
+                {flat}
             </div>
         </>
     );

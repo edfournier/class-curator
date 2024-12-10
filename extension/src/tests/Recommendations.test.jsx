@@ -29,7 +29,7 @@ describe("Recommendations Component", () => {
         expect(cs101Bubble).toHaveAttribute('title', 'Based on 3 friends!');
         
         const cs201Bubble = screen.getByText('CS201').closest('div');
-        expect(cs201Bubble).toHaveAttribute('title', 'Based on your interests!');
+        expect(cs201Bubble).toHaveAttribute('title', 'Based on your tags!');
         
         const cs301Bubble = screen.getByText('CS301').closest('div');
         expect(cs301Bubble).toHaveAttribute('title', 'Based on 5 similar peers!');
