@@ -91,6 +91,7 @@ function Friends() {
         <>
             <h1>Friend Requests</h1>
             <SubmitBox 
+                label={"send"}
                 value={email} 
                 onChange={(e) => setEmail(e.target.value)} 
                 onClick={handleSendRequest} 
@@ -103,10 +104,12 @@ function Friends() {
                         <span className="text-sm font-medium">{requests[0].username}</span>
                         <div className="flex space-x-3">
                             <FaCheck
+                                aria-label="accept"
                                 className="text-green-500 cursor-pointer hover:text-green-600"
                                 onClick={() => handleDecideRequest(true)}
                             />
                             <FaTimes
+                                aria-label="deny"
                                 className="text-red-500 cursor-pointer hover:text-red-600"
                                 onClick={() => handleDecideRequest(false)}
                             />
