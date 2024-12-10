@@ -7,7 +7,7 @@ import com.group.project.entities.Friendship;
 import com.group.project.entities.User;
 import com.group.project.repositories.FriendshipRepository;
 
-public class PeopleUtils {
+public interface PeopleUtils {
     public static List<User> getAllFriends(FriendshipRepository friendshipRepository, User user) {
         // Friendships are a undirected graph, so need two queries to get full list
         List<Friendship> leftHalf = friendshipRepository.findByUser1(user);

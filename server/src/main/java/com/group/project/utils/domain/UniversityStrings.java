@@ -3,7 +3,7 @@ package com.group.project.utils.domain;
 import java.util.Arrays;
 import java.util.List;
 
-public class UniversityStrings {
+public interface UniversityStrings {
 
     public static String standardizeCourseCode(String candidate) {
         // Standardizing course_code_query to match "ABC 123X" format
@@ -14,7 +14,9 @@ public class UniversityStrings {
             if (Character.isDigit(candidate.charAt(idx)))
                 break;
         }
-        candidate = candidate.substring(0, idx) + " " + candidate.substring(idx);
+
+        if (idx != candidate.length())
+            candidate = candidate.substring(0, idx) + " " + candidate.substring(idx);
         return candidate;
     }
 

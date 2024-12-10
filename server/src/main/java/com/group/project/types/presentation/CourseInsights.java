@@ -53,7 +53,7 @@ public class CourseInsights {
                     profRatings.put(prof, weightedScore);
                 } else {
                     // Damped aggregate score
-                    profRatings.put(prof, profRatings.get(prof) / 0.5f + weightedScore);
+                    profRatings.put(prof, profRatings.get(prof) / 2 + weightedScore);
                 }
             });
 

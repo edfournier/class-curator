@@ -119,7 +119,13 @@ public class FriendController {
         }
 
         // Create friend request
-        FriendRequest friendRequest = new FriendRequest(currentUser, targetUser);
+        FriendRequest friendRequest;
+        try {
+            friendRequest = new FriendRequest(currentUser, targetUser);
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body(e.getMessage());
+        }
+
         friendRequestRepository.save(friendRequest);
         return ResponseEntity.ok().build();
     }

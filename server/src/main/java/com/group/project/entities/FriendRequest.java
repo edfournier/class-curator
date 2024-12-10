@@ -1,7 +1,5 @@
 package com.group.project.entities;
 
-import java.util.Date;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -23,15 +21,13 @@ public class FriendRequest {
     @JoinColumn(name = "receiver_id", referencedColumnName = "id")
     private User receiver;
 
-    private Date created_at;
-
     public FriendRequest() {
     }
 
-    public FriendRequest(User sender, User receiver) {
+    public FriendRequest(User sender, User receiver) throws Exception {
+        if (sender.equals(receiver)) throw new Exception("Cannot send friend request to self");
         this.sender = sender;
         this.receiver = receiver;
-        this.created_at = new Date();
     }
 
     public User getSender() {
@@ -40,9 +36,5 @@ public class FriendRequest {
 
     public User getReceiver() {
         return receiver;
-    }
-
-    public Date getCreated_at() {
-        return created_at;
     }
 }

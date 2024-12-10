@@ -1,5 +1,7 @@
 package com.group.project.entities;
 
+import com.group.project.utils.domain.UniversityStrings;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -24,7 +26,7 @@ public class Course {
     }
 
     public Course(String code, String name, String subject, String description) {
-        this.code = code;
+        this.code = UniversityStrings.standardizeCourseCode(code);
         this.name = name;
         this.subject = subject;
         this.description = description;

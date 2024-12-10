@@ -32,8 +32,7 @@ public class AggrRating {
         this.rate_rmp_difficulty = -1.0f;
     }
 
-    public AggrRating(UniClass uniClass, float rate_user_avg, float rate_rmp_helpfulness,
-            float rate_rmp_difficulty) {
+    public AggrRating(UniClass uniClass, float rate_rmp_helpfulness, float rate_rmp_difficulty) {
         this.uniClass = uniClass;
         this.course = uniClass.getCourse();
         this.rate_rmp_helpfulness = rate_rmp_helpfulness;

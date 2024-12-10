@@ -1,7 +1,5 @@
 package com.group.project.entities;
 
-import java.util.Date;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -23,8 +21,6 @@ public class Friendship {
     @JoinColumn(name = "user_2_id", referencedColumnName = "id")
     private User user2;
 
-    private Date created_at;
-
     public Friendship() {
     }
 
@@ -38,7 +34,6 @@ public class Friendship {
 
         this.user1 = user1;
         this.user2 = user2;
-        this.created_at = new Date();
     }
 
     public User getUser1() {
@@ -47,9 +42,5 @@ public class Friendship {
 
     public User getUser2() {
         return user2;
-    }
-
-    public Date getCreated_at() {
-        return created_at;
     }
 }
