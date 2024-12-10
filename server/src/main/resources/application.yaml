@@ -15,6 +15,6 @@ spring:
 domain:
   defaults:
     user:
-      grad_session:
+      gradSession:
         semester: SPRING
       major: Computer Science

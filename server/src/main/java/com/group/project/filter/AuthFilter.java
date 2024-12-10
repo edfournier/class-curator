@@ -45,7 +45,7 @@ public class AuthFilter extends OncePerRequestFilter {
     @Value("${domain.defaults.user.major}")
     private String defaultMajor;
 
-    @Value("${domain.defaults.user.grad_session.semester}")
+    @Value("${domain.defaults.user.gradSession.semester}")
     private String defaultGradSemester;
 
     @Override
