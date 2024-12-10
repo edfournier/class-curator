@@ -7,6 +7,7 @@ import sqlite3
 app = FastAPI()
 
 # Open connection to database
+# The `check_same_thread=False` parameter allows usage across multiple threads
 con = sqlite3.connect('../server/class_c.db', check_same_thread=False)
 cursor = con.cursor()
 
@@ -31,13 +32,16 @@ def recommend_courses(input_tags: List[str], courses: List[Dict]) -> List[str]:
 
     # Perform semantic search
     hits = util.semantic_search(input_embedding, course_embeddings, top_k=10)[0]
-
+    
+    # Get course recommendations based on the user's tags
     recommendations = [course_titles[hit['corpus_id']] for hit in hits]
 
     recommendations = list(set(recommendations))
 
+    # Return the recommendations as a JSON response
     return [course_dict[recommendation] for recommendation in recommendations][:5]
 
+# API endpoint to get course recommendations for a given user
 @app.get("/recommend/{user_id}")
 async def get_recommendations(user_id):
     query = f"SELECT * FROM USER WHERE ID = {user_id};"
