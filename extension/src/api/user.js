@@ -19,6 +19,6 @@ export async function getCurrentUserInterests() {
 }
 
 export async function getUserInterests(id) {
-    const res = await authAxios.get(`/private/user/interests`);
+    const res = await authAxios.get(`/user/${id}/interests`);
     return res;
 }
