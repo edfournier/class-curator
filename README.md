@@ -1,4 +1,4 @@
-## Class Curator - A Spire Course Discovery Tool
+# Class Curator - A Spire Course Discovery Tool
 
 ## Introduction
 
@@ -15,65 +15,51 @@ This tool was developed by:
 - **Saloni Khatu**: [skhatu@umass.edu](mailto:skhatu@umass.edu)  
 - **Harsh Seth**: [hseth@umass.edu](mailto:hseth@umass.edu)  
 
----
-
 ## Installation Instructions
 
-### Backend Setup
+Perform each of the following starting the the project root:
 
-1. **Populate the Database**:  
-   From the project root, run the following command to set up the database:
+1. **Populate the Database**
+```bash
+python3 ./setup/db_populate.py
+```
 
-   ```bash
-   python3 ./setup/db_populate.py
-   ```
+2. **Start the FAST API recommendation service**
+```bash
+cd ./inference
+pip install -r requirements.txt
+fastapi run recommendations.py
+```
 
-2. **To start the Spring Boot backend, from the project root**:
+2. **Start the Spring Boot backend**
+```bash
+cd ./server
+mvn clean install
+mvn spring-boot:run
+```
 
-    ```bash
-    python3 ./setup/db_populate.py
-    cd server
-    mvn clean install
-    mvn spring-boot:run
-    ```
-3. **Then to build the extension, again from the project root**:
+3. **Build the extension**
+```bash
+cd ./extension
+npm i
+npm run build
+```
 
-    ```bash
-    cd ./extension
-    npm i
-    npm run build
-    ```
-This builds a `dist` directory. Next, open Chrome, and navigate to `chrome://extensions/`. Then Enable `Developer Mode`, press `Load unpacked` and load the `dist` directory on your machine. 
-
+This final step builds a `dist` directory. After it's built, open Chrome, and navigate to `chrome://extensions/`. Then, enable `Developer Mode`, press `Load unpacked`, and load the `dist` directory on your machine. The extension will now be visible in Chrome's "Extensions" tab in the top-right of the browser.
 
 # Configuration
 
-## Backend Configuration
+1. **Spring Boot Configuration**
 
 The Spring Boot backend requires some configurable settings. These can be modified in the `filename` file located at:
 
 <to be modified>
 
-## Recommendation Service Configuration:
-
-The FastAPI recommendation service requires dependencies specified in requirements.txt. Install them with the following command:
-
-    ```bash
-    pip install -r requirements.txt
-    ```
- **To run the Python FastAPI server**:
-    ```bash
-    fastapi run recommendations.py
-    ```
-
-## Chrome Extension Configuration:
+2. **Chrome Extension Configuration**
 
 The Chrome extension has configurable API endpoints and settings. These are defined in:
 
 <to be modified>
 
-
-
-
-# Large Language Model Used:
+# Large Language Model Used
 The system uses the *all-MiniLM-L6-v2* model for generating recommendations and processing course-related data. This model provides efficient performance for tasks like semantic search and embedding generation.
