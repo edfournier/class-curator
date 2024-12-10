@@ -42,9 +42,10 @@ def recommend_courses(input_tags: List[str], courses: List[Dict]) -> List[str]:
 async def get_recommendations(user_id):
     query = f"SELECT * FROM USER WHERE ID = {user_id};"
     user = cursor.execute(query).fetchone()
-    tags = user[7]
+    tags = user[7].split(",")
     print(tags)
     recommendations = recommend_courses(tags, courses)
+    print(recommendations)
     return {"recommended_courses": recommendations}
 
 if __name__ == "__main__":

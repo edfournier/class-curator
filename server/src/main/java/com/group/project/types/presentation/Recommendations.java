@@ -40,10 +40,20 @@ public class Recommendations {
                 .toList();
     }
 
-    class TagRecommendations {
-        List<String> recommended_courses;
+    public static class TagRecommendations {
+        private List<String> recommended_courses;
+
+        public TagRecommendations() {}
 
         public TagRecommendations(List<String> recommended_courses) {
+            this.recommended_courses = recommended_courses;
+        }
+
+        public List<String> getRecommended_courses() {
+            return recommended_courses;
+        }
+
+        public void setRecommended_courses(List<String> recommended_courses) {
             this.recommended_courses = recommended_courses;
         }
     }
