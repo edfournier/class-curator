@@ -53,13 +53,13 @@ This final step builds a `dist` directory. After it's built, open Chrome, and na
 
 The Spring Boot backend requires some configurable settings. These can be modified in the `filename` file located at:
 
-<to be modified>
+```to be modified```
 
 2. **Chrome Extension Configuration**
 
 The Chrome extension has configurable API endpoints and settings. These are defined in:
 
-<to be modified>
+```to be modified```
 
 # Large Language Model Used
 The system uses the *all-MiniLM-L6-v2* model for generating recommendations and processing course-related data. This model provides efficient performance for tasks like semantic search and embedding generation.
