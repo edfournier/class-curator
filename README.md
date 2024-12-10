@@ -12,7 +12,8 @@ A project by
 - Saloni Khatu <skhatu@umass.edu>
 - Harsh Seth <hseth@umass.edu>
 
-### Setup
+## Setup
+
 To start the Spring Boot backend, from the project root:
 
 ```bash
@@ -31,5 +32,3 @@ npm run build
 ```
 
 This builds a `dist` directory. Next, open Chrome, and navigate to `chrome://extensions/`. Then Enable `Developer Mode`, press `Load unpacked` and load the `dist` directory on your machine. 
-
----
