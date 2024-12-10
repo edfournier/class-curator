@@ -15,10 +15,11 @@ export async function putUserDetails(details) {
 
 export async function getCurrentUserInterests() {
     const res = await authAxios.get(`/private/user/interests`);
-    return res;
+    console.log(res.data);
+    return res.data;
 }
 
 export async function getUserInterests(id) {
     const res = await authAxios.get(`/user/${id}/interests`);
-    return res;
+    return res.data;
 }

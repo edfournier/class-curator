@@ -65,7 +65,7 @@ function Home() {
             try {
                 // Load user details from backend
                 const userDetails = await getUserDetails();
-                setTags(userDetails.tags.split(",") || []);
+                setTags(userDetails.tags ? userDetails.tags.split(",") : []);
                 setFormData({ 
                     major: userDetails.major,
                     minor: userDetails.minor,

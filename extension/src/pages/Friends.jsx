@@ -6,7 +6,7 @@ import SubmitBox from "../components/SubmitBox";
 import PagableList from "../components/PagableList";
 import { useAlerts } from "../providers/AlertProvider";
 import { deleteFriend, getFriends, getIncomingRequests, postFriendRequest, postRequestDecision } from "../api/friends";
-import { getUserInterests } from "../api/user";
+import { getCurrentUserInterests } from "../api/user";
 import { useAuth } from "../providers/AuthProvider";
 
 function Friends() {
@@ -73,7 +73,7 @@ function Friends() {
             try {
                 // Load user's friends and requests 
                 const [friends, requests, userInterests] = await Promise.all(
-                    [getFriends(), getIncomingRequests(), getUserInterests(user.email)]
+                    [getFriends(), getIncomingRequests(), getCurrentUserInterests()]
                 );
                 setFriends(friends);
                 setRequests(requests);

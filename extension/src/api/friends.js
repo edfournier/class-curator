@@ -2,11 +2,13 @@ import authAxios from "./auth-axios";
 
 export async function getFriends() {
     const res = await authAxios.get(`/private/friend`);
+    console.log(res.data);
     return res.data;
 }
 
 export async function getIncomingRequests() {
     const res = await authAxios.get(`/private/friend/request`);
+    console.log(res.data);
     return res.data;
 }
 
