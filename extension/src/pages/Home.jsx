@@ -98,7 +98,12 @@ function Home() {
 
     return (
         <>
-            <h1>{modified ? "Your Profile*" : "Your Profile"}</h1>
+            <h1>Recommendations</h1>
+            <div className="flex justify-center">
+                <button onClick={handleGetRecommendations}>Get Recommendations!</button>
+            </div>
+            {Object.keys(recs).length > 0 && <Recommendations recs={recs} />}
+            <h1 className="mt-4">{modified ? "Your Profile*" : "Your Profile"}</h1>
             <form className="max-w-lg mx-auto space-y-4 mb-4" onSubmit={handleSave} >
                 <FormField value={formData.major} label="major" placeholder={"E.g. Computer Science"} onChange={handleFormChange} />
                 <FormField value={formData.minor} label="minor" placeholder={"E.g. Linguistics"} onChange={handleFormChange}/>
@@ -112,8 +117,8 @@ function Home() {
                     hint={"Enter a tag describing your interests..."}
                 />
                 {tags.length > 0 
-                    && <div className="flex flex-wrap gap-1 overflow-y-auto max-h-28 pt-2 pb-2 border-b-[1px] border-t-[1px] border-gray-700">{
-                        // Map user's tags to clickable tiles
+                    && <div className="flex flex-wrap gap-1 pt-2 pb-2">{
+                        // Map user's tags to clickable bubbles
                         tags.map((tag) => 
                             <div key={tag} className="px-3 py-1 text-black rounded-full bg-indigo-200 flex items-center space-x-2">
                                 <FaTimes onClick={() => removeTag(tag)} className="cursor-pointer hover:text-indigo-600"/> 
@@ -123,15 +128,9 @@ function Home() {
                     }</div>
                 }
                 <div className="flex justify-center">
-                    <button type="submit" className="w-full">Save Changes</button>
+                    <button type="submit">Save Changes</button>
                 </div>
             </form>
-
-            <h1>Recommendations</h1>
-            <div className="flex justify-center">
-                <button onClick={handleGetRecommendations}>Get Recommendations!</button>
-            </div>
-            {Object.keys(recs).length > 0 && <Recommendations recs={recs} />}
         </>
     );
 }
