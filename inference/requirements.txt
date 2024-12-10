@@ -1,2 +1,4 @@
 fastapi[standard]
 sentence-transformers
+typing
+sqlite3
