@@ -1,5 +1,8 @@
 import { IoArrowBackSharp, IoArrowForwardSharp } from "react-icons/io5";
 
+// Pager component provides navigation controls for paginated content.
+// It includes "Back" and "Next" buttons with customizable click handlers and disabled states.
+
 function Pager({ onLeft, onRight, leftOff, rightOff }) {
     return (
         <div className="flex justify-center mt-4">
