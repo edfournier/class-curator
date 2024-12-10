@@ -16,7 +16,7 @@ function Recommendations({ recs }) {
 
     const flat = bubbles.flat();
     if (flat.length == 0) {
-        return <p className="mt-4">We don't know enough about you to recommend a course. Use the app some more and come back!</p>
+        return <p className="mt-4">We don't have enough info to recommend a course yet. Explore the app more and check back soon!</p>
     }
 
     return (
