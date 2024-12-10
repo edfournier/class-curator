@@ -77,7 +77,7 @@ describe("AuthProvider", () => {
     test("logs in successfully and navigates correctly without redirect", async () => {
         axios.get.mockResolvedValue({ data: { name: "John Doe", email: "john@example.com" } });
         chrome.identity.getAuthToken.mockResolvedValue({ token: "mockToken" });
-        chrome.storage.local.get.mockResolvedValue({ mockToken: { user: true, expiry: Date.now() + 1 } });
+        chrome.storage.local.get.mockResolvedValue({ mockToken: { user: true, expiry: 1000000000000000 } });
         chrome.storage.session.get.mockResolvedValue({});
 
         const button = screen.getByText("Login");

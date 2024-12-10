@@ -30,7 +30,8 @@ function CourseCard({ course, onClose }) {
 
     async function handleInterest() {
         try {
-            if (isInterested) {
+            // Send corresponding request
+            if (!isInterested) {
                 await putCourseInterest(course.code);
             }
             else {
@@ -55,6 +56,7 @@ function CourseCard({ course, onClose }) {
                 setVote(details.userRating);
                 setDetails(details);
                 setInsights(insights);
+                setIsInterested(details.interested);
             }
             catch (err) {
                 console.error(err);
@@ -74,13 +76,13 @@ function CourseCard({ course, onClose }) {
             <h2 className="mb-3 mt-2">{course.name}</h2>
             <div className="mb-2 flex items-center space-x-3">
                 <div className="flex items-center space-x-1">
-                    <button className="p-1" onClick={() => handleVote(1)}>
+                    <button aria-label="like" className="p-1" onClick={() => handleVote(1)}>
                         {vote === 1 ? <FaThumbsUp /> : <FaRegThumbsUp />}
                     </button>
                     <span>{details.upvotes}</span>
                 </div>
                 <div className="flex items-center space-x-1">
-                    <button className="p-1" onClick={() => handleVote(-1)}>
+                    <button aria-label="dislike" className="p-1" onClick={() => handleVote(-1)}>
                         {vote === -1 ? <FaThumbsDown /> : <FaRegThumbsDown />}
                     </button>
                     <span>{details.downvotes}</span>
@@ -96,18 +98,17 @@ function CourseCard({ course, onClose }) {
                 {insights.profRatings && Object.keys(insights.profRatings).length > 0
                     ? Object.keys(insights.profRatings).map(prof => {
                         const quality = insights.profRatings[prof];
-                        return <>
-                            <li key={prof}>
-                                <span className={"font-semibold text-indigo-500"}>{prof}</span>
-                                <span className="text-gray-400"> {quality}</span>
-                            </li>
-                        </>
+                        return <li key={prof}>
+                            <span className={"font-semibold text-indigo-500"}>{prof}</span>
+                            <span className="text-gray-400"> {quality}</span>
+                        </li>
                     })
                     : <span className="font-semibold text-indigo-200">No professor rankings yet!</span>
                 }
             </ul>
             <div className="mt-4 flex justify-center">
                 <button
+                    aria-label="interest"
                     onClick={handleInterest}
                     className={isInterested ? "py-1" : "py-1 bg-gray-600 text-gray-300 hover:bg-gray-500"}
                 >
