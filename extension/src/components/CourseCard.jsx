@@ -11,6 +11,7 @@ function CourseCard({ course, onClose }) {
     const [details, setDetails] = useState({});
     const [insights, setInsights] = useState({});
 
+    // Handles voting on the course, allowing users to like or dislike.
     async function handleVote(value) {
         try {   
             const newVote = value === vote ? 0 : value;
@@ -28,6 +29,7 @@ function CourseCard({ course, onClose }) {
         }
     }
 
+    // Toggles the user's interest in the course.
     async function handleInterest() {
         try {
             // Send corresponding request
@@ -45,6 +47,7 @@ function CourseCard({ course, onClose }) {
         }
     }
 
+    // Fetches course details and insights when the component is mounted.
     useEffect(() => {
         async function load() {
             try {
