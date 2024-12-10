@@ -1,21 +1,24 @@
+import axios from "axios";
+import authAxios from "./auth-axios";
+
+axios.defaults.baseURL = import.meta.env.VITE_BACKEND_URL;
+
 export async function getUserDetails() {
-    return Promise.resolve({
-        major: "Computer Science",
-        minor: "Linguistics",
-        year: 2025,
-        tags: ["Machine Learning", "Artificial Intelligence", "Networks"]
-    });
+    const res = await authAxios.get(`/private/user`);
+    return res.data;
 }
 
 export async function putUserDetails(details) {
-    return Promise.resolve();
+    const res = await authAxios.put(`private/user`, details);
+    return res;
 }
 
-export async function getUserInterests(email) {
-    return Promise.resolve([
-        { name: "Data Structures", code: "CS 187" },
-        { name: "Algorithms", code: "CS 201" },
-        { name: "Operating Systems", code: "CS 350" },
-        { name: "Machine Learning", code: "CS 500" }
-    ]);
+export async function getCurrentUserInterests() {
+    const res = await authAxios.get(`/private/user/interests`);
+    return res;
+}
+
+export async function getUserInterests(id) {
+    const res = await authAxios.get(`/private/user/interests`);
+    return res;
 }

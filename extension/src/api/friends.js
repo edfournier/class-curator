@@ -1,28 +1,26 @@
+import authAxios from "./auth-axios";
+
 export async function getFriends() {
-    return Promise.resolve([
-        { name: "Alice", email: "alice@umass.edu" },
-        { name: "Bob", email: "bob@umass.edu" },
-        { name: "Charlie", email: "charlie@umass.edu" },
-        { name: "David", email: "david@umass.edu" },
-        { name: "Eva", email: "eva@umass.edu" }
-    ]);
+    const res = await authAxios.get(`/private/friend`);
+    return res.data;
 }
 
 export async function getIncomingRequests() {
-    return Promise.resolve([
-        { name: "Johnny", email: "jappleseed@umass.edu" },
-        { name: "Sally", email: "sally@umass.edu" }
-    ]);
+    const res = await authAxios.get(`/private/friend/request`);
+    return res.data;
 }
 
-export async function deleteFriend(email) {
-    return Promise.resolve();
+export async function deleteFriend(id) {
+    const res = await authAxios.delete(`private/friend/${id}`)
+    return res;
 }
 
 export async function postFriendRequest(email) {
-    return Promise.resolve();
+    const res = await authAxios.post(`/private/friend/request/${email}`);
+    return res;
 }
 
-export async function postRequestDecision(isAccepted) {
-    return Promise.resolve();
+export async function postRequestDecision(id, isAccepted) {
+    const res = await authAxios.post(`private/friend/request/${id}/${isAccepted ? "accept" : "deny"}`);
+    return res;
 }

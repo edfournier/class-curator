@@ -44,8 +44,9 @@ function Home() {
                 const details = {
                     major: e.target.elements.major.value,
                     minor: e.target.elements.minor.value,
-                    year: e.target.elements.year.value,
-                    tags: tags
+                    gradSemester: e.target.elements.semester.value,
+                    gradYear: Number(e.target.elements.year.value),
+                    tags: tags.join(",")
                 }
                 await putUserDetails(details);
                 setModified(false);
@@ -64,11 +65,12 @@ function Home() {
             try {
                 // Load user details from backend
                 const userDetails = await getUserDetails();
-                setTags(userDetails.tags);
+                setTags(userDetails.tags.split(",") || []);
                 setFormData({ 
                     major: userDetails.major,
                     minor: userDetails.minor,
-                    year: userDetails.year
+                    year: userDetails.gradSession.year,
+                    semester: userDetails.gradSession.semester
                 });
             }
             catch (err) {
@@ -87,6 +89,7 @@ function Home() {
                 <FormField value={formData.major} label="major" placeholder={"E.g. Computer Science"} onChange={handleFormChange} />
                 <FormField value={formData.minor} label="minor" placeholder={"E.g. Linguistics"} onChange={handleFormChange}/>
                 <FormField value={formData.year} label="year"  type={"number"} placeholder={"E.g. 2025"} onChange={handleFormChange}/>
+                <FormField value={formData.semester} label="semester" type={"text"} placeholder={"E.g. SPRING"} onChange={handleFormChange}/>
                 <SubmitBox 
                     value={tag}
                     onChange={(e) => setTag(e.target.value)}

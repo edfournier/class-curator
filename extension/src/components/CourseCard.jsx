@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { FaTimes, FaThumbsUp, FaThumbsDown, FaRegThumbsUp, FaRegThumbsDown } from "react-icons/fa"; 
-import { getCourseDetails, getCourseInsights, postCourseInterest, postCourseRating } from "../api/courses";
+import { getCourseDetails, getCourseInsights, putCourseInterest, deleteCourseInterest, postCourseRating } from "../api/courses";
 import { useAlerts } from "../providers/AlertProvider";
 import CourseRatingChart from "./CourseRatingChart";
 
@@ -30,7 +30,12 @@ function CourseCard({ course, onClose }) {
 
     async function handleInterest() {
         try {
-            await postCourseInterest(course.code, isInterested);
+            if (isInterested) {
+                await putCourseInterest(course.code);
+            }
+            else {
+                await deleteCourseInterest(course.code);
+            }
             setIsInterested(!isInterested); 
         }
         catch (err) {
