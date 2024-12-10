@@ -3,15 +3,18 @@ import { FaTimes } from "react-icons/fa";
 import { getUserInterests } from "../api/user";
 import { useAlerts } from "../providers/AlertProvider";
 
+// FriendCard component displays a friend's profile and shared interests.
 function FriendCard({ friend, userInterests, onClose, onUnfriend }) {
     const alerts = useAlerts();
     const [friendInterests, setFriendInterests] = useState([]);
 
+     // Extract the first name from the friend's display name for a personalized greeting.
     const firstName = friend.displayName.split(" ")[0];
 
     useEffect(() => {
         async function load() {
             try {
+                // Fetch the friend's interests from the API.
                 const friendInterests = await getUserInterests(friend.id);
 
                 // Find intersection of logged-in user and this friend's interests
