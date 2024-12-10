@@ -1,6 +1,9 @@
 import Pager from "../components/Pager";
 import { useState } from "react";
 
+// PagableList component displays a paginated list of entries.
+// It supports navigation through pages using the Pager component and allows item selection via clicks.
+
 function PagableList({ entries, onClick, mainKey, subKey, emptyMessage }) {   
     const [page, setPage] = useState(1); // Current visible page
 
@@ -8,6 +11,7 @@ function PagableList({ entries, onClick, mainKey, subKey, emptyMessage }) {
     const last = page * maxTiles;
     const first = last - maxTiles;
 
+    // Display a message if there are no entries
     if (entries.length === 0) {
         return <span className="font-semibold text-indigo-200">{emptyMessage}</span>;
     }
