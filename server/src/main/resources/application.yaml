@@ -1,6 +1,7 @@
 oauth:
   google:
     tokeninfo: https://www.googleapis.com/oauth2/v3/tokeninfo
+    userinfo: https://www.googleapis.com/oauth2/v3/userinfo
 
 spring:
   datasource:

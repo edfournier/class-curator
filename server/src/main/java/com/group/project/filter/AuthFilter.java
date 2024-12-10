@@ -11,6 +11,10 @@ import com.group.project.types.common.UniversitySession;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import jakarta.servlet.FilterChain;
@@ -27,8 +31,8 @@ import java.util.Optional;
 @Component
 public class AuthFilter extends OncePerRequestFilter {
 
-    @Value("${oauth.google.tokeninfo}")
-    private String tokenInfoEndpoint;
+    @Value("${oauth.google.userinfo}")
+    private String userInfoEndpoint;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -79,8 +83,9 @@ public class AuthFilter extends OncePerRequestFilter {
 
     private User createUserAndRefreshSession(String token) throws IOException, ParseException, Exception {
         User user = null;
-        JsonNode tokenInfo = getTokenInfo(token);
-        String email = tokenInfo.get("email").asText();
+        JsonNode userInfo = getUserInfo(token);
+        String email = userInfo.get("email").asText();
+        String name = userInfo.get("name").asText();
 
         // Check if user exists in DB, else create new user
         Optional<User> userQueryResult = userRepository.findByUsername(email);
@@ -88,7 +93,7 @@ public class AuthFilter extends OncePerRequestFilter {
             user = userQueryResult.get();
         } else {
             // TODO: Can check if user is Umass student
-            String displayName = email.split("@")[0];
+            String displayName = name;
             int defaultGradYear = Year.now().getValue() + 4;
             user = new User(email, displayName, new UniversitySession(defaultGradYear, defaultGradSemester),
                     defaultMajor);
@@ -105,9 +110,16 @@ public class AuthFilter extends OncePerRequestFilter {
         return user;
     }
 
-    private JsonNode getTokenInfo(String token) throws IOException, ParseException {
-        String res = rest.getForObject(tokenInfoEndpoint + "?access_token=" + token, String.class);
-        JsonNode tokenInfo = objectMapper.readTree(res);
-        return tokenInfo;
+    private JsonNode getUserInfo(String token) throws IOException, ParseException {
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer " + token);
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+        ResponseEntity<String> res = rest.exchange(
+            userInfoEndpoint, 
+            HttpMethod.GET, 
+            entity, 
+            String.class
+        );
+        return objectMapper.readTree(res.getBody());
     }
 }
