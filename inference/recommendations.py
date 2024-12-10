@@ -1,8 +1,8 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI
 from typing import List, Dict
 from sentence_transformers import SentenceTransformer, util
 import sqlite3
-import json
+
 
 
 app = FastAPI()
