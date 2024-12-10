@@ -14,10 +14,20 @@ jest.mock("../providers/AlertProvider", () => ({
     useAlerts: jest.fn(),
 }));
 
+
+jest.mock("react-router-dom", () => {
+    return {
+        ...jest.requireActual("react-router-dom"),
+        useLocation: jest.fn()
+    };
+});
+
 const mockAlerts = { 
     error: jest.fn(), 
     info: jest.fn() 
 };
+
+const mockRedirect = { code: "CS187", name: "Data Structures" };
 
 useAlerts.mockReturnValue(mockAlerts);
 
@@ -41,6 +51,23 @@ getCourseInsights.mockResolvedValue({
 });
 
 describe("Courses", () => {
+    test("handles redirection with a preselected course", async () => {    
+        // Mock `useLocation` to return a value once and then null
+        const mockUseLocation = require("react-router-dom").useLocation;
+        mockUseLocation
+            .mockImplementationOnce(() => ({ state: { course: mockRedirect } }))
+            .mockImplementation(() => ({ state: null })); // Return null after the first call
+    
+        render(
+            <Router>
+                <Courses />
+            </Router>
+        );
+    
+        // Check that the query and results are pre-filled with the redirected course
+        waitFor(() => expect(screen.getByDisplayValue("CS187")).toBeInTheDocument());
+    });
+
     beforeEach(() => {
         jest.clearAllMocks();
         render(

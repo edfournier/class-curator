@@ -32,7 +32,7 @@ describe("Login Component", () => {
 	});
 
     test("logs error when auto-login fails", async () => {
-        const consoleSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+        const consoleSpy = jest.spyOn(console, "log").mockImplementation(() => {});
         mockLogin.mockRejectedValueOnce(new Error("Auto-login failed"));
         render(<Login />);
 

@@ -15,7 +15,8 @@ function Courses() {
     const [query, setQuery] = useState(""); 
 
     // Handle case popup was opened from SPIRE
-    const redirect = location?.state?.course;           
+
+    const redirect = location?.state?.course;   
     if (redirect) {
         location.state.course = null;
         setCourse(redirect);
