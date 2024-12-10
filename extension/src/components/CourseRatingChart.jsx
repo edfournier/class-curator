@@ -1,5 +1,6 @@
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Legend } from "recharts";
 
+// CourseRatingChart displays a line chart with course rating data for helpfulness and difficulty.
 const CourseRatingChart = ({ data }) => {
     if (data) {
         data = data.map(item => {
