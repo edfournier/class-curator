@@ -45,8 +45,35 @@ This tool was developed by:
     ```
 This builds a `dist` directory. Next, open Chrome, and navigate to `chrome://extensions/`. Then Enable `Developer Mode`, press `Load unpacked` and load the `dist` directory on your machine. 
 
-4. **To run the Python FastAPI server**:
+
+# Configuration
+
+## Backend Configuration
+
+The Spring Boot backend requires some configurable settings. These can be modified in the `filename` file located at:
+
+<to be modified>
+
+## Recommendation Service Configuration:
+
+The FastAPI recommendation service requires dependencies specified in requirements.txt. Install them with the following command:
+
+    ```bash
+    pip install -r requirements.txt
+    ```
+ **To run the Python FastAPI server**:
     ```bash
     fastapi run recommendations.py
     ```
 
+## Chrome Extension Configuration:
+
+The Chrome extension has configurable API endpoints and settings. These are defined in:
+
+<to be modified>
+
+
+
+
+# Large Language Model Used:
+The system uses the *all-MiniLM-L6-v2* model for generating recommendations and processing course-related data. This model provides efficient performance for tasks like semantic search and embedding generation.
