@@ -18,7 +18,7 @@ function PagableList({ entries, onClick, mainKey, subKey, emptyMessage }) {
                 {entries.slice(first, last).map((entry) => (
                     <li
                         key={entry[mainKey]}
-                        className="flex justify-between p-3 border border-gray-700 hover:bg-gray-700 rounded-lg cursor-pointer"
+                        className="flex items-center justify-between p-3 border border-gray-700 hover:bg-gray-700 rounded-lg cursor-pointer"
                         onClick={() => onClick(entry)}
                     >
                         <span className="text-sm font-medium">{entry[mainKey]}</span>

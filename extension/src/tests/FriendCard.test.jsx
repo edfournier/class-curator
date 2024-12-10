@@ -20,8 +20,8 @@ useAlerts.mockReturnValue(mockAlerts);
 
 const mockFriend = {
     id: "1",
-    email: "edfournier@umass.edu",
-    name: "Eric",
+    username: "edfournier@umass.edu",
+    displayName: "Eric Fournier",
 };
 
 const mockUserInterests = [

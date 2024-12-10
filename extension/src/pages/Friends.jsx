@@ -38,9 +38,10 @@ function Friends() {
     async function handleDecideRequest(isAccepted) {
         try {
             // Notify backend of accept/deny
-            await postRequestDecision(friend.id, isAccepted);
+            await postRequestDecision(requests[0].id, isAccepted);
             if (isAccepted) {
-                alerts.info(`Added ${requests[0].email}!`);
+                alerts.info(`Added ${requests[0].username}!`);
+                setFriends([...friends, requests[0]]);
             }
 
             // Show next request
@@ -56,9 +57,9 @@ function Friends() {
         try {
             // Notify backend to unfriend
             await deleteFriend(friend.id);
-            setFriends(friends.filter(({ email }) => email !== friend.email));
+            setFriends(friends.filter(({ username }) => username !== friend.username));
             setFriend(null);
-            alerts.info(`Unfriended ${friend.email}!`);
+            alerts.info(`Unfriended ${friend.username}!`);
         }
         catch (err) {
             console.error(err);
@@ -75,6 +76,7 @@ function Friends() {
                 );
                 setFriends(friends);
                 setRequests(requests);
+                console.log(requests);
                 setUserInterests(userInterests);
             }
             catch (err) {
@@ -99,7 +101,7 @@ function Friends() {
             {requests.length > 0 && 
                 <div className="bg-gray-900 p-3 rounded-md border-[1px] border-gray-700 mb-2">
                     <div className="flex justify-between items-center">
-                        <span className="text-sm font-medium">{requests[0].email}</span>
+                        <span className="text-sm font-medium">{requests[0].username}</span>
                         <div className="flex space-x-3">
                             <FaCheck
                                 className="text-green-500 cursor-pointer hover:text-green-600"
@@ -126,8 +128,8 @@ function Friends() {
                 : <PagableList 
                     entries={friends} 
                     onClick={setFriend} 
-                    mainKey={"name"}
-                    subKey={"email"}
+                    mainKey={"displayName"}
+                    subKey={"username"}
                     emptyMessage={"You have no friends!"}
                 />
             }

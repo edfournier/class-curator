@@ -109,8 +109,7 @@ function Home() {
                 <FormField value={formData.year || 2024} label="year"  type={"number"} placeholder={"E.g. 2025"} onChange={handleFormChange}/>
                 <div className="flex items-center space-x-4">
                     <label htmlFor="semester" className="text-sm font-medium text-center w-20">Semester</label>
-                    <select value={formData.semester || ""} onChange={handleFormChange} className="w-full" id="semester" name="semester">
-                        <option value="" disabled></option>
+                    <select value={formData.semester} onChange={handleFormChange} className="w-full" id="semester" name="semester">
                         <option value="FALL">Fall</option>
                         <option value="SPRING">Spring</option>
                     </select>

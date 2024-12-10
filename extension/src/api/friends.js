@@ -16,9 +16,7 @@ export async function deleteFriend(id) {
 }
 
 export async function postFriendRequest(email) {
-    const res = await authAxios.post(`/private/friend/request/`, {
-        targetUsername: email
-    });
+    const res = await authAxios.post(`/private/friend/request`, email, {headers: {"Content-Type": "text/plain"}});
     return res;
 }
 

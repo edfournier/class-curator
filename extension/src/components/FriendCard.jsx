@@ -7,6 +7,8 @@ function FriendCard({ friend, userInterests, onClose, onUnfriend }) {
     const alerts = useAlerts();
     const [friendInterests, setFriendInterests] = useState([]);
 
+    const firstName = friend.displayName.split(" ")[0];
+
     useEffect(() => {
         async function load() {
             try {
@@ -30,13 +32,13 @@ function FriendCard({ friend, userInterests, onClose, onUnfriend }) {
     return (
         <div className="card">
             <div className="flex justify-between">
-                <p className="text-xs text-gray-400">{friend.email}</p>
+                <p className="text-xs text-gray-400">{friend.username}</p>
                 <FaTimes onClick={onClose} className="cursor-pointer hover:text-indigo-600" />
             </div>
-            <h2 className="mb-3 mt-2">{friend.name}'s Interests</h2>
-            <ul className="overflow-y-auto max-h-36 mb-6 space-y-1 mr-1 ml-2">
+            <h2 className="mb-3 mt-2">{firstName}'s Interests</h2>
+            <ul className="mb-6 space-y-1">
                 {friendInterests.length === 0 
-                    ? <span className="font-semibold text-indigo-200">{friend.name} has no interests!</span>
+                    ? <span className="font-semibold text-indigo-200">{firstName} has no interests!</span>
                     : friendInterests.map((interest) => {
                         return (
                             <li key={interest.code}>
@@ -46,7 +48,7 @@ function FriendCard({ friend, userInterests, onClose, onUnfriend }) {
                                 >
                                     {interest.name}
                                 </span>
-                                <span className="text-gray-400"> {interest.code}</span>
+                                <span className="text-gray-400 ml-3">{interest.code}</span>
                             </li>
                         );
                     })
