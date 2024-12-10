@@ -123,7 +123,7 @@ public class FriendController {
         try {
             friendRequest = new FriendRequest(currentUser, targetUser);
         } catch (Exception e) {
-            return ResponseEntity.internalServerError().body(e.getMessage());
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
 
         friendRequestRepository.save(friendRequest);
