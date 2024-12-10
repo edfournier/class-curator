@@ -1,3 +1,5 @@
+import axios from "axios";
+
 function createExtensionButton(course) {
     const button = document.createElement("button");
     button.textContent = "🔍"; 
@@ -13,10 +15,6 @@ function createExtensionButton(course) {
 }
 
 function createRatingsDisplay(course) {
-    // TODO: hit API to get course likes/dislikes
-    const likes = 0;
-    const dislikes = 0;
-
     // Create a display for the two spans
     const display = document.createElement("span");
     display.style.display = "inline-flex"; 
@@ -31,10 +29,10 @@ function createRatingsDisplay(course) {
     display.style.cursor = "default";
 
     const likesSpan = document.createElement("span");
-    likesSpan.textContent = `${likes} 👍`;
+    likesSpan.textContent = `${course.upvotes} 👍`;
 
     const dislikesSpan = document.createElement("span");
-    dislikesSpan.textContent = `${dislikes} 👎`;
+    dislikesSpan.textContent = `${course.downvotes} 👎`;
     dislikesSpan.style.marginLeft = "10px"; 
 
     // Append both spans inside the display
@@ -44,7 +42,7 @@ function createRatingsDisplay(course) {
     return display;
 }
 
-function embed() {
+async function embed() {
     console.log("Parsing course search results...");
     const courses = []
     const first = document.getElementById("PTS_RSLTS_LIST$0_row_0"); // First search result
@@ -59,10 +57,31 @@ function embed() {
         );
     }
 
-    console.log(`Embedding content into ${courses.length} listings...`);
-    for (const course of courses) {
-        course.element.appendChild(createRatingsDisplay(course));
-        course.element.appendChild(createExtensionButton(course));
+    try {
+        // Fetch upvotes/downvotes for each course
+        const query = courses.map(course => course.title).join(",");
+        const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/course/${query}`);
+        const courseDetails = res.data;
+
+        // Merge fetched data with parsed data
+        const merged = courses.map(course => {
+            const courseDetail = courseDetails.find(detail => detail.course.code === course.title);
+            return {
+                ...course,
+                upvotes: courseDetail ? courseDetail.upvotes : 0,
+                downvotes: courseDetail ? courseDetail.downvotes : 0
+            };
+        });
+        
+        // Render content
+        console.log(`Embedding content into ${courses.length} listings...`);
+        for (const course of merged) {
+            course.element.appendChild(createRatingsDisplay(course));
+            course.element.appendChild(createExtensionButton(course));
+        }
+    }
+    catch (err) {
+        console.error(err);
     }
 }
 
