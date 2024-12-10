@@ -20,10 +20,10 @@ const CourseRatingChart = ({ data }) => {
     }
 
     return (
-        <LineChart data={data} width={250} height={150}>
+        <LineChart data={data} width={285} height={150}>
             <CartesianGrid />
             <XAxis dataKey="key" />
-            <YAxis domain={[0, 5]} />
+            <YAxis domain={[0, 5]} width={0}/>
             <Legend />
             <Line type="monotone" dataKey="helpfulness" stroke="#4caf50" name="Quality" dot={false} />
             <Line type="monotone" dataKey="difficulty" stroke="#f44336" name="Difficulty" dot={false} />
