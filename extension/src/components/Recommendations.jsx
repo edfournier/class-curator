@@ -8,12 +8,14 @@ function RecBubble({ code, reason }) {
 }
 
 function Recommendations({ recs }) {   
+    // Map courses to bubbles, each with customized tool tip
     const bubbles = [
         recs.friends.map(entry => <RecBubble code={entry.course.code} reason={`Based on ${entry.networkCount} friends!`}/>),
         recs.tags.map(entry => <RecBubble code={entry.course.code} reason={`Based on your interests!`}/>),
         recs.peers.map(entry => <RecBubble code={entry.course.code} reason={`Based on ${entry.networkCount} similar peers!`}/>)
     ];
 
+    // Flatten 2D array for rendering
     const flat = bubbles.flat();
     if (flat.length == 0) {
         return <p className="mt-4">We don't have enough info to recommend a course yet. Explore the app more and check back soon!</p>
@@ -23,7 +25,7 @@ function Recommendations({ recs }) {
         <>
             <p className="mt-4">We think you'd love these courses! Hover to see why.</p>
             <div className="flex flex-wrap gap-1 pt-2 pb-2">
-                {bubbles.flat()}
+                {bubbles}
             </div>
         </>
     );
