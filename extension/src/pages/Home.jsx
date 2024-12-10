@@ -4,6 +4,8 @@ import FormField from "../components/FormField";
 import SubmitBox from "../components/SubmitBox";
 import { useAlerts } from "../providers/AlertProvider";
 import { getUserDetails, putUserDetails } from "../api/user.js";
+import { getRecommendations } from "../api/recommendations.js";
+import Recommendations from "../components/Recommendations.jsx";
 
 function Home() {
     const alerts = useAlerts();
@@ -11,6 +13,7 @@ function Home() {
     const [tag, setTag] = useState("");
     const [modified, setModified] = useState(false);
     const [formData, setFormData] = useState({});
+    const [recs, setRecs] = useState({});
 
     function addTag() {
         // Ensure tag isn't duplicate or blank
@@ -59,6 +62,17 @@ function Home() {
         }
     }
 
+    async function handleGetRecommendations() {
+        try {
+            const recs = await getRecommendations();
+            setRecs(recs);
+            console.log(recs);
+        }
+        catch (err) {
+            console.error(err);
+            alerts.error("Failed to get recommendations, please try again");
+        }
+    }
 
     useEffect(() => {
         async function load() {
@@ -85,7 +99,7 @@ function Home() {
     return (
         <>
             <h1>{modified ? "Your Profile*" : "Your Profile"}</h1>
-            <form className="max-w-lg mx-auto space-y-4" onSubmit={handleSave} >
+            <form className="max-w-lg mx-auto space-y-4 mb-4" onSubmit={handleSave} >
                 <FormField value={formData.major} label="major" placeholder={"E.g. Computer Science"} onChange={handleFormChange} />
                 <FormField value={formData.minor} label="minor" placeholder={"E.g. Linguistics"} onChange={handleFormChange}/>
                 <FormField value={formData.year} label="year"  type={"number"} placeholder={"E.g. 2025"} onChange={handleFormChange}/>
@@ -112,6 +126,12 @@ function Home() {
                     <button type="submit" className="w-full">Save Changes</button>
                 </div>
             </form>
+
+            <h1>Recommendations</h1>
+            <div className="flex justify-center">
+                <button onClick={handleGetRecommendations}>Get Recommendations!</button>
+            </div>
+            {Object.keys(recs).length > 0 && <Recommendations recs={recs} />}
         </>
     );
 }
