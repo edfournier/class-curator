@@ -66,7 +66,6 @@ function Home() {
         try {
             const recs = await getRecommendations();
             setRecs(recs);
-            console.log(recs);
         }
         catch (err) {
             console.error(err);
@@ -105,9 +104,9 @@ function Home() {
             {Object.keys(recs).length > 0 && <Recommendations recs={recs} />}
             <h1 className="mt-4">{modified ? "Your Profile*" : "Your Profile"}</h1>
             <form className="max-w-lg mx-auto space-y-4 mb-4" onSubmit={handleSave} >
-                <FormField value={formData.major} label="major" placeholder={"E.g. Computer Science"} onChange={handleFormChange} />
-                <FormField value={formData.minor} label="minor" placeholder={"E.g. Linguistics"} onChange={handleFormChange}/>
-                <FormField value={formData.year} label="year"  type={"number"} placeholder={"E.g. 2025"} onChange={handleFormChange}/>
+                <FormField value={formData.major || ""} label="major" placeholder={"E.g. Computer Science"} onChange={handleFormChange} />
+                <FormField value={formData.minor || ""} label="minor" placeholder={"E.g. Linguistics"} onChange={handleFormChange}/>
+                <FormField value={formData.year || 2024} label="year"  type={"number"} placeholder={"E.g. 2025"} onChange={handleFormChange}/>
                 <div className="flex items-center space-x-4">
                     <label htmlFor="semester" className="text-sm font-medium text-center w-20">Semester</label>
                     <select value={formData.semester || ""} onChange={handleFormChange} className="w-full" id="semester" name="semester">
@@ -117,6 +116,7 @@ function Home() {
                     </select>
                 </div>
                 <SubmitBox 
+                    label={"add-tag"}
                     value={tag}
                     onChange={(e) => setTag(e.target.value)}
                     onClick={addTag}
@@ -124,7 +124,7 @@ function Home() {
                     hint={"Enter a tag describing your interests..."}
                 />
                 {tags.length > 0 
-                    && <div className="flex flex-wrap gap-1 pt-2 pb-2">{
+                    && <div className="flex flex-wrap gap-1 pt-2 pb-2 justify-center">{
                         // Map user's tags to clickable bubbles
                         tags.map((tag) => 
                             <div key={tag} className="px-3 py-1 text-black rounded-full bg-indigo-200 flex items-center space-x-2">

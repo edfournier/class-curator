@@ -1,4 +1,4 @@
-function SubmitBox({ value, onChange, onClick, hint, icon }) {
+function SubmitBox({ value, onChange, onClick, hint, icon, label }) {
     return (
         <>
             <div className="flex justify-center mb-4">
@@ -9,7 +9,7 @@ function SubmitBox({ value, onChange, onClick, hint, icon }) {
                 className="w-full"
                 placeholder={hint}
             />
-            <button type="button" onClick={onClick} className="ml-1">{icon}</button>
+            <button aria-label={label} type="button" onClick={onClick} className="ml-1">{icon}</button>
             </div>
         </>
     )

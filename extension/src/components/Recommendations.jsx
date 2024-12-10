@@ -8,6 +8,7 @@ function RecBubble({ code, reason }) {
 
 function Recommendations({ recs }) {   
     // Map courses to bubbles, each with customized tool tip
+
     const bubbles = [
         recs.friends.map(entry => <RecBubble key={entry.course.code} code={entry.course.code} reason={`Based on ${entry.networkCount} friends!`}/>),
         recs.tags.map(entry => <RecBubble key={entry.course.code} code={entry.course.code} reason={`Based on your tags!`}/>),
@@ -21,9 +22,11 @@ function Recommendations({ recs }) {
     }
 
     return (
-        <>
-            <p className="mt-4">We think you'd love these courses! Hover to see why.</p>
-            <div className="flex flex-wrap gap-1 pt-2 mt-2">
+        <>  
+            <div className="flex justify-center">
+                <p className="mt-4">We think you'd love these courses! Hover to see why.</p>
+            </div>
+            <div className="flex justify-center flex-wrap gap-1 pt-2 mt-2">
                 {flat}
             </div>
         </>
