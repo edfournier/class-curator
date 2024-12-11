@@ -14,14 +14,15 @@ This file details specific contributions of each member.
   [Any other significant contributions, e.g., code reviews, project management, design, etc.]
 
 ## Saloni Khatu
-- **Feature Development:**  
-  [Description of features developed.]
-
-- **Documentation:**  
-  [Details about documentation contributions.]
-
-- **Other Contributions:**  
-  [Additional contributions.]
+- Collaborated with Eric to develop CourseRatingChart.jsx, enabling data visualization for the selected course.
+- implemented the chart using recharts to display professors' ratings based on difficulty level and course period (e.g., FALL 21).
+- Analyzed the manage_ratings.json file to understand the data schema and ensure accurate plotting.
+- Researched the all-MiniLM-L6-v2 language model and found its functionality to be semantic search and checking sentence similarity.
+- Tested model's accuracy on dummy data on HuggingFace and found the accuracy to be a solid 90%.
+- Worked on recommendations.py with Liam and built a FastAPI-based course recommendation feature using a SentenceTransformer model for semantic search.
+- Was able to retrieve user tags from a database, compares them to course descriptions using sentence embeddings, and recommends the top relevant courses and delivered recommendations - through a simple API endpoint.
+- Created the README.md and contributions.md file and made sure to add the necessary installations and configurations along with the entire team.
+- Added comments to files wherever necesssary and cleaned up the code.
 
 
 ## Liam Gates
