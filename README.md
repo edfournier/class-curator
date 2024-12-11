@@ -118,6 +118,7 @@ cd ./extension
 npm i
 npm test
 ```
+![alt text](./docs/assets/extension-coverage.png)
 
 
 ## Demo
