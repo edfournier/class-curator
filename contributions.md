@@ -36,7 +36,7 @@ This file details specific contributions of each member.
 
 ## Eric Fournier
 - Setup Vite to automatically build the extension.
-- Created the scripts `db-setup/scrape/rmp.py` and `db-setup/scrape/spire.py`, which collect course and review data from Rate My Professor and an independently Spire API respectively.
+- Created the scripts `db-setup/scrape/rmp.py` and `db-setup/scrape/spire.py`, which collect course and review data from Rate My Professor and an independently run Spire API respectively.
 - Created the content and background scripts that are injected into the Spire webpage. These scripts handle embedding content such as course likes and dislikes, and pass messages to the popup extension.
 - Created the Home, Friends, and Course pages in React, and wrote API calls with Axios to integrate with the Spring Boot backend.
 - Created AuthProvider and AlertProvider components, which handle authentication and error/info alerting on the front end respectively. The former leverages Chrome's `storage` and `identity` APIs to obtain and cache relevant user data.
