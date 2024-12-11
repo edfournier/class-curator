@@ -3,8 +3,7 @@
 Over the course of the semester, all members of our group participated in several, multihour work sessions in which we brainstormed, troubleshooted, and developed the project together.
 This file details specific contributions of each member.
 
-### Harsh Seth
----
+## Harsh Seth
 - **Feature Development:**  
   [Brief description of the features you developed or worked on.]
 
