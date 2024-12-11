@@ -11,12 +11,12 @@ export async function getIncomingRequests() {
 }
 
 export async function deleteFriend(id) {
-    const res = await authAxios.delete(`private/friend/${id}`)
+    const res = await authAxios.delete(`private/friend/${id}`);
     return res;
 }
 
 export async function postFriendRequest(email) {
-    const res = await authAxios.post(`/private/friend/request`, email, {headers: {"Content-Type": "text/plain"}});
+    const res = await authAxios.post(`/private/friend/request`, email, { headers: { "Content-Type": "text/plain" } });
     return res;
 }
 
@@ -24,8 +24,7 @@ export async function postRequestDecision(id, isAccepted) {
     if (isAccepted) {
         const res = await authAxios.post(`/private/friend/request/${id}/accept`);
         return res;
-    }
-    else {
+    } else {
         const res = await authAxios.delete(`/private/friend/request/${id}`);
         return res;
     }

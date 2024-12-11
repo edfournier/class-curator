@@ -7,30 +7,30 @@ import { useState, useEffect } from "react";
  */
 function Login() {
     const { login } = useAuth();
-    const [loading, setLoading] = useState(true); 
+    const [loading, setLoading] = useState(true);
 
     async function handleLogin(details) {
         try {
             // Show spinner while OAuth consent page is up
             setLoading(true);
             await login(details);
-        }
-        catch (err) {
+        } catch (err) {
             // Triggers if auto-login fails (i.e. new user) or user doesn't approve access
-            console.log(err); 
-        }
-        finally {
-            setLoading(false)
+            console.log(err);
+        } finally {
+            setLoading(false);
         }
     }
-    
+
     useEffect(() => {
         // Attempts to automatically login
         handleLogin({ interactive: false });
     }, []);
-    
-    return loading ? <Spinner /> : (
-        <div className="flex items-center justify-center min-h-screen">
+
+    return loading ? (
+        <Spinner />
+    ) : (
+        <div className="flex min-h-screen items-center justify-center">
             <button onClick={() => handleLogin({ interactive: true })} className="px-6">
                 Login with Google
             </button>

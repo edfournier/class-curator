@@ -9,10 +9,8 @@ function Link({ name, path }) {
         <NavLink
             to={path}
             className={({ isActive }) =>
-                `text-lg transition-colors pb-2 ${
-                    isActive
-                        ? "text-indigo-500 border-b-4 border-indigo-500"
-                        : "hover:text-indigo-500"
+                `pb-2 text-lg transition-colors ${
+                    isActive ? "border-b-4 border-indigo-500 text-indigo-500" : "hover:text-indigo-500"
                 }`
             }
         >
@@ -28,19 +26,15 @@ function Navbar() {
     const { user } = useAuth();
 
     return (
-        <div className="bg-gray-900 py-2 px-4 shadow-md w-full fixed top-0">
-            <div className="flex justify-between items-center">
+        <div className="fixed top-0 w-full bg-gray-900 px-4 py-2 shadow-md">
+            <div className="flex items-center justify-between">
                 <div className="space-x-6">
                     <Link name="Home" path="/home" />
                     <Link name="Friends" path="/friends" />
                     <Link name="Courses" path="/courses" />
                 </div>
                 <div className="relative">
-                    <img
-                        src={user.picture}  
-                        alt="Profile"
-                        className="w-8 h-8 rounded-full border-2 border-gray-700"
-                    />
+                    <img src={user.picture} alt="Profile" className="h-8 w-8 rounded-full border-2 border-gray-700" />
                 </div>
             </div>
         </div>

@@ -22,7 +22,7 @@ function AuthProvider({ children }) {
 
     async function login(details) {
         // Retrieve token from Chrome's cache
-        const { token }  = await chrome.identity.getAuthToken(details); 
+        const { token } = await chrome.identity.getAuthToken(details);
 
         try {
             // Check cache first for user details
@@ -38,9 +38,8 @@ function AuthProvider({ children }) {
                 // Cache valid for 1 day
                 await chrome.storage.local.set({
                     [token]: { user, expiry: Date.now() + 86400000 }
-                }); 
-            }
-            else {
+                });
+            } else {
                 user = cached[token].user;
             }
             setUser(user);
@@ -50,22 +49,16 @@ function AuthProvider({ children }) {
             if (redirect) {
                 await chrome.storage.session.remove("redirect");
                 navigate("/courses", { state: { course: redirect } });
-            }
-            else {
+            } else {
                 navigate("/home");
             }
-        }
-        catch (err) {
+        } catch (err) {
             console.error(err);
             alerts.error("Couldn't contact Google servers");
         }
     }
 
-    return (
-        <AuthContext.Provider value={{ user, login }}>
-            {children}
-        </AuthContext.Provider>
-    );
+    return <AuthContext.Provider value={{ user, login }}>{children}</AuthContext.Provider>;
 }
 
 export default AuthProvider;

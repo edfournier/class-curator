@@ -1,10 +1,9 @@
 import { render, screen, fireEvent } from "@testing-library/react";
-import FormField from "../components/FormField"; 
+import FormField from "../components/FormField";
 
 const mockOnChange = jest.fn();
 
 describe("FormField Component", () => {
-
     test("calls onChange handler when input is modified", () => {
         render(<FormField label="username" value="" onChange={mockOnChange} />);
 

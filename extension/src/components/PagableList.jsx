@@ -4,7 +4,7 @@ import { useState } from "react";
 /**
  * Displays a paginated list of entries, with built in pager for navigation
  */
-function PagableList({ entries, onClick, mainKey, subKey, emptyMessage }) {   
+function PagableList({ entries, onClick, mainKey, subKey, emptyMessage }) {
     const [page, setPage] = useState(1); // Current visible page
 
     const maxTiles = 4;
@@ -22,11 +22,11 @@ function PagableList({ entries, onClick, mainKey, subKey, emptyMessage }) {
                 {entries.slice(first, last).map((entry) => (
                     <li
                         key={entry[subKey]}
-                        className="flex items-center justify-between p-3 border border-gray-700 hover:bg-gray-700 rounded-lg cursor-pointer"
+                        className="flex cursor-pointer items-center justify-between rounded-lg border border-gray-700 p-3 hover:bg-gray-700"
                         onClick={() => onClick(entry)}
                     >
-                        <span className="text-sm font-medium mr-1">{entry[mainKey]}</span>
-                        <span className="text-xs text-gray-400 text-right">{entry[subKey]}</span>
+                        <span className="mr-1 text-sm font-medium">{entry[mainKey]}</span>
+                        <span className="text-right text-xs text-gray-400">{entry[subKey]}</span>
                     </li>
                 ))}
             </ul>

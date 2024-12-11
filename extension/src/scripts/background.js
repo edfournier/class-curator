@@ -6,6 +6,6 @@ chrome.runtime.onMessage.addListener(async (message) => {
          * to wait until recieving end is open before sending a message
          */
         await chrome.storage.session.set({ redirect: message.course });
-        chrome.action.openPopup(); 
+        chrome.action.openPopup();
     }
 });

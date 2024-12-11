@@ -5,10 +5,10 @@ import { ImSpinner10 } from "react-icons/im";
  */
 function Spinner() {
     return (
-        <div className="flex items-center justify-center h-screen">
+        <div className="flex h-screen items-center justify-center">
             <ImSpinner10
                 aria-label="loading-spinner"
-                className="text-indigo-500 animate-spin"
+                className="animate-spin text-indigo-500"
                 style={{ fontSize: "48px" }}
             />
         </div>

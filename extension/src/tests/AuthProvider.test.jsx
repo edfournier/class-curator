@@ -6,34 +6,34 @@ import { useAlerts } from "../providers/AlertProvider";
 // Mocks chrome API
 global.chrome = {
     identity: {
-        getAuthToken: jest.fn(),
+        getAuthToken: jest.fn()
     },
     storage: {
         local: {
             get: jest.fn(),
             set: jest.fn(),
-            clear: jest.fn(),
+            clear: jest.fn()
         },
         session: {
             get: jest.fn(),
-            remove: jest.fn(),
-        },
-    },
+            remove: jest.fn()
+        }
+    }
 };
 
 const mockUseNavigate = jest.fn();
 
-const mockAlerts = { 
-    error: jest.fn(), 
-    info: jest.fn() 
+const mockAlerts = {
+    error: jest.fn(),
+    info: jest.fn()
 };
 
 jest.mock("../providers/AlertProvider", () => ({
-    useAlerts: jest.fn(),
+    useAlerts: jest.fn()
 }));
 
 jest.mock("react-router-dom", () => ({
-    useNavigate: () => mockUseNavigate,
+    useNavigate: () => mockUseNavigate
 }));
 
 jest.mock("axios");
@@ -68,10 +68,14 @@ describe("AuthProvider", () => {
         // Should navigate to /course with some-course state
         const button = screen.getByText("Login");
         fireEvent.click(button);
-        await waitFor(() => expect(axios.get).toHaveBeenCalledWith("https://www.googleapis.com/oauth2/v3/userinfo", {
-            headers: { Authorization: "Bearer mockToken" },
-        }));
-        await waitFor(() => expect(mockUseNavigate).toHaveBeenCalledWith("/courses", { state: { course: "some-course" } }));
+        await waitFor(() =>
+            expect(axios.get).toHaveBeenCalledWith("https://www.googleapis.com/oauth2/v3/userinfo", {
+                headers: { Authorization: "Bearer mockToken" }
+            })
+        );
+        await waitFor(() =>
+            expect(mockUseNavigate).toHaveBeenCalledWith("/courses", { state: { course: "some-course" } })
+        );
     });
 
     test("logs in successfully and navigates correctly without redirect", async () => {
@@ -87,12 +91,12 @@ describe("AuthProvider", () => {
     });
 
     test("handles user info retrieval failure and shows error alert", async () => {
-        const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+        const consoleErrorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
         // E.g if google is down
-        axios.get.mockRejectedValue(new Error("Mock error")); 
+        axios.get.mockRejectedValue(new Error("Mock error"));
         chrome.identity.getAuthToken.mockResolvedValue({ token: "mockToken" });
-        chrome.storage.local.get.mockResolvedValue({ mockToken: { user: null, expiry: 0 } }); 
-        
+        chrome.storage.local.get.mockResolvedValue({ mockToken: { user: null, expiry: 0 } });
+
         // Hit login and see if error triggers
         const button = screen.getByText("Login");
         fireEvent.click(button);

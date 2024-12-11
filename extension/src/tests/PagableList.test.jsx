@@ -8,19 +8,13 @@ const mockEntries = [
     { name: "Item 3", desc: "Desc 3" },
     { name: "Item 4", desc: "Desc 4" },
     { name: "Item 5", desc: "Desc 5" },
-    { name: "Item 6", desc: "Desc 6" },
+    { name: "Item 6", desc: "Desc 6" }
 ];
 
 describe("PagableList Component", () => {
     test("renders empty message when no entries", () => {
         render(
-            <PagableList
-                entries={[]}
-                onClick={mockOnClick}
-                mainKey="name"
-                subKey="desc"
-                emptyMessage="No entries"
-            />
+            <PagableList entries={[]} onClick={mockOnClick} mainKey="name" subKey="desc" emptyMessage="No entries" />
         );
 
         expect(screen.getByText("No entries")).toBeInTheDocument();

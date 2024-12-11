@@ -4,22 +4,22 @@ import { getUserInterests } from "../api/user";
 import { useAlerts } from "../providers/AlertProvider";
 
 jest.mock("../api/user", () => ({
-    getUserInterests: jest.fn(),
+    getUserInterests: jest.fn()
 }));
 
 jest.mock("../providers/AlertProvider", () => ({
-    useAlerts: jest.fn(),
+    useAlerts: jest.fn()
 }));
 
-const mockAlerts = { 
-    error: jest.fn(), 
-    info: jest.fn() 
+const mockAlerts = {
+    error: jest.fn(),
+    info: jest.fn()
 };
 
 const mockFriend = {
     id: "1",
     username: "edfournier@umass.edu",
-    displayName: "Eric Fournier",
+    displayName: "Eric Fournier"
 };
 
 const mockUserInterests = [
@@ -58,7 +58,7 @@ describe("FriendCard", () => {
     });
 
     test("displays error when failed to fetch friend's interests", async () => {
-        const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+        const consoleErrorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
         getUserInterests.mockRejectedValue(new Error("Mock error"));
 
         render(

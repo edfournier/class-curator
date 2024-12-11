@@ -3,10 +3,10 @@
  */
 async function getAuthCode() {
     const params = new URLSearchParams({
-        response_type: "code",  
+        response_type: "code",
         client_id: chrome.runtime.getManifest().oauth2.client_id,
         redirect_uri: chrome.identity.getRedirectURL(),
-        scope: chrome.runtime.getManifest().oauth2.scopes.join(" "),  
+        scope: chrome.runtime.getManifest().oauth2.scopes.join(" "),
         prompt: "consent",
         access_type: "offline" // Needed to get refresh token
     });
@@ -18,6 +18,6 @@ async function getAuthCode() {
     });
 
     // Parse code from redirect URL
-    const url = new URL(redirectURL)
+    const url = new URL(redirectURL);
     return new URLSearchParams(url.search).get("code");
 }

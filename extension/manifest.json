@@ -7,7 +7,7 @@
     },
     "oauth2": {
         "client_id": "479457844079-2ufmg67gkrod0j79pqr85jk7gd38e03u.apps.googleusercontent.com",
-        "scopes":["email", "profile"]
+        "scopes": ["email", "profile"]
     },
     "permissions": ["identity", "storage"],
     "content_scripts": [

@@ -5,11 +5,11 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Legend } from "recharts";
  */
 const CourseRatingChart = ({ data }) => {
     if (data) {
-        data = data.map(item => {
+        data = data.map((item) => {
             // Create key from semester and year: e.g. F-21
             return {
                 ...item,
-                key: `${item.session.semester.charAt(0)}-${item.session.year % 100}`,
+                key: `${item.session.semester.charAt(0)}-${item.session.year % 100}`
             };
         });
 
@@ -26,7 +26,7 @@ const CourseRatingChart = ({ data }) => {
         <LineChart data={data} width={285} height={150}>
             <CartesianGrid />
             <XAxis dataKey="key" />
-            <YAxis domain={[0, 5]} width={0}/>
+            <YAxis domain={[0, 5]} width={0} />
             <Legend />
             <Line type="monotone" dataKey="helpfulness" stroke="#4caf50" name="Quality" dot={false} />
             <Line type="monotone" dataKey="difficulty" stroke="#f44336" name="Difficulty" dot={false} />

@@ -10,19 +10,27 @@ jest.mock("../providers/AuthProvider", () => {
 describe("Navbar Component", () => {
     useAuth.mockReturnValue({
         user: {
-            picture: "https://via.placeholder.com/150",
-        },
+            picture: "https://via.placeholder.com/150"
+        }
     });
 
     test("renders all navigation links", () => {
-        render(<MemoryRouter><Navbar /></MemoryRouter>);
+        render(
+            <MemoryRouter>
+                <Navbar />
+            </MemoryRouter>
+        );
         expect(screen.getByText("Home")).toBeInTheDocument();
         expect(screen.getByText("Friends")).toBeInTheDocument();
         expect(screen.getByText("Courses")).toBeInTheDocument();
     });
 
     test("renders user profile picture", () => {
-        render(<MemoryRouter><Navbar /></MemoryRouter>);
+        render(
+            <MemoryRouter>
+                <Navbar />
+            </MemoryRouter>
+        );
 
         // Renders rrofile picture from useAuth
         const profileImg = screen.getByAltText("Profile");
@@ -31,7 +39,11 @@ describe("Navbar Component", () => {
     });
 
     test("applies correct classes to active link", () => {
-        render(<MemoryRouter><Navbar /></MemoryRouter>);
+        render(
+            <MemoryRouter>
+                <Navbar />
+            </MemoryRouter>
+        );
         const homeLink = screen.getByText("Home");
 
         // Active link should be highlighted

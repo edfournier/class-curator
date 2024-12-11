@@ -14,28 +14,29 @@
     }
 
     button {
-        @apply px-4 py-2 bg-indigo-500 rounded-lg hover:bg-indigo-600 active:scale-95;
+        @apply rounded-lg bg-indigo-500 px-4 py-2 hover:bg-indigo-600 active:scale-95;
     }
 
-    select, input {
-        @apply p-2 text-slate-950 bg-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500;
+    select,
+    input {
+        @apply rounded-md bg-gray-100 p-2 text-slate-950 focus:outline-none focus:ring-2 focus:ring-indigo-500;
     }
 
     h1 {
-        @apply text-lg font-semibold mb-3 border-b-[1px] border-gray-700;
+        @apply mb-3 border-b-[1px] border-gray-700 text-lg font-semibold;
     }
 
     h2 {
-        @apply border-b-[1px] border-gray-700 text-lg font-bold 
+        @apply border-b-[1px] border-gray-700 text-lg font-bold;
     }
 
     .card {
-        @apply bg-gray-900 p-3 rounded-md border-[1px] border-gray-700;
+        @apply rounded-md border-[1px] border-gray-700 bg-gray-900 p-3;
     }
 
     ::-webkit-scrollbar {
         display: none;
-        -ms-overflow-style: none;  
-        scrollbar-width: none; 
+        -ms-overflow-style: none;
+        scrollbar-width: none;
     }
 }

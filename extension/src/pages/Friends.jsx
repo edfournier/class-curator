@@ -14,9 +14,9 @@ import { getCurrentUserInterests } from "../api/user";
 function Friends() {
     const alerts = useAlerts();
     const [friends, setFriends] = useState([]);
-    const [friend, setFriend] = useState(null);             // Current friend shown in card view
-    const [email, setEmail] = useState("");                 // Target of friend request
-    const [requests, setRequests] = useState([]);           // Incoming friend requests
+    const [friend, setFriend] = useState(null); // Current friend shown in card view
+    const [email, setEmail] = useState(""); // Target of friend request
+    const [requests, setRequests] = useState([]); // Incoming friend requests
     const [userInterests, setUserInterests] = useState([]); // Interests of logged in user
 
     async function handleSendRequest() {
@@ -24,15 +24,13 @@ function Friends() {
             // Check email isn't invalid
             if (!email.includes("@umass.edu")) {
                 alerts.error("Please enter a valid UMass email, e.g. edfournier@umass.edu");
-            }
-            else {
+            } else {
                 // Notify backend of new request
                 await postFriendRequest(email);
                 alerts.info(`Sent request to ${email}!`);
             }
             setEmail("");
-        }
-        catch (err) {
+        } catch (err) {
             console.error(err);
             alerts.error("Failed to send friend request");
         }
@@ -48,9 +46,8 @@ function Friends() {
             }
 
             // Show next request
-            setRequests(requests.slice(1)); 
-        }
-        catch (err) {
+            setRequests(requests.slice(1));
+        } catch (err) {
             console.error(err);
             alerts.error("Failed to respond to request, please try again");
         }
@@ -63,8 +60,7 @@ function Friends() {
             setFriends(friends.filter(({ username }) => username !== friend.username));
             setFriend(null);
             alerts.info(`Unfriended ${friend.username}!`);
-        }
-        catch (err) {
+        } catch (err) {
             console.error(err);
             alerts.error("Failed to unfriend, please try again");
         }
@@ -73,15 +69,16 @@ function Friends() {
     useEffect(() => {
         async function load() {
             try {
-                // Load user's friends and requests 
-                const [friends, requests, userInterests] = await Promise.all(
-                    [getFriends(), getIncomingRequests(), getCurrentUserInterests()]
-                );
+                // Load user's friends and requests
+                const [friends, requests, userInterests] = await Promise.all([
+                    getFriends(),
+                    getIncomingRequests(),
+                    getCurrentUserInterests()
+                ]);
                 setFriends(friends);
                 setRequests(requests);
                 setUserInterests(userInterests);
-            }
-            catch (err) {
+            } catch (err) {
                 console.error(err);
                 alerts.error("Failed to load user's friends");
             }
@@ -93,51 +90,52 @@ function Friends() {
     return (
         <>
             <h1>Friend Requests</h1>
-            <SubmitBox 
+            <SubmitBox
                 label={"send"}
-                value={email} 
-                onChange={(e) => setEmail(e.target.value)} 
-                onClick={handleSendRequest} 
-                icon={<BsSendFill />} 
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                onClick={handleSendRequest}
+                icon={<BsSendFill />}
                 hint={"Enter a UMass email address..."}
             />
-            {requests.length > 0 && 
-                <div className="bg-gray-900 p-3 rounded-md border-[1px] border-gray-700 mb-2">
-                    <div className="flex justify-between items-center">
+            {requests.length > 0 && (
+                <div className="mb-2 rounded-md border-[1px] border-gray-700 bg-gray-900 p-3">
+                    <div className="flex items-center justify-between">
                         <span className="text-sm font-medium">{requests[0].username}</span>
                         <div className="flex space-x-3">
                             <FaCheck
                                 aria-label="accept"
-                                className="text-green-500 cursor-pointer hover:text-green-600"
+                                className="cursor-pointer text-green-500 hover:text-green-600"
                                 onClick={() => handleDecideRequest(true)}
                             />
                             <FaTimes
                                 aria-label="deny"
-                                className="text-red-500 cursor-pointer hover:text-red-600"
+                                className="cursor-pointer text-red-500 hover:text-red-600"
                                 onClick={() => handleDecideRequest(false)}
                             />
                         </div>
                     </div>
                 </div>
-            }
+            )}
 
             <h1>Your Friends</h1>
-            {friend 
+            {friend ? (
                 // Either render selected friend's card or the friends list
-                ? <FriendCard 
-                    friend={friend} 
+                <FriendCard
+                    friend={friend}
                     userInterests={userInterests}
-                    onClose={() => setFriend(null)} 
+                    onClose={() => setFriend(null)}
                     onUnfriend={handleUnfriend}
                 />
-                : <PagableList 
-                    entries={friends} 
-                    onClick={setFriend} 
+            ) : (
+                <PagableList
+                    entries={friends}
+                    onClick={setFriend}
                     mainKey={"displayName"}
                     subKey={"username"}
                     emptyMessage={"You have no friends!"}
                 />
-            }
+            )}
         </>
     );
 }

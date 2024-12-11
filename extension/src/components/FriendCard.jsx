@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { FaTimes } from "react-icons/fa"; 
+import { FaTimes } from "react-icons/fa";
 import { getUserInterests } from "../api/user";
 import { useAlerts } from "../providers/AlertProvider";
 
@@ -10,7 +10,7 @@ function FriendCard({ friend, userInterests, onClose, onUnfriend }) {
     const alerts = useAlerts();
     const [friendInterests, setFriendInterests] = useState([]);
 
-     // Cleaner to display just first name
+    // Cleaner to display just first name
     const firstName = friend.displayName.split(" ")[0];
 
     useEffect(() => {
@@ -24,8 +24,7 @@ function FriendCard({ friend, userInterests, onClose, onUnfriend }) {
                     interest.isCommon = userInterests.some(({ code }) => code === interest.code);
                 }
                 setFriendInterests(friendInterests);
-            } 
-            catch (err) {
+            } catch (err) {
                 console.error(err);
                 alerts.error("Failed to get friend's interests");
             }
@@ -42,9 +41,10 @@ function FriendCard({ friend, userInterests, onClose, onUnfriend }) {
             </div>
             <h2 className="mb-3 mt-2">{firstName}'s Interests</h2>
             <ul className="mb-6 space-y-1">
-                {friendInterests.length === 0 
-                    ? <span className="font-semibold text-indigo-200">{firstName} has no interests!</span>
-                    : friendInterests.map((interest) => {
+                {friendInterests.length === 0 ? (
+                    <span className="font-semibold text-indigo-200">{firstName} has no interests!</span>
+                ) : (
+                    friendInterests.map((interest) => {
                         return (
                             <li key={interest.code}>
                                 <span
@@ -53,11 +53,11 @@ function FriendCard({ friend, userInterests, onClose, onUnfriend }) {
                                 >
                                     {interest.name}
                                 </span>
-                                <span className="text-gray-400 ml-3">{interest.code}</span>
+                                <span className="ml-3 text-gray-400">{interest.code}</span>
                             </li>
                         );
                     })
-                }
+                )}
             </ul>
             <div className="flex justify-center">
                 <button onClick={onUnfriend} className="w-20 hover:bg-red-500">

@@ -1,6 +1,12 @@
 import { useState, useEffect } from "react";
-import { FaTimes, FaThumbsUp, FaThumbsDown, FaRegThumbsUp, FaRegThumbsDown } from "react-icons/fa"; 
-import { getCourseDetails, getCourseInsights, putCourseInterest, deleteCourseInterest, postCourseRating } from "../api/courses";
+import { FaTimes, FaThumbsUp, FaThumbsDown, FaRegThumbsUp, FaRegThumbsDown } from "react-icons/fa";
+import {
+    getCourseDetails,
+    getCourseInsights,
+    putCourseInterest,
+    deleteCourseInterest,
+    postCourseRating
+} from "../api/courses";
 import { useAlerts } from "../providers/AlertProvider";
 import CourseRatingChart from "./CourseRatingChart";
 
@@ -9,14 +15,14 @@ import CourseRatingChart from "./CourseRatingChart";
  */
 function CourseCard({ course, onClose }) {
     const alerts = useAlerts();
-    const [vote, setVote] = useState(0);                        // -1 for down, 1 for up, 0 for undecided
-    const [isInterested, setIsInterested] = useState(false);    // Whether the user is interested in the course
-    const [details, setDetails] = useState({});                 // Description, upvotes, downvotes, etc.
-    const [insights, setInsights] = useState({});               // Data for graph and professor ranking
+    const [vote, setVote] = useState(0); // -1 for down, 1 for up, 0 for undecided
+    const [isInterested, setIsInterested] = useState(false); // Whether the user is interested in the course
+    const [details, setDetails] = useState({}); // Description, upvotes, downvotes, etc.
+    const [insights, setInsights] = useState({}); // Data for graph and professor ranking
 
     // Handles voting on the course, allowing users to like or dislike.
     async function handleVote(value) {
-        try {   
+        try {
             const newVote = value === vote ? 0 : value;
             await postCourseRating(course.code, newVote);
             setDetails({
@@ -26,8 +32,7 @@ function CourseCard({ course, onClose }) {
                 downvotes: details.downvotes + (vote === -1 ? -1 : 0) + (newVote === -1 ? 1 : 0)
             });
             setVote(newVote);
-        }
-        catch (err) {
+        } catch (err) {
             console.error(err);
             alerts.error("Failed to register rating, please try again");
         }
@@ -39,13 +44,11 @@ function CourseCard({ course, onClose }) {
             // Send corresponding request
             if (!isInterested) {
                 await putCourseInterest(course.code);
-            }
-            else {
+            } else {
                 await deleteCourseInterest(course.code);
             }
-            setIsInterested(!isInterested); 
-        }
-        catch (err) {
+            setIsInterested(!isInterested);
+        } catch (err) {
             console.error(err);
             alerts.error("Failed to register interest, please try again");
         }
@@ -55,7 +58,7 @@ function CourseCard({ course, onClose }) {
     useEffect(() => {
         async function load() {
             try {
-                // Get details and insights for clicked course 
+                // Get details and insights for clicked course
                 const [details, insights] = await Promise.all([
                     getCourseDetails(course.code),
                     getCourseInsights(course.code)
@@ -64,8 +67,7 @@ function CourseCard({ course, onClose }) {
                 setDetails(details);
                 setInsights(insights);
                 setIsInterested(details.interested);
-            }
-            catch (err) {
+            } catch (err) {
                 console.error(err);
                 alerts.error("Failed to get course details and insights");
             }
@@ -95,30 +97,35 @@ function CourseCard({ course, onClose }) {
                     <span>{details.downvotes}</span>
                 </div>
             </div>
-            <p className="flex-grow mb-2">{details.course?.description}</p>
+            <p className="mb-2 flex-grow">{details.course?.description}</p>
 
             <h2 className="mb-3 mt-2">Historical Data</h2>
-            <CourseRatingChart data={insights.ratingHistory} /> 
+            <CourseRatingChart data={insights.ratingHistory} />
 
             <h2 className="mt-2">Professor Rankings</h2>
-            <em className="mt-1">(Ratings out of 10, reward those with consistently high scores across multiple sessions)</em>
+            <em className="mt-1">
+                (Ratings out of 10, reward those with consistently high scores across multiple sessions)
+            </em>
             <ul className="mt-1">
-                {insights.profRatings && Object.keys(insights.profRatings).length > 0
-                    ? Object.keys(insights.profRatings).map(prof => {
+                {insights.profRatings && Object.keys(insights.profRatings).length > 0 ? (
+                    Object.keys(insights.profRatings).map((prof) => {
                         const quality = insights.profRatings[prof];
-                        return <li key={prof}>
-                            <span className={"font-semibold text-indigo-500"}>{prof}</span>
-                            <span className="text-gray-400"> {quality}</span>
-                        </li>
+                        return (
+                            <li key={prof}>
+                                <span className={"font-semibold text-indigo-500"}>{prof}</span>
+                                <span className="text-gray-400"> {quality}</span>
+                            </li>
+                        );
                     })
-                    : <span className="font-semibold text-indigo-200">No professor rankings yet!</span>
-                }
+                ) : (
+                    <span className="font-semibold text-indigo-200">No professor rankings yet!</span>
+                )}
             </ul>
             <div className="mt-4 flex justify-center">
                 <button
                     aria-label="interest"
                     onClick={handleInterest}
-                    className={isInterested ? "py-1" : "py-1 bg-gray-600 text-gray-300 hover:bg-gray-500"}
+                    className={isInterested ? "py-1" : "bg-gray-600 py-1 text-gray-300 hover:bg-gray-500"}
                 >
                     I'm Interested!
                 </button>

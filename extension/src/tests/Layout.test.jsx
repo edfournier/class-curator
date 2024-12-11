@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import Layout from "../components/Layout"; 
+import Layout from "../components/Layout";
 
 jest.mock("../components/Navbar", () => () => <div>Navbar</div>);
 
@@ -12,7 +12,7 @@ describe("Layout Component", () => {
         );
     });
 
-    test("renders Navbar component", () => {        
+    test("renders Navbar component", () => {
         expect(screen.getByText("Navbar")).toBeInTheDocument();
     });
 

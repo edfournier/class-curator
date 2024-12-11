@@ -8,7 +8,7 @@ const mockUserDetails = {
     major: "Computer Science",
     minor: "Linguistics",
     gradSession: { year: 2025, semester: "SPRING" },
-    tags: "AI,Data Science",
+    tags: "AI,Data Science"
 };
 
 const mockRecommendations = {
@@ -17,22 +17,22 @@ const mockRecommendations = {
     peers: [{ course: { code: "COMPSCI 687" }, networkCount: 2 }]
 };
 
-const mockAlerts = { 
-    error: jest.fn(), 
-    info: jest.fn() 
+const mockAlerts = {
+    error: jest.fn(),
+    info: jest.fn()
 };
 
 jest.mock("../api/user", () => ({
     getUserDetails: jest.fn(),
-    putUserDetails: jest.fn(),
+    putUserDetails: jest.fn()
 }));
 
 jest.mock("../api/recommendations", () => ({
-    getRecommendations: jest.fn(),
+    getRecommendations: jest.fn()
 }));
 
 jest.mock("../providers/AlertProvider", () => ({
-    useAlerts: jest.fn(),
+    useAlerts: jest.fn()
 }));
 
 describe("Home", () => {
@@ -88,13 +88,13 @@ describe("Home", () => {
 
     test("saves user details and handles success", async () => {
         getUserDetails.mockResolvedValue(mockUserDetails);
-        putUserDetails.mockResolvedValue({}); 
+        putUserDetails.mockResolvedValue({});
         render(<Home />);
 
         const input = screen.getByPlaceholderText("Enter a tag describing your interests...");
         fireEvent.change(input, { target: { value: "New Tag" } });
         fireEvent.click(screen.getByLabelText("add-tag"));
-        
+
         const submitButton = screen.getByText("Save Changes");
         fireEvent.click(submitButton);
         await waitFor(() => expect(mockAlerts.info).toHaveBeenCalled());
@@ -105,7 +105,7 @@ describe("Home", () => {
             major: "Computer Science",
             minor: "Linguistics",
             gradSession: { year: 2025, semester: "SPRING" },
-            tags: "",
+            tags: ""
         });
         render(<Home />);
 
@@ -115,7 +115,7 @@ describe("Home", () => {
 
     test("handles save with no changes", async () => {
         render(<Home />);
-        
+
         const submitButton = screen.getByText("Save Changes");
         fireEvent.click(submitButton);
         await waitFor(() => expect(mockAlerts.info).toHaveBeenCalledTimes(0));
@@ -123,9 +123,9 @@ describe("Home", () => {
 
     test("saves user details and handles error", async () => {
         getUserDetails.mockResolvedValue(mockUserDetails);
-        putUserDetails.mockRejectedValue(new Error("Mock error")); 
+        putUserDetails.mockRejectedValue(new Error("Mock error"));
         render(<Home />);
-    
+
         const input = screen.getByPlaceholderText("Enter a tag describing your interests...");
         fireEvent.change(input, { target: { value: "New Tag" } });
         fireEvent.click(screen.getByLabelText("add-tag"));
@@ -134,7 +134,7 @@ describe("Home", () => {
         const submitButton = screen.getByText("Save Changes");
         fireEvent.click(submitButton);
         await waitFor(() => expect(mockAlerts.error).toHaveBeenCalled());
-    })
+    });
 
     test("shows error on saving user details", async () => {
         getUserDetails.mockResolvedValue(mockUserDetails);
@@ -144,7 +144,7 @@ describe("Home", () => {
         const input = screen.getByPlaceholderText("Enter a tag describing your interests...");
         fireEvent.change(input, { target: { value: "New Tag" } });
         fireEvent.click(screen.getByLabelText("add-tag"));
-        
+
         // Error handler should have fired
         const submitButton = screen.getByText("Save Changes");
         fireEvent.click(submitButton);
@@ -169,5 +169,4 @@ describe("Home", () => {
         fireEvent.click(button);
         await waitFor(() => expect(mockAlerts.error).toHaveBeenCalled());
     });
-
 });

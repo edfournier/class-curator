@@ -1,6 +1,6 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import SubmitBox from "../components/SubmitBox";
-import { FaSearch } from "react-icons/fa"; 
+import { FaSearch } from "react-icons/fa";
 
 const mockOnChange = jest.fn();
 const mockOnClick = jest.fn();
@@ -22,7 +22,7 @@ describe("SubmitBox Component", () => {
     test("renders input and button correctly", () => {
         expect(screen.getByPlaceholderText("Enter text")).toBeInTheDocument();
         expect(screen.getByRole("button")).toBeInTheDocument();
-        expect(screen.getByRole("button")).toContainHTML('<svg');
+        expect(screen.getByRole("button")).toContainHTML("<svg");
     });
 
     test("calls onChange when input value changes", () => {

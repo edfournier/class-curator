@@ -1,5 +1,5 @@
 import { render, screen, fireEvent } from "@testing-library/react";
-import AlertProvider, { useAlerts } from "../providers/AlertProvider"; 
+import AlertProvider, { useAlerts } from "../providers/AlertProvider";
 
 // Helper component to trigger alerts
 function TestComponent() {
