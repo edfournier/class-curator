@@ -1,5 +1,9 @@
 # Class Curator - A Spire Course Discovery Tool
 
+
+
+
+
 ## Introduction
 
 **Class Curator** is a Chrome extension designed to make the course discovery process easier, more intuitive, and more social for UMass Amherst students. Finding courses that match your interests and coordinating selections with friends can be tedious and confusing, especially when using SPIRE. Class Curator integrates seamlessly with SPIRE to help you:
@@ -15,16 +19,19 @@ This tool was developed by:
 - **Saloni Khatu**: [skhatu@umass.edu](mailto:skhatu@umass.edu)  
 - **Harsh Seth**: [hseth@umass.edu](mailto:hseth@umass.edu)  
 
+
+
+
 ## Installation Instructions
 
-Perform each of the following starting the project root:
+Perform each of the following at the project's root:
 
-1. **Populate the Database**
+1. **Populate the database**
 ```bash
 python ./db-setup/db_populate.py
 ```
 
-2. **Start the FAST API recommendation service**
+2. **Start the FastAPI recommendation service**
 ```bash
 cd ./fast-api
 pip install -r requirements.txt
@@ -45,32 +52,32 @@ npm i
 npm run build
 ```
 
-This final step builds a `dist` directory. After it's built, open Chrome, and navigate to `chrome://extensions/`. Then, enable `Developer Mode`, press `Load unpacked`, and load the `dist` directory on your machine. The extension will now be visible in Chrome's "Extensions" tab in the top-right of the browser.
+This final step builds a `dist` directory in `extension`. After it's built, open Chrome, and navigate to `chrome://extensions/`. Then, enable `Developer Mode`, press `Load unpacked`, and load the `dist` directory on your machine. The extension will now be accessible in Chrome's "Extensions" tab in the top-right of the browser.
+
+
+
 
 ## Configuration
 
-1. **Spring Boot Configuration**
+1. **Spring Boot Configuration**:
 
-The Spring Boot backend requires some configurable settings. These can be modified in the `filename` file located at:
+2. **Extension Configuration**:
 
-```to be modified```
+3. **FastAPI Configuration**:
 
-2. **Chrome Extension Configuration**
 
-The Chrome extension has configurable API endpoints and settings. These are defined in:
 
-```to be modified```
-
-3. **FastAPI Configuration**
-The FastAPI server powers the recommendation service in the **Class Curator** project. This configuration guide provides details on setting up and customizing the FastAPI server for seamless integration.
 
 ## Datasets
-
 To generate insights and recommendations, the backend leverages historical review data from [Rate My Professor](https://www.ratemyprofessors.com/) and course data from Daniel Melanson's [Spire API](https://github.com/daniel-melanson/spire-api.melanson.dev). The scripts to generate these data sets, `rmp.py` and `spire.py` respectively, are found in `db-setup/scrape`. 
+
+
+
 
 ## Large Language Model Used
 The system uses the *all-MiniLM-L6-v2* model for generating recommendations and processing course-related data. This model provides efficient performance for tasks like semantic search and embedding generation.
 
-```bash
-pip install sentence-transformers
-```
+
+
+
+## Test Suites
