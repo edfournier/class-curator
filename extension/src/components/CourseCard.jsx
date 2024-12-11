@@ -4,12 +4,15 @@ import { getCourseDetails, getCourseInsights, putCourseInterest, deleteCourseInt
 import { useAlerts } from "../providers/AlertProvider";
 import CourseRatingChart from "./CourseRatingChart";
 
+/**
+ * Renders the course details in a card view
+ */
 function CourseCard({ course, onClose }) {
     const alerts = useAlerts();
-    const [vote, setVote] = useState(0); // -1 for down, 1 for up, 0 for undecided
-    const [isInterested, setIsInterested] = useState(false);  
-    const [details, setDetails] = useState({});
-    const [insights, setInsights] = useState({});
+    const [vote, setVote] = useState(0);                        // -1 for down, 1 for up, 0 for undecided
+    const [isInterested, setIsInterested] = useState(false);    // Whether the user is interested in the course
+    const [details, setDetails] = useState({});                 // Description, upvotes, downvotes, etc.
+    const [insights, setInsights] = useState({});               // Data for graph and professor ranking
 
     // Handles voting on the course, allowing users to like or dislike.
     async function handleVote(value) {
@@ -17,6 +20,7 @@ function CourseCard({ course, onClose }) {
             const newVote = value === vote ? 0 : value;
             await postCourseRating(course.code, newVote);
             setDetails({
+                // Update details accordingly so like counts change
                 ...details,
                 upvotes: details.upvotes + (vote === 1 ? -1 : 0) + (newVote === 1 ? 1 : 0),
                 downvotes: details.downvotes + (vote === -1 ? -1 : 0) + (newVote === -1 ? 1 : 0)

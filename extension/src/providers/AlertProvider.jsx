@@ -11,11 +11,13 @@ export function useAlerts() {
     return useContext(AlertContext);
 }
 
+/**
+ * Renders alert (error or info) and exposes an interface for other components to display them
+ */
 function AlertProvider({ children }) {
     const [alert, setAlert] = useState(null);
     const [showing, setShowing] = useState(false);
-    const timeoutRef = useRef(null);
-
+    const timeoutRef = useRef(null);               
     const duration = 3000; // Alerts last 3 seconds
 
     function showAlert(message, type) {

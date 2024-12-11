@@ -1,6 +1,6 @@
-// SubmitBox is a reusable input and button component for submitting text input.
-// It accepts props for value, onChange handler, onClick handler, a hint for the input, an icon for the button, and a label for accessibility.
-
+/**
+ * Renders an input field and a button to submit the value in the field
+ */
 function SubmitBox({ value, onChange, onClick, hint, icon, label }) {
     return (
         <>

@@ -7,15 +7,17 @@ import SubmitBox from "../components/SubmitBox";
 import PagableList from "../components/PagableList";
 import { useAlerts } from "../providers/AlertProvider";
 
+/**
+ * The main course page: renders course search and course information
+ */
 function Courses() {
     const alerts = useAlerts();
     const location = useLocation();
     const [course, setCourse] = useState(null);    // Details and insights of the course being shown in card view
     const [results, setResults] = useState(null);  // Search results from given query
-    const [query, setQuery] = useState(""); 
+    const [query, setQuery] = useState("");        // The current query in the search bar
 
-    // Handle case popup was opened from SPIRE
-
+    // Handle case where popup was opened from SPIRE
     const redirect = location?.state?.course;   
     if (redirect) {
         location.state.course = null;

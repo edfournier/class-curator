@@ -1,6 +1,7 @@
 import axios from "axios";
 
 function createExtensionButton(course) {
+    // Button that auto-opens the extension (i.e. redirect)
     const button = document.createElement("button");
     button.textContent = "🔍"; 
     button.style.marginLeft = "10px";
@@ -71,7 +72,7 @@ async function embed() {
             });
             return {
                 ...course,
-                name: courseDetail ? courseDetail.course.name : "Unknown Course", // It's possible our data is fully updated
+                name: courseDetail ? courseDetail.course.name : "Unknown Course", // It's possible our data isn't fully updated
                 upvotes: courseDetail ? courseDetail.upvotes : 0,
                 downvotes: courseDetail ? courseDetail.downvotes : 0
             };

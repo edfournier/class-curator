@@ -1,9 +1,9 @@
 import Pager from "../components/Pager";
 import { useState } from "react";
 
-// PagableList component displays a paginated list of entries.
-// It supports navigation through pages using the Pager component and allows item selection via clicks.
-
+/**
+ * Displays a paginated list of entries, with built in pager for navigation
+ */
 function PagableList({ entries, onClick, mainKey, subKey, emptyMessage }) {   
     const [page, setPage] = useState(1); // Current visible page
 

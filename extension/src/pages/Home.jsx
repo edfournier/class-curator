@@ -7,6 +7,9 @@ import { getUserDetails, putUserDetails } from "../api/user.js";
 import { getRecommendations } from "../api/recommendations.js";
 import Recommendations from "../components/Recommendations.jsx";
 
+/**
+ * The main home page: renders recommendations and user profile
+ */
 function Home() {
     const alerts = useAlerts();
     const [tags, setTags] = useState([]); 

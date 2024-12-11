@@ -1,10 +1,12 @@
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Legend } from "recharts";
 
-// CourseRatingChart displays a line chart with course rating data for helpfulness and difficulty.
+/**
+ * Displays a line chart with course rating data for helpfulness and difficulty.
+ */
 const CourseRatingChart = ({ data }) => {
     if (data) {
         data = data.map(item => {
-            // Create key from semester and year
+            // Create key from semester and year: e.g. F-21
             return {
                 ...item,
                 key: `${item.session.semester.charAt(0)}-${item.session.year % 100}`,

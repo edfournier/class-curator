@@ -8,6 +8,9 @@ import { useAlerts } from "../providers/AlertProvider";
 import { deleteFriend, getFriends, getIncomingRequests, postFriendRequest, postRequestDecision } from "../api/friends";
 import { getCurrentUserInterests } from "../api/user";
 
+/**
+ * The main friend page: renders friends and friend requests
+ */
 function Friends() {
     const alerts = useAlerts();
     const [friends, setFriends] = useState([]);

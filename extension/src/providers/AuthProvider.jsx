@@ -12,6 +12,9 @@ export function useAuth() {
     return useContext(AuthContext);
 }
 
+/**
+ * Handles initial auth and exposes interface for other components to get user details
+ */
 function AuthProvider({ children }) {
     const navigate = useNavigate();
     const [user, setUser] = useState(null);
