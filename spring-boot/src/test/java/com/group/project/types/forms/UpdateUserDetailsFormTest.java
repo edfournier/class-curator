@@ -17,7 +17,8 @@ public class UpdateUserDetailsFormTest {
         Optional<String> gradSemester = Optional.of("FALL");
 
         // Act
-        UpdateUserDetailsForm updateUserDetailsForm = new UpdateUserDetailsForm(major, minor, tags, gradYear, gradSemester);
+        UpdateUserDetailsForm updateUserDetailsForm = new UpdateUserDetailsForm(major, minor, tags, gradYear,
+                gradSemester);
 
         // Assert
         assertThat(updateUserDetailsForm.major.get()).isEqualTo(major.get());

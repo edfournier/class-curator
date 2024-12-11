@@ -126,7 +126,7 @@ public class FriendControllerTest {
         User f1 = new User();
         List<FriendRequest> receivedFriendRequests = List.of(new FriendRequest(f1, mockUser));
         when(friendRequestRepository.findByReceiver(mockUser)).thenReturn(receivedFriendRequests);
-        
+
         List<User> expectedFriendsList = List.of(f1);
 
         // Act
@@ -156,7 +156,7 @@ public class FriendControllerTest {
         // Act
         ResponseEntity res = friendController.acceptReceivedFriendRequest(mockUser, senderId);
 
-        //Assert
+        // Assert
         assertThat(res.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(res.getBody()).isEqualTo(null);
     }
@@ -176,7 +176,7 @@ public class FriendControllerTest {
         // Act
         ResponseEntity res = friendController.acceptReceivedFriendRequest(mockUser, senderId);
 
-        //Assert
+        // Assert
         assertThat(res.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
         assertThat(res.getBody()).isEqualTo(null);
     }
@@ -196,7 +196,7 @@ public class FriendControllerTest {
         // Act
         ResponseEntity res = friendController.acceptReceivedFriendRequest(mockUser, senderId);
 
-        //Assert
+        // Assert
         assertThat(res.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
         assertThat(res.getBody()).isEqualTo("Friendship already exists!");
     }
@@ -212,7 +212,7 @@ public class FriendControllerTest {
         // Act
         ResponseEntity res = friendController.acceptReceivedFriendRequest(mockUser, senderId);
 
-        //Assert
+        // Assert
         assertThat(res.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
         assertThat(res.getBody()).isEqualTo(null);
     }
@@ -235,7 +235,7 @@ public class FriendControllerTest {
         // Act
         ResponseEntity res = friendController.createFriendRequest(mockUser, targetUsername);
 
-        //Assert
+        // Assert
         assertThat(res.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(res.getBody()).isEqualTo(null);
     }
@@ -252,37 +252,40 @@ public class FriendControllerTest {
         when(friendRequestRepository.findBySenderAndReceiver(mockUser, targetUser)).thenReturn(Optional.empty());
         when(friendRequestRepository.findBySenderAndReceiver(targetUser, mockUser)).thenReturn(Optional.empty());
 
-
         // Act
         ResponseEntity res = friendController.createFriendRequest(mockUser, targetUsername);
 
-        //Assert
+        // Assert
         assertThat(res.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
         assertThat(res.getBody()).isEqualTo("Cannot send friend request to self");
     }
 
     // @Test
     // void createFriendRequestExistingFrChecks() throws Exception {
-    //     // Setup
-    //     User mockUser = new User();
-    //     mockUser._setId(0);
-    //     String targetUsername = "targetUsername";
-    //     int targetUserId = 2;
-    //     User targetUser = new User();
-    //     targetUser._setId(targetUserId);
-    //     FriendRequest frReq = new FriendRequest(targetUser, mockUser);
+    // // Setup
+    // User mockUser = new User();
+    // mockUser._setId(0);
+    // String targetUsername = "targetUsername";
+    // int targetUserId = 2;
+    // User targetUser = new User();
+    // targetUser._setId(targetUserId);
+    // FriendRequest frReq = new FriendRequest(targetUser, mockUser);
 
-    //     when(userRepository.findByUsername(targetUsername)).thenReturn(Optional.of(targetUser));
-    //     when(friendshipRepository.findByUser1AndUser2(any(), any())).thenReturn(Optional.empty());
-    //     when(friendRequestRepository.findBySenderAndReceiver(mockUser, targetUser)).thenReturn(Optional.empty());
-    //     when(friendRequestRepository.findBySenderAndReceiver(targetUser, mockUser)).thenReturn(Optional.of(frReq));
+    // when(userRepository.findByUsername(targetUsername)).thenReturn(Optional.of(targetUser));
+    // when(friendshipRepository.findByUser1AndUser2(any(),
+    // any())).thenReturn(Optional.empty());
+    // when(friendRequestRepository.findBySenderAndReceiver(mockUser,
+    // targetUser)).thenReturn(Optional.empty());
+    // when(friendRequestRepository.findBySenderAndReceiver(targetUser,
+    // mockUser)).thenReturn(Optional.of(frReq));
 
-    //     // Act
-    //     ResponseEntity res = friendController.createFriendRequest(mockUser, targetUsername);
+    // // Act
+    // ResponseEntity res = friendController.createFriendRequest(mockUser,
+    // targetUsername);
 
-    //     //Assert
-    //     assertThat(res.getStatusCode()).isEqualTo(HttpStatus.OK);
-    //     assertThat(res.getBody()).isEqualTo(null);
+    // //Assert
+    // assertThat(res.getStatusCode()).isEqualTo(HttpStatus.OK);
+    // assertThat(res.getBody()).isEqualTo(null);
     // }
 
     @Test
@@ -302,7 +305,7 @@ public class FriendControllerTest {
         // Act
         ResponseEntity res = friendController.createFriendRequest(mockUser, targetUsername);
 
-        //Assert
+        // Assert
         assertThat(res.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(res.getBody()).isEqualTo(null);
     }
@@ -323,7 +326,7 @@ public class FriendControllerTest {
         // Act
         ResponseEntity res = friendController.createFriendRequest(mockUser, targetUsername);
 
-        //Assert
+        // Assert
         assertThat(res.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
         assertThat(res.getBody()).isEqualTo("Friendship already exists!");
     }
@@ -343,7 +346,7 @@ public class FriendControllerTest {
         // Act
         ResponseEntity res = friendController.createFriendRequest(mockUser, targetUsername);
 
-        //Assert
+        // Assert
         assertThat(res.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
         assertThat(res.getBody()).isEqualTo(null);
     }
@@ -363,7 +366,7 @@ public class FriendControllerTest {
         // Act
         ResponseEntity res = friendController.deleteReceivedFriendRequest(mockUser, targetUserId);
 
-        //Assert
+        // Assert
         assertThat(res.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(res.getBody()).isEqualTo(null);
     }
@@ -383,7 +386,7 @@ public class FriendControllerTest {
         // Act
         ResponseEntity res = friendController.deleteReceivedFriendRequest(mockUser, targetUserId);
 
-        //Assert
+        // Assert
         assertThat(res.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
         assertThat(res.getBody()).isEqualTo(null);
     }
@@ -399,7 +402,7 @@ public class FriendControllerTest {
         // Act
         ResponseEntity res = friendController.deleteReceivedFriendRequest(mockUser, targetUserId);
 
-        //Assert
+        // Assert
         assertThat(res.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
         assertThat(res.getBody()).isEqualTo(null);
     }

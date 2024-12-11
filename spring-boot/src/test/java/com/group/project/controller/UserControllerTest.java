@@ -40,7 +40,7 @@ public class UserControllerTest {
     }
 
     @Test
-    void getUserDetailsChecks(){
+    void getUserDetailsChecks() {
         // Setup
         PublicUserController controller = userController.new PublicUserController();
         int mockUserId = 1;
@@ -57,7 +57,7 @@ public class UserControllerTest {
     }
 
     @Test
-    void getMissingUserDetailsChecks(){
+    void getMissingUserDetailsChecks() {
         // Setup
         PublicUserController controller = userController.new PublicUserController();
         int mockUserId = 1;
@@ -73,15 +73,14 @@ public class UserControllerTest {
     }
 
     @Test
-    void getUserInterestsChecks(){
+    void getUserInterestsChecks() {
         // Setup
         PublicUserController controller = userController.new PublicUserController();
         int mockUserId = 1;
         User mockUser = new User();
         Course course1 = new Course();
         List<UserInterest> userInterests = List.of(
-            new UserInterest(mockUser, course1)
-        );
+                new UserInterest(mockUser, course1));
 
         List<Course> expected = List.of(course1);
 
@@ -97,7 +96,7 @@ public class UserControllerTest {
     }
 
     @Test
-    void getMissingUserInterestsChecks(){
+    void getMissingUserInterestsChecks() {
         // Setup
         PublicUserController controller = userController.new PublicUserController();
         int mockUserId = 1;
@@ -113,7 +112,7 @@ public class UserControllerTest {
     }
 
     @Test
-    void getCurrentUserDetailsChecks(){
+    void getCurrentUserDetailsChecks() {
         // Setup
         PrivateUserController controller = userController.new PrivateUserController();
         User mockUser = new User();
@@ -127,17 +126,16 @@ public class UserControllerTest {
     }
 
     @Test
-    void allEmpty_updateCurrentUserDetailsChecks(){
+    void allEmpty_updateCurrentUserDetailsChecks() {
         // Setup
         PrivateUserController controller = userController.new PrivateUserController();
         User mockUser = new User();
         UpdateUserDetailsForm formData = new UpdateUserDetailsForm(
-            Optional.empty(), 
-            Optional.empty(), 
-            Optional.empty(), 
-            Optional.empty(), 
-            Optional.empty()
-        );
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty());
 
         // Act
         ResponseEntity res = controller.updateCurrentUserDetails(mockUser, formData);
@@ -148,18 +146,17 @@ public class UserControllerTest {
     }
 
     @Test
-    void major_updateCurrentUserDetailsChecks(){
+    void major_updateCurrentUserDetailsChecks() {
         // Setup
         PrivateUserController controller = userController.new PrivateUserController();
         User mockUser = new User();
         String major = "Updated Major";
         UpdateUserDetailsForm formData = new UpdateUserDetailsForm(
-            Optional.of(major), 
-            Optional.empty(), 
-            Optional.empty(), 
-            Optional.empty(), 
-            Optional.empty()
-        );
+                Optional.of(major),
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty());
 
         when(userRepository.save(mockUser)).thenReturn(mockUser);
 
@@ -174,18 +171,17 @@ public class UserControllerTest {
     }
 
     @Test
-    void minor_updateCurrentUserDetailsChecks(){
+    void minor_updateCurrentUserDetailsChecks() {
         // Setup
         PrivateUserController controller = userController.new PrivateUserController();
         User mockUser = new User();
         String minor = "Updated minor";
         UpdateUserDetailsForm formData = new UpdateUserDetailsForm(
-            Optional.empty(), 
-            Optional.of(minor),
-            Optional.empty(), 
-            Optional.empty(), 
-            Optional.empty()
-        );
+                Optional.empty(),
+                Optional.of(minor),
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty());
 
         when(userRepository.save(mockUser)).thenReturn(mockUser);
 
@@ -200,18 +196,17 @@ public class UserControllerTest {
     }
 
     @Test
-    void tags_updateCurrentUserDetailsChecks(){
+    void tags_updateCurrentUserDetailsChecks() {
         // Setup
         PrivateUserController controller = userController.new PrivateUserController();
         User mockUser = new User();
         String tags = "Updated tags";
         UpdateUserDetailsForm formData = new UpdateUserDetailsForm(
-            Optional.empty(), 
-            Optional.empty(), 
-            Optional.of(tags),
-            Optional.empty(), 
-            Optional.empty()
-        );
+                Optional.empty(),
+                Optional.empty(),
+                Optional.of(tags),
+                Optional.empty(),
+                Optional.empty());
 
         when(userRepository.save(mockUser)).thenReturn(mockUser);
 
@@ -226,19 +221,18 @@ public class UserControllerTest {
     }
 
     @Test
-    void gradYear_updateCurrentUserDetailsChecks() throws Exception{
+    void gradYear_updateCurrentUserDetailsChecks() throws Exception {
         // Setup
         PrivateUserController controller = userController.new PrivateUserController();
         User mockUser = new User();
         mockUser.setGradSession(new UniversitySession(2024, "FALL"));
         int gradYear = 2025;
         UpdateUserDetailsForm formData = new UpdateUserDetailsForm(
-            Optional.empty(), 
-            Optional.empty(), 
-            Optional.empty(), 
-            Optional.of(gradYear),
-            Optional.empty()
-        );
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty(),
+                Optional.of(gradYear),
+                Optional.empty());
 
         when(userRepository.save(mockUser)).thenReturn(mockUser);
 
@@ -253,19 +247,18 @@ public class UserControllerTest {
     }
 
     @Test
-    void gradSemester_updateCurrentUserDetailsChecks() throws Exception{
+    void gradSemester_updateCurrentUserDetailsChecks() throws Exception {
         // Setup
         PrivateUserController controller = userController.new PrivateUserController();
         User mockUser = new User();
         mockUser.setGradSession(new UniversitySession(2024, "FALL"));
         String gradSemester = "SPRING";
         UpdateUserDetailsForm formData = new UpdateUserDetailsForm(
-            Optional.empty(), 
-            Optional.empty(), 
-            Optional.empty(), 
-            Optional.empty(),
-            Optional.of(gradSemester)
-        );
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty(),
+                Optional.of(gradSemester));
 
         when(userRepository.save(mockUser)).thenReturn(mockUser);
 
@@ -280,19 +273,18 @@ public class UserControllerTest {
     }
 
     @Test
-    void failingRequest_updateCurrentUserDetailsChecks() throws Exception{
+    void failingRequest_updateCurrentUserDetailsChecks() throws Exception {
         // Setup
         PrivateUserController controller = userController.new PrivateUserController();
         User mockUser = new User();
         mockUser.setGradSession(new UniversitySession(2024, "FALL"));
         String gradSemester = "NOT-FALL";
         UpdateUserDetailsForm formData = new UpdateUserDetailsForm(
-            Optional.empty(), 
-            Optional.empty(), 
-            Optional.empty(), 
-            Optional.empty(),
-            Optional.of(gradSemester)
-        );
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty(),
+                Optional.of(gradSemester));
 
         when(userRepository.save(mockUser)).thenReturn(mockUser);
 
@@ -304,16 +296,14 @@ public class UserControllerTest {
         assertThat(res.getBody()).isEqualTo("Semester value isn't valid!");
     }
 
-
     @Test
-    void getCurrentUserInterestsChecks(){
+    void getCurrentUserInterestsChecks() {
         // Setup
         PrivateUserController controller = userController.new PrivateUserController();
         User mockUser = new User();
         Course course1 = new Course();
         List<UserInterest> userInterests = List.of(
-            new UserInterest(mockUser, course1)
-        );
+                new UserInterest(mockUser, course1));
 
         List<Course> expected = List.of(course1);
 

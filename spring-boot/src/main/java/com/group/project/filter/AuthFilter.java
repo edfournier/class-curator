@@ -89,7 +89,6 @@ public class AuthFilter extends OncePerRequestFilter {
         User user = userRepository.findByUsername(email).orElse(null);
         
         if (user == null) {
-            // TODO: Can check if user is Umass student
             String displayName = name;
             int defaultGradYear = Year.now().getValue() + 4;
             user = new User(email, displayName, new UniversitySession(defaultGradYear, defaultGradSemester),

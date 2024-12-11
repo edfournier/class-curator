@@ -11,7 +11,7 @@ public class UniversitySessionTest {
         // Setup
         int year = 2024;
         String semester = "FALL";
-        
+
         // Act
         UniversitySession universitySession = new UniversitySession();
         universitySession.setYear(year);
@@ -27,8 +27,9 @@ public class UniversitySessionTest {
         // Setup
         String semester = "NOT FALL";
         UniversitySession universitySession = new UniversitySession();
-        
+
         // Act (and Assert)
-        assertThatException().isThrownBy(() -> universitySession.setSemester(semester)).withMessage("Semester value isn't valid!");
+        assertThatException().isThrownBy(() -> universitySession.setSemester(semester))
+                .withMessage("Semester value isn't valid!");
     }
 }

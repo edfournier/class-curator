@@ -18,7 +18,7 @@ import com.group.project.repositories.FriendshipRepository;
 public class PeopleUtilsTest {
     @Mock
     private FriendshipRepository friendshipRepository;
-    
+
     @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);

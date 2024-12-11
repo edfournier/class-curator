@@ -70,11 +70,10 @@ public class RecommendationUtilsTest {
 
         // Act (and Assert)
         assertThat(RecommendationUtils.getSortedList(map, 3))
-        .containsExactly(
-            Map.entry("Three", 3),
-            Map.entry("Two", 2), 
-            Map.entry("One", 1)
-        );
+                .containsExactly(
+                        Map.entry("Three", 3),
+                        Map.entry("Two", 2),
+                        Map.entry("One", 1));
     }
 
     @Test
@@ -83,7 +82,8 @@ public class RecommendationUtilsTest {
         String rawTagRecServerResponseString = "{\"recommended_courses\":[]}";
 
         // Act
-        List<Course> courses = RecommendationUtils.getCoursesFromTagRecommendationsResponse(courseRepository, rawTagRecServerResponseString);
+        List<Course> courses = RecommendationUtils.getCoursesFromTagRecommendationsResponse(courseRepository,
+                rawTagRecServerResponseString);
 
         // Assert
         assertThat(courses).hasSize(0);
@@ -95,7 +95,8 @@ public class RecommendationUtilsTest {
         String rawTagRecServerResponseString = "{\"recommended_courses\":[}";
 
         // Act
-        List<Course> courses = RecommendationUtils.getCoursesFromTagRecommendationsResponse(courseRepository, rawTagRecServerResponseString);
+        List<Course> courses = RecommendationUtils.getCoursesFromTagRecommendationsResponse(courseRepository,
+                rawTagRecServerResponseString);
 
         // Assert
         assertThat(courses).hasSize(0);
@@ -110,7 +111,8 @@ public class RecommendationUtilsTest {
         when(courseRepository.findByCode(code1)).thenReturn(Optional.of(course1));
 
         // Act
-        List<Course> courses = RecommendationUtils.getCoursesFromTagRecommendationsResponse(courseRepository, rawTagRecServerResponseString);
+        List<Course> courses = RecommendationUtils.getCoursesFromTagRecommendationsResponse(courseRepository,
+                rawTagRecServerResponseString);
 
         // Assert
         assertThat(courses).contains(course1);
@@ -120,7 +122,7 @@ public class RecommendationUtilsTest {
     void tagRecommendationsCheck() {
         // Setup
         List<String> courseCodes = List.of("code1", "code2");
-        
+
         // Act
         TagRecommendations tagRecs = new RecommendationUtils.TagRecommendations(courseCodes);
 

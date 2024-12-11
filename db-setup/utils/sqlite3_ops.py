@@ -9,6 +9,7 @@ def purge_db(db_path: str) -> None:
 def open_db_connection(db_path: str) -> object:
     return sqlite3.connect(db_path)
 
+# Used to create queries for bulk insert operations ( See ../queries/manage_*.json files for templates)
 def construct_query_with_values(query_parts, records):
     values = []
     for record in records:

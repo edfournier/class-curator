@@ -34,9 +34,8 @@ public class CourseInsightsTest {
         UniversitySession universitySession1 = new UniversitySession(2024, "FALL");
         UniversitySession universitySession2 = new UniversitySession(2023, "FALL");
         List<AggrRating> aggrRatings = List.of(
-            new AggrRating(new UniClass(course, universitySession1, prof1), 4.0f, 4.0f),
-            new AggrRating(new UniClass(course, universitySession2, prof1), 4.0f, 2.0f)
-        );
+                new AggrRating(new UniClass(course, universitySession1, prof1), 4.0f, 4.0f),
+                new AggrRating(new UniClass(course, universitySession2, prof1), 4.0f, 2.0f));
 
         // Act
         CourseInsights courseInsights = new CourseInsights(aggrRatings);
@@ -57,10 +56,9 @@ public class CourseInsightsTest {
         String prof1 = "Prof One";
         String prof2 = "Prof Two";
         List<AggrRating> aggrRatings = List.of(
-            new AggrRating(new UniClass(course, new UniversitySession(), prof1), 4.0f, 4.0f),
-            new AggrRating(new UniClass(course, new UniversitySession(), prof1), 4.0f, 2.0f),
-            new AggrRating(new UniClass(course, new UniversitySession(), prof2), 4.0f, 4.0f)
-        );
+                new AggrRating(new UniClass(course, new UniversitySession(), prof1), 4.0f, 4.0f),
+                new AggrRating(new UniClass(course, new UniversitySession(), prof1), 4.0f, 2.0f),
+                new AggrRating(new UniClass(course, new UniversitySession(), prof2), 4.0f, 4.0f));
 
         // Act
         CourseInsights courseInsights = new CourseInsights(aggrRatings);

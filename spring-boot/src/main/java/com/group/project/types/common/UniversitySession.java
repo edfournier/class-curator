@@ -16,7 +16,7 @@ public class UniversitySession implements Serializable {
 
     public UniversitySession(int year, String semester) throws Exception {
         this.year = year;
-        UniversityStrings.validateSemester(semester);
+        UniversityStrings.validateSemester(semester); // reject invalid values
         this.semester = semester;
     }
 
@@ -25,7 +25,7 @@ public class UniversitySession implements Serializable {
     }
 
     public void setSemester(String semester) throws Exception {
-        UniversityStrings.validateSemester(semester);
+        UniversityStrings.validateSemester(semester); // reject invalid values
         this.semester = semester;
     }
 
