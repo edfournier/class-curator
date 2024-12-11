@@ -108,12 +108,11 @@ public class FriendControllerTest {
         User friend = new User();
         friend._setId(mockFriendId);
 
-        when(userRepository.findById(mockFriendId)).thenReturn(Optional.empty());
+        when(userRepository.findById(mockFriendId)).thenReturn(Optional.of(friend));
+        when(friendshipRepository.findByUser1AndUser2(any(), any())).thenReturn(Optional.empty());
 
         // Act
         ResponseEntity res = friendController.deleteFriendship(mockUser, mockFriendId);
-        when(userRepository.findById(mockFriendId)).thenReturn(Optional.of(friend));
-        when(friendshipRepository.findByUser1AndUser2(any(), any())).thenReturn(Optional.empty());
 
         // Assert
         assertThat(res.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);

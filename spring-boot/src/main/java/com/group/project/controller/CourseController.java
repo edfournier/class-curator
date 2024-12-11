@@ -1,10 +1,5 @@
 package com.group.project.controller;
 
-import java.io.IOException;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
 import com.group.project.entities.AggrRating;
 import com.group.project.entities.Course;
@@ -61,15 +57,19 @@ public class CourseController {
     @Autowired
     private final UserRepository userRepository;
 
+    @Autowired
+    private final RestTemplate restTemplate;
+
     public CourseController(CourseRepository courseRepository, UserRatingRepository userRatingRepository,
             UserInterestRepository userInterestRepository, AggrRatingRepository aggrRatingRepository,
-            FriendshipRepository friendshipRepository, UserRepository userRepository) {
+            FriendshipRepository friendshipRepository, UserRepository userRepository, RestTemplate restTemplate) {
         this.courseRepository = courseRepository;
         this.userRatingRepository = userRatingRepository;
         this.userInterestRepository = userInterestRepository;
         this.aggrRatingRepository = aggrRatingRepository;
         this.friendshipRepository = friendshipRepository;
         this.userRepository = userRepository;
+        this.restTemplate = restTemplate;
     }
 
     @RestController
@@ -226,18 +226,10 @@ public class CourseController {
         public ResponseEntity<Object> getRecommendation(@RequestAttribute User currentUser) {
             // Fetch recommendations based off user tags from inference server
             List<Course> tagRecs = List.of();
-            try {
-                HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create("http://localhost:8000/recommend/" + currentUser.getId()))
-                    .method("GET", HttpRequest.BodyPublishers.noBody())
-                    .build();
 
-                HttpResponse<String> response = HttpClient.newHttpClient().send(request,
-                        HttpResponse.BodyHandlers.ofString());
-
-                tagRecs = RecommendationUtils.getCoursesFromTagRecommendationsResponse(courseRepository,
-                        response.body());
-            } catch (IOException | InterruptedException e) {}
+            String response = restTemplate.getForObject("http://localhost:8000/recommend/" + currentUser.getId(),
+                    String.class);
+            tagRecs = RecommendationUtils.getCoursesFromTagRecommendationsResponse(courseRepository, response);
 
             // Get currentUsers' friends
             List<User> friends = PeopleUtils.getAllFriends(friendshipRepository, currentUser);
