@@ -54,7 +54,7 @@ def test_get_recommendations(mock_transformer, mock_sqlite, client):
     mock_transformer.return_value = mock_model
 
     # Mock util.semantic_search
-    with patch("your_module.util.semantic_search") as mock_search:
+    with patch("recommendations.util.semantic_search") as mock_search:
         mock_search.return_value = [[{"corpus_id": 0}, {"corpus_id": 1}]]
 
         # Test endpoint
