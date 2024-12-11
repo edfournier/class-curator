@@ -27,7 +27,7 @@ public class FriendRequestTest {
 
         // Act (and Assert)
         assertThatException()
-            .isThrownBy(() -> new FriendRequest(sender, sender))
-            .withMessage("Cannot send friend request to self");
+                .isThrownBy(() -> new FriendRequest(sender, sender))
+                .withMessage("Cannot send friend request to self");
     }
 }

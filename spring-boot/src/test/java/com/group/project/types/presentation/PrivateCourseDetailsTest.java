@@ -19,7 +19,8 @@ public class PrivateCourseDetailsTest {
         boolean interested = false;
 
         // Act
-        PrivateCourseDetails privateCourseDetails = new PrivateCourseDetails(course, upvotes, downvotes, userRating, interested);
+        PrivateCourseDetails privateCourseDetails = new PrivateCourseDetails(course, upvotes, downvotes, userRating,
+                interested);
 
         // Assert
         assertThat(privateCourseDetails.course).isEqualTo(course);
@@ -39,6 +40,8 @@ public class PrivateCourseDetailsTest {
         boolean interested = false;
 
         // Act (and Assert)
-        assertThatException().isThrownBy(() -> new PrivateCourseDetails(course, upvotes, downvotes, userRating, interested)).withMessage("Invalid Rating Value!");
+        assertThatException()
+                .isThrownBy(() -> new PrivateCourseDetails(course, upvotes, downvotes, userRating, interested))
+                .withMessage("Invalid Rating Value!");
     }
 }

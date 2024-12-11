@@ -47,7 +47,8 @@ public class UserRatingTest {
         int rating = 7;
 
         // Act (and Assert)
-        assertThatException().isThrownBy(() -> new UserRating(user, course, rating)).withMessage("Invalid Rating Value!");
+        assertThatException().isThrownBy(() -> new UserRating(user, course, rating))
+                .withMessage("Invalid Rating Value!");
     }
 
     @Test

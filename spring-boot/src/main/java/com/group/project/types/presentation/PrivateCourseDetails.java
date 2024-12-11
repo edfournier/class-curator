@@ -9,7 +9,7 @@ public class PrivateCourseDetails extends PublicCourseDetails {
 
     public PrivateCourseDetails(Course course, int upvotes, int downvotes, int userRating, boolean interested) throws Exception {
         super(course, upvotes, downvotes);
-        DomainMapper.validateRating(userRating);
+        DomainMapper.validateRating(userRating); // reject invalid values
         this.userRating = userRating;
         this.interested = interested;
     }

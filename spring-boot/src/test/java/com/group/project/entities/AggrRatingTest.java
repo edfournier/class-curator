@@ -12,7 +12,7 @@ public class AggrRatingTest {
         // Setup
         Course course = new Course();
         UniClass uniClass = new UniClass(course, new UniversitySession(2025, "FALL"), "Prof");
-        
+
         float expected_default_rating = -1.0f;
 
         // Act

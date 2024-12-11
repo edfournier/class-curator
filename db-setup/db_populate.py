@@ -3,7 +3,7 @@ from utils.preprocessing import preprocess_class_data, preprocess_course_data
 from utils.sqlite3_ops import construct_query_with_values, open_db_connection, purge_db
 
 ## file paths
-RELATIVE_PATH = '.' # NOTE: Change this 
+RELATIVE_PATH = '.' # NOTE: Change this to match local execution context
 DB_PATH = f'{RELATIVE_PATH}/spring-boot/class_c.db'
 SETUP_FOLDER_PATH = f'{RELATIVE_PATH}/db-setup'
 COURSE_PATH = f'{SETUP_FOLDER_PATH}/scrape/courses.json'

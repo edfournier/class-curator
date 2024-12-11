@@ -10,7 +10,7 @@ public class UniversityStringsTest {
         // Setup
         String courseCodeString = "abc";
         String expectedCourseCodeString = "ABC";
-        
+
         // Act (and Assert)
         assertThat(UniversityStrings.standardizeCourseCode(courseCodeString)).isEqualTo(expectedCourseCodeString);
     }

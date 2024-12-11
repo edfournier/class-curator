@@ -8,7 +8,9 @@ def preprocess_course_data(raw_data_courses: List[object]) -> List[Tuple[str, st
         code = standardize_course_code(record['code'])
         name = record['name'].replace('"', "'")
         subject = record['subject'].replace('"', "'")
-        description = record['description'].replace('"', "'") if record['description'] else "" # coercing empty descriptions into ""
+
+        # coercing empty descriptions into ""
+        description = record['description'].replace('"', "'") if record['description'] else ""
 
         data_courses.append((code, name, subject, description))
     return data_courses
@@ -31,9 +33,11 @@ def preprocess_class_data(raw_data_ratings: List[List[str]]) -> Tuple[
         if not is_valid_course_code(code):
             continue
 
+        # Build unique class identifier
         year, semester = determine_session(rating_datestr)
         class_identifier = (code, year, semester)
 
+        # Add rating to class detail, create new entry if new class
         if class_identifier not in class_details:
             class_details[class_identifier] = {
                 "rate_difficulty": difficulty,
@@ -47,8 +51,8 @@ def preprocess_class_data(raw_data_ratings: List[List[str]]) -> Tuple[
             class_details[class_identifier]["count"] += 1
             class_details[class_identifier]["profs"].append(prof) # Good to have: Handle misspelled profs, which results in false entries
 
+    # aggregate ratings and select professors by class (session-aware)
     for class_identifier in class_details:
-        # generating aggregates
         count = class_details[class_identifier]["count"]
         class_details[class_identifier]["rate_difficulty"] = round(class_details[class_identifier]["rate_difficulty"]/count, 3)
         class_details[class_identifier]["rate_helpfulness"] = round(class_details[class_identifier]["rate_helpfulness"]/count, 3)

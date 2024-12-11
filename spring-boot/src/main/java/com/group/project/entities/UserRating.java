@@ -36,7 +36,7 @@ public class UserRating {
     public UserRating(User user, Course course, int rating) throws Exception {
         this.user = user;
         this.course = course;
-        DomainMapper.validateRating(rating);
+        DomainMapper.validateRating(rating); // reject invalid values
         this.rating = rating;
     }
 
@@ -53,7 +53,7 @@ public class UserRating {
     }
 
     public void setRating(int rating) throws Exception {
-        DomainMapper.validateRating(rating);
+        DomainMapper.validateRating(rating); // reject invalid values
         this.rating = rating;
     }
 }
