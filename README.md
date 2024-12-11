@@ -21,7 +21,7 @@ Perform each of the following starting the project root:
 
 1. **Populate the Database**
 ```bash
-python3 ./db-setup/db_populate.py
+python ./db-setup/db_populate.py
 ```
 
 2. **Start the FAST API recommendation service**
@@ -47,7 +47,7 @@ npm run build
 
 This final step builds a `dist` directory. After it's built, open Chrome, and navigate to `chrome://extensions/`. Then, enable `Developer Mode`, press `Load unpacked`, and load the `dist` directory on your machine. The extension will now be visible in Chrome's "Extensions" tab in the top-right of the browser.
 
-# Configuration
+## Configuration
 
 1. **Spring Boot Configuration**
 
@@ -64,11 +64,13 @@ The Chrome extension has configurable API endpoints and settings. These are defi
 3. **FastAPI Configuration**
 The FastAPI server powers the recommendation service in the **Class Curator** project. This configuration guide provides details on setting up and customizing the FastAPI server for seamless integration.
 
+## Datasets
 
-# Large Language Model Used
+To generate insights and recommendations, the backend leverages historical review data from [Rate My Professor](https://www.ratemyprofessors.com/) and course data from Daniel Melanson's [Spire API](https://github.com/daniel-melanson/spire-api.melanson.dev). The scripts to generate these data sets, `rmp.py` and `spire.py` respectively, are found in `db-setup/scrape`. 
+
+## Large Language Model Used
 The system uses the *all-MiniLM-L6-v2* model for generating recommendations and processing course-related data. This model provides efficient performance for tasks like semantic search and embedding generation.
 
-The FastAPI server uses the all-MiniLM-L6-v2 model for generating course recommendations. 
 ```bash
 pip install sentence-transformers
 ```
