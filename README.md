@@ -61,5 +61,14 @@ The Chrome extension has configurable API endpoints and settings. These are defi
 
 ```to be modified```
 
+3. **FastAPI Configuration**
+The FastAPI server powers the recommendation service in the **Class Curator** project. This configuration guide provides details on setting up and customizing the FastAPI server for seamless integration.
+
+
 # Large Language Model Used
 The system uses the *all-MiniLM-L6-v2* model for generating recommendations and processing course-related data. This model provides efficient performance for tasks like semantic search and embedding generation.
+
+The FastAPI server uses the all-MiniLM-L6-v2 model for generating course recommendations. 
+```bash
+pip install sentence-transformers
+```
