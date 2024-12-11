@@ -17,7 +17,7 @@ This tool was developed by:
 
 ## Installation Instructions
 
-Perform each of the following starting the the project root:
+Perform each of the following starting the project root:
 
 1. **Populate the Database**
 ```bash
