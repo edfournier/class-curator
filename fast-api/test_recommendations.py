@@ -44,5 +44,5 @@ def test_get_recommendations(mock_sqlite, client):
     # Test for course format
     for course in response.json()["recommended_courses"]:
         assert type(course) is str
-        course_code = course[-3:]
+        course_code = course.partition(' ')[2][:3]
         assert course_code.isnumeric()
