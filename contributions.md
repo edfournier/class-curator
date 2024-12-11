@@ -35,11 +35,11 @@ This file details specific contributions of each member.
   [Additional contributions.]
 
 ## Eric Fournier
-- **Feature Development:**  
-  [Description of features developed.]
-
-- **Documentation:**  
-  [Details about documentation contributions.]
-
-- **Other Contributions:**  
-  [Additional contributions.]
+- Setup Vite to automatically build the extension.
+- Created the scripts `db-setup/scrape/rmp.py` and `db-setup/scrape/spire.py`, which collect course and review data from Rate My Professor and an independently Spire API respectively.
+- Created the content and background scripts that are injected into the Spire webpage. These scripts handle embedding content such as course likes and dislikes, and pass messages to the popup extension.
+- Created the Home, Friends, and Course pages in React, and wrote API calls with Axios to integrate with the Spring Boot backend.
+- Created AuthProvider and AlertProvider components, which handle authentication and error/info alerting on the front end respectively. The former leverages Chrome's `storage` and `identity` APIs to obtain and cache relevant user data.
+- Wrote Jest test cases for the front end's React components
+- Worked with Harsh to implement authentication on the backend, specifically `AuthFilter.java`, which accepts tokens from Chrome's identity API to authenticate users. 
+- Worked with Saloni to create the data visualizations graphs with Recharts. These graphs visualized course trends (such as difficulty and quality) over time.
