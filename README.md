@@ -125,3 +125,8 @@ npm test
 cd ./fast-api
 pytest
 ```
+
+
+## Demo Videos
+[Application Setup and Backend Infra](https://drive.google.com/file/d/1uF5qFFuqfKGHbezvw-6q8K14wI9wjYpi/view?usp=sharing)
+[Frontend Infra and Testing](https://drive.google.com/file/d/1_wo6RSKMsuVOWwoNzQRt8YCDiDntcjQi/view?usp=sharing)

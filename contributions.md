@@ -5,13 +5,12 @@ This file details specific contributions of each member.
 
 ## Harsh Seth
 - **Feature Development:**  
-  [Brief description of the features you developed or worked on.]
-
-- **Documentation:**  
-  [Details about any documentation you contributed to.]
-
-- **Other Contributions:**  
-  [Any other significant contributions, e.g., code reviews, project management, design, etc.]
+  - Database
+    - Designed the DB schema
+    - Wrote the DB Populate Scripts
+  - Backend
+    - Contributed to design of features and implemented RESTful APIs in Spring Boot
+    - Wrote Tests for all features and classes in Spring Boot
 
 ## Saloni Khatu
 - Collaborated with Eric to develop CourseRatingChart.jsx, enabling data visualization for the selected course.
