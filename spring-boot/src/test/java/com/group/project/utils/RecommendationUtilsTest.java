@@ -89,23 +89,32 @@ public class RecommendationUtilsTest {
         assertThat(courses).hasSize(0);
     }
 
-    // @Test
-    // void tagRecsParserChecks() {
-    //     // Setup
-    //     String rawTagRecServerResponseString = "{\"recommended_courses\":[\"fromTag1\",\"fromTag2\"]}";
-    //     Course course1 = new Course();
-    //     Course course2 = new Course();
-    //     String code1 = "fromTag1";
-    //     String code2 = "fromTag2";
-    //     when(courseRepository.findByCode(code1)).thenReturn(Optional.of(course1));
-    //     when(courseRepository.findByCode(code2)).thenReturn(Optional.of(course2));
+    @Test
+    void emptyTagRecsParserWithBadStringChecks() {
+        // Setup
+        String rawTagRecServerResponseString = "{\"recommended_courses\":[}";
 
-    //     // Act
-    //     List<Course> courses = RecommendationUtils.getCoursesFromTagRecommendationsResponse(courseRepository, rawTagRecServerResponseString);
+        // Act
+        List<Course> courses = RecommendationUtils.getCoursesFromTagRecommendationsResponse(courseRepository, rawTagRecServerResponseString);
 
-    //     // Assert
-    //     assertThat(courses).contains(course1, course2);
-    // }
+        // Assert
+        assertThat(courses).hasSize(0);
+    }
+
+    @Test
+    void tagRecsParserChecks() {
+        // Setup
+        String rawTagRecServerResponseString = "{\"recommended_courses\":[\"fromTag1\"]}";
+        Course course1 = new Course();
+        String code1 = "fromTag1";
+        when(courseRepository.findByCode(code1)).thenReturn(Optional.of(course1));
+
+        // Act
+        List<Course> courses = RecommendationUtils.getCoursesFromTagRecommendationsResponse(courseRepository, rawTagRecServerResponseString);
+
+        // Assert
+        assertThat(courses).contains(course1);
+    }
 
     @Test
     void tagRecommendationsCheck() {
@@ -117,5 +126,6 @@ public class RecommendationUtilsTest {
 
         // Assert
         assertThat(tagRecs.recommended_courses).containsAll(courseCodes);
+        assertThat(tagRecs.getRecommended_courses()).containsAll(courseCodes);
     }
 }

@@ -26,7 +26,6 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.time.Year;
 import java.util.Date;
-import java.util.Optional;
 
 @Component
 public class AuthFilter extends OncePerRequestFilter {

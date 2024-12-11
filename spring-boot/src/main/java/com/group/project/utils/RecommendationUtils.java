@@ -13,7 +13,7 @@ import com.group.project.entities.UserInterest;
 import com.group.project.repositories.CourseRepository;
 import com.group.project.repositories.UserInterestRepository;
 
-public class RecommendationUtils {
+public interface RecommendationUtils {
     public static Map<Course, Integer> getCourseInterestCountsForUsers(UserInterestRepository userInterestRepository,
             List<User> users) {
         Map<Course, Integer> courseInterestCounts = new HashMap<>();
