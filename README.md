@@ -52,7 +52,7 @@ npm i
 npm run build
 ```
 
-This final step builds a `dist` directory in `extension`. After it's built, open Chrome, and navigate to `chrome://extensions/`. Then, enable `Developer Mode`, press `Load unpacked`, and load the `dist` directory on your machine. The extension will now be accessible in Chrome's "Extensions" tab in the top-right of the browser.
+This final step builds an `extension/dist` directory. After it's built, open Chrome, and navigate to `chrome://extensions/`. Then, enable `Developer Mode`, press `Load unpacked`, and load the `dist` directory on your machine. The extension will now be accessible in Chrome's "Extensions" tab in the top-right of the browser.
 
 
 
@@ -61,7 +61,7 @@ This final step builds a `dist` directory in `extension`. After it's built, open
 
 1. **Spring Boot Configuration**:
 
-2. **Extension Configuration**:
+2. **Extension Configuration**: The extension expects an environment variable `VITE_BACKEND_URL`, which should be set to the hostname of the Spring Boot server. This can be configured in `extension/.env`.
 
 3. **FastAPI Configuration**:
 
