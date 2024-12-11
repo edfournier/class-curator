@@ -3,12 +3,11 @@ from typing import List, Dict
 from sentence_transformers import SentenceTransformer, util
 import sqlite3
 
-
 app = FastAPI()
 
 # Open connection to database
 # The `check_same_thread=False` parameter allows usage across multiple threads
-con = sqlite3.connect('../server/class_c.db', check_same_thread=False)
+con = sqlite3.connect('../spring-boot/class_c.db', check_same_thread=False)
 cursor = con.cursor()
 
 # Initialize the model for sentence embeddings. miniLM - Sentence-transformer model for semantic search and checking sentence similarity.
@@ -35,7 +34,6 @@ def recommend_courses(input_tags: List[str], courses: List[Dict]) -> List[str]:
     
     # Get course recommendations based on the user's tags
     recommendations = [course_titles[hit['corpus_id']] for hit in hits]
-
     recommendations = list(set(recommendations))
 
     # Return the recommendations as a JSON response
