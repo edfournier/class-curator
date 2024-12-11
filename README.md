@@ -64,7 +64,7 @@ This final step builds an `extension/dist` directory. After it's built, open Chr
 2. **Extension Configuration**: The extension expects an environment variable `VITE_BACKEND_URL`, which should be set to the hostname of the Spring Boot server. This can be configured in `extension/.env`.
 
 3. **FastAPI Configuration**:
-
+The FastAPI expects to use the dependencies in the `requirements.txt` file. Install the dependencies using `pip install -r requirements.txt`.
 
 
 
@@ -75,7 +75,7 @@ To generate insights and recommendations, the backend leverages historical revie
 
 
 ## Large Language Model Used
-The system uses the *all-MiniLM-L6-v2* model for generating recommendations and processing course-related data. This model provides efficient performance for tasks like semantic search and embedding generation.
+The system uses *all-MiniLM-L6-v2* model, a sentence transformer, which maps sentences and paragraphs to a 384 dimensional vector space. The system generates recommendations using processed course-related data. This model provides efficient performance for tasks like semantic search and embedding generation.
 
 
 
@@ -91,3 +91,8 @@ npm test
 ```
 
 3. **FastAPI Tests**:
+The pytest test for the recommendation feature is provided in `test_recommendations.py`. To run the suite:
+```bash
+cd ./fast-api
+pytest
+```
