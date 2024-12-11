@@ -8,7 +8,7 @@ mock_user = (3, 'jdoe@umass.edu', 'John Doe', 2023, 'Spring', 'Computer Science'
 
 # Add mock user to database for testing using the follow script:
 # import sqlite3
-# conn = sqlite3.connect("./server/class_c.db")
+# conn = sqlite3.connect("./spring-boot/class_c.db")
 # cursor = conn.cursor()
 # addQuery =  """
 #             INSERT INTO USER
