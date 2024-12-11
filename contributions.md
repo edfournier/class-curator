@@ -27,13 +27,14 @@ This file details specific contributions of each member.
 
 ## Liam Gates
 - **Feature Development:**  
-  [Description of features developed.]
+  - Implemented the Python server using the FastAPI for the course recommendation features.
+  - Implemented the Hugging Face Sentence Transformer Model to get course recommendation from user info.
+  - Implemented tests for the course recommendation feature using pytest and FastAPI.
+  - Contributed to the Spring server controllers to handle requests to the database.
 
 - **Documentation:**  
-  [Details about documentation contributions.]
-
-- **Other Contributions:**  
-  [Additional contributions.]
+  - Documented the information about the Hugging Face Sentence Transformer used in the system.
+  - Documented the FastAPI test instructions to the README.md.
 
 ## Eric Fournier
 - Setup Vite to automatically build the extension.

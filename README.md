@@ -82,7 +82,7 @@ New users are created with some values for Graduation Semester and Major. These 
 #### Extension Configuration
 The extension expects an environment variable `VITE_BACKEND_URL`, which should be set to the hostname of the Spring Boot server. This can be configured in `extension/.env`.
 
-#### FastAPI Configuration
+3. **FastAPI Configuration**:
 
 
 
@@ -94,7 +94,7 @@ To generate insights and recommendations, the backend leverages historical revie
 
 
 ## Large Language Model Used
-The system uses the *all-MiniLM-L6-v2* model for generating recommendations and processing course-related data. This model provides efficient performance for tasks like semantic search and embedding generation.
+The system uses *all-MiniLM-L6-v2* model, a sentence transformer, which maps sentences and paragraphs to a 384 dimensional vector space. The system generates recommendations using processed course-related data. This model provides efficient performance for tasks like semantic search and embedding generation.
 
 
 
@@ -120,6 +120,8 @@ npm test
 ```
 ![alt text](./docs/assets/extension-coverage.png)
 
-
-## Demo
-[Link to Video](https://localhost/)
+3. **FastAPI Tests**: The pytest test for the recommendation feature is provided in `test_recommendations.py`. To run the suite:
+```bash
+cd ./fast-api
+pytest
+```
