@@ -119,4 +119,8 @@ npm i
 npm test
 ```
 
-3. **FastAPI Tests**:
+3. **FastAPI Tests**: The pytest test for the recommendation feature is provided in `test_recommendations.py`. To run the suite:
+```bash
+cd ./fast-api
+pytest
+```
