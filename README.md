@@ -81,3 +81,13 @@ The system uses the *all-MiniLM-L6-v2* model for generating recommendations and 
 
 
 ## Test Suites
+1. **Spring Boot Tests**:
+
+2. **Extension Tests**: A Jest test suite is provided in `extension/src/tests`. Each component was tested for edge cases and error scenarios, with mocking used for API calls. To run the suite:
+```bash
+cd ./extension
+npm i
+npm test
+```
+
+3. **FastAPI Tests**:
