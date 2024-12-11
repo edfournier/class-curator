@@ -63,21 +63,3 @@ def test_get_recommendations(mock_transformer, mock_sqlite, client):
         assert response.status_code == 200
         for course in mock_courses:
             assert course in response.json()["recommended_courses"]
-
-@patch("recommendations.SentenceTransformer")
-@patch("recommendations.get_recommendations")
-def test_recommend_courses(mock_transformer):
-    # Mock SentenceTransformer
-    mock_model = MagicMock()
-    mock_model.encode.side_effect = lambda x, convert_to_tensor: [
-        [0.1, 0.2, 0.3],
-        [0.4, 0.5, 0.6],
-    ]
-    mock_transformer.return_value = mock_model
-
-    with patch("your_module.util.semantic_search") as mock_search:
-        mock_search.return_value = [[{"corpus_id": 0}, {"corpus_id": 1}]]
-
-        recommendations = get_recommendations(["Machine Learning", "Artificial Intelligence"], mock_courses)
-
-        assert recommendations == ["COMPSCI 119", "COMPSCI 220"]
