@@ -59,11 +59,30 @@ This final step builds an `extension/dist` directory. After it's built, open Chr
 
 ## Configuration
 
-1. **Spring Boot Configuration**:
+#### Spring Boot Configuration
+_Runtime Setup_
 
-2. **Extension Configuration**: The extension expects an environment variable `VITE_BACKEND_URL`, which should be set to the hostname of the Spring Boot server. This can be configured in `extension/.env`.
+The Spring Boot server requires a JDK and JRE version 23 or higher. Additionally, we recommend having Maven v3.5 or higher. Any required external dependencies are listed in the `pom.xml` file and will be installed as part of `mvn spring-boot:run`
 
-3. **FastAPI Configuration**:
+_Changing the Default Port_
+
+The server attempts to start on the `8080` port. 
+If you wish to application to start on a different port, add in the following to the `application.yaml` file
+
+```yaml
+server:
+     port: <new_port>
+```
+
+_Domain Defaults_
+
+New Users -
+New users are created with some values for Graduation Semester and Major. These defaults can be changed in the `application.yaml` file under the `domain.defaults.user` section
+
+#### Extension Configuration
+The extension expects an environment variable `VITE_BACKEND_URL`, which should be set to the hostname of the Spring Boot server. This can be configured in `extension/.env`.
+
+#### FastAPI Configuration
 
 
 
@@ -81,7 +100,17 @@ The system uses the *all-MiniLM-L6-v2* model for generating recommendations and 
 
 
 ## Test Suites
-1. **Spring Boot Tests**:
+1. **Backend Tests**: Tests covering all 36 classes is present at `spring-boot/src/test`. These tests extensively cover application behavior across all the features - **Course Search**, **Course Rating**, **Course Interests**, **User Search**, **Friendship Management**, **Friend Request Management**, **Course Insights**, **Course Recommendations** and **Authentication**
+
+To run the tests:
+```bash
+cd ./server
+mvn clean test
+```
+
+As the below test run results show, we've achieved 92% line coverage and 94% branch coverage as of writing this section
+![alt text](./docs/assets/spring-boot_code-coverage.png)
+
 
 2. **Extension Tests**: A Jest test suite is provided in `extension/src/tests`. Each component was tested for edge cases and error scenarios, with mocking used for API calls. To run the suite:
 ```bash
@@ -90,4 +119,6 @@ npm i
 npm test
 ```
 
-3. **FastAPI Tests**:
+
+## Demo
+[Link to Video](https://localhost/)
