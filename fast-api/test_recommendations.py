@@ -1,5 +1,6 @@
 import pytest
 from unittest.mock import patch
+from fastapi.testclient import TestClient
 from recommendations import app
 
 # Mock data for courses
@@ -33,10 +34,15 @@ def client():
     return TestClient(app)
 
 @patch("sqlite3.connect")
-def test_get_courses(client):
+def test_get_courses(mock_connect, client):
+    # Mock the database connection and cursor
+    mock_conn = mock_connect.return_value
+    mock_cursor = mock_conn.cursor.return_value
+    mock_cursor.fetchall.return_value = mock_courses
+
     # Test endpoint
     response = client.get("/recommend/3")
 
     assert response.status_code == 200
     for course in mock_courses:
-        assert course in response.json().recommended_courses
+        assert course in response.json()["recommended_courses"]
