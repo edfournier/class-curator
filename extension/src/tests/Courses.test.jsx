@@ -29,28 +29,23 @@ const mockAlerts = {
 
 const mockRedirect = { code: "CS187", name: "Data Structures" };
 
-useAlerts.mockReturnValue(mockAlerts);
-
-getCourseResults.mockResolvedValue([
-    { name: "Data Structures", code: "CS187", id: 1 },
-]);
-
-getCourseDetails.mockResolvedValue({
-    details: {
-        id: 1,
-        name: "Data Structures",
-        code: "CS 187",
-        description: "Desc"
-    },
-    upvotes: 10,
-    dislikes: 0,
-});
-
-getCourseInsights.mockResolvedValue({
-    ratingsHistory: [{ semester: "FALL", year: 2019, helpfulness: 1.2, difficulty: 2.2 }]
-});
-
 describe("Courses", () => {
+
+    beforeEach(() => {
+        jest.clearAllMocks();
+        useAlerts.mockReturnValue(mockAlerts);
+        getCourseResults.mockResolvedValue([
+            { name: "Data Structures", code: "CS187", id: 1 },
+        ]);
+        getCourseDetails.mockResolvedValue({
+            details: { id: 1, name: "Data Structures", code: "CS 187", description: "Desc" }, upvotes: 10, dislikes: 0,
+        });
+        getCourseInsights.mockResolvedValue({
+            ratingsHistory: [{ semester: "FALL", year: 2019, helpfulness: 1.2, difficulty: 2.2 }]
+        });
+    });
+
+    
     test("handles redirection with a preselected course", async () => {    
         // Mock `useLocation` to return a value once and then null
         const mockUseLocation = require("react-router-dom").useLocation;
@@ -58,26 +53,15 @@ describe("Courses", () => {
             .mockImplementationOnce(() => ({ state: { course: mockRedirect } }))
             .mockImplementation(() => ({ state: null })); // Return null after the first call
     
-        render(
-            <Router>
-                <Courses />
-            </Router>
-        );
+        render(<Router><Courses /></Router>);
     
         // Check that the query and results are pre-filled with the redirected course
         waitFor(() => expect(screen.getByDisplayValue("CS187")).toBeInTheDocument());
     });
 
-    beforeEach(() => {
-        jest.clearAllMocks();
-        render(
-            <Router>
-                <Courses />
-            </Router>
-        );
-    });
 
     test("shows course details and closes on close button click", async () => {
+        render(<Router><Courses /></Router>);
         const searchInput = screen.getByPlaceholderText("Search a course by code...");
         fireEvent.change(searchInput, { target: { value: "CS" } });
 
@@ -98,6 +82,7 @@ describe("Courses", () => {
     });
 
     test("shows an error message when the API call fails", async () => {
+        render(<Router><Courses /></Router>);
         const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
         getCourseResults.mockRejectedValue(new Error("Mock error"));
 

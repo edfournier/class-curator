@@ -36,7 +36,7 @@ function FriendCard({ friend, userInterests, onClose, onUnfriend }) {
         <div className="card">
             <div className="flex justify-between">
                 <p className="text-xs text-gray-400">{friend.username}</p>
-                <FaTimes onClick={onClose} className="cursor-pointer hover:text-indigo-600" />
+                <FaTimes aria-label="close" onClick={onClose} className="cursor-pointer hover:text-indigo-600" />
             </div>
             <h2 className="mb-3 mt-2">{firstName}'s Interests</h2>
             <ul className="mb-6 space-y-1">

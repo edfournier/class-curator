@@ -28,9 +28,6 @@ const mockAlerts = {
     info: jest.fn() 
 };
 
-useAlerts.mockReturnValue(mockAlerts);
-
-
 jest.mock("../providers/AlertProvider", () => ({
     useAlerts: jest.fn(),
 }));
@@ -54,6 +51,7 @@ function TestComponent() {
 describe("AuthProvider", () => {
     beforeEach(() => {
         jest.clearAllMocks();
+        useAlerts.mockReturnValue(mockAlerts);
         render(
             <AuthProvider>
                 <TestComponent />
@@ -95,6 +93,7 @@ describe("AuthProvider", () => {
         chrome.identity.getAuthToken.mockResolvedValue({ token: "mockToken" });
         chrome.storage.local.get.mockResolvedValue({ mockToken: { user: null, expiry: 0 } }); 
         
+        // Hit login and see if error triggers
         const button = screen.getByText("Login");
         fireEvent.click(button);
         await waitFor(() => expect(mockAlerts.error).toHaveBeenCalled());

@@ -28,28 +28,20 @@ jest.mock("../providers/AlertProvider", () => ({
     useAlerts: jest.fn(),
 }));
 
-getCourseInsights.mockResolvedValue({
-    ratingHistory: [
-        { session: { semester: "SPRING", year: 2023 }, helpfulness: 4.5, difficulty: 3.0 },
-        { session: { semester: "FALL", year: 2022 }, helpfulness: 4.2, difficulty: 2.8 },
-    ],
-    profRatings: {
-        "Marius": 4.8,
-    }
-});
-
-getCourseDetails.mockResolvedValue({
-    userRating: 0,
-    upvotes: 10,
-    downvotes: 2,
-    course: {
-        description: "Desc",
-    },
-});
-
 describe("CourseCard", () => {
     beforeEach(() => {
         jest.clearAllMocks();
+        getCourseInsights.mockResolvedValue({
+            ratingHistory: [
+                { session: { semester: "SPRING", year: 2023 }, helpfulness: 4.5, difficulty: 3.0 },
+                { session: { semester: "FALL", year: 2022 }, helpfulness: 4.2, difficulty: 2.8 },
+            ],
+            profRatings: { "Marius": 4.8 }
+        });
+        
+        getCourseDetails.mockResolvedValue({
+            userRating: 0, upvotes: 10, downvotes: 2, course: { description: "Desc", }, }
+        );
     });
 
     test("handles upvote and downvote button clicks", async () => {

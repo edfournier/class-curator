@@ -10,13 +10,12 @@ jest.mock("../components/Spinner", () => () => <div>Loading...</div>);
 
 const mockLogin = jest.fn();
 
-useAuth.mockReturnValue({
-	login: mockLogin
-});
-
 describe("Login Component", () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
+        useAuth.mockReturnValue({
+            login: mockLogin
+        });
 	});
 
 	test("calls handleLogin on component mount for auto-login", async () => {

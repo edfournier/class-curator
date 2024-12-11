@@ -16,8 +16,6 @@ const mockAlerts = {
     info: jest.fn() 
 };
 
-useAlerts.mockReturnValue(mockAlerts);
-
 const mockFriend = {
     id: "1",
     username: "edfournier@umass.edu",
@@ -35,6 +33,7 @@ const mockOnUnfriend = jest.fn();
 describe("FriendCard", () => {
     beforeEach(() => {
         jest.clearAllMocks();
+        useAlerts.mockReturnValue(mockAlerts);
     });
 
     test("renders friend's interests and highlights common ones", async () => {

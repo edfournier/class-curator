@@ -22,8 +22,6 @@ const mockAlerts = {
     info: jest.fn() 
 };
 
-useAlerts.mockReturnValue(mockAlerts);
-
 jest.mock("../api/user", () => ({
     getUserDetails: jest.fn(),
     putUserDetails: jest.fn(),
@@ -41,6 +39,7 @@ describe("Home", () => {
     beforeEach(() => {
         jest.spyOn(console, "error").mockImplementation(() => {});
         jest.clearAllMocks();
+        useAlerts.mockReturnValue(mockAlerts);
     });
 
     test("shows error when failing to load user details", async () => {
