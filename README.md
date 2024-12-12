@@ -82,7 +82,7 @@ New users are created with some values for Graduation Semester and Major. These 
 #### Extension Configuration
 The extension expects an environment variable `VITE_BACKEND_URL`, which should be set to the hostname of the Spring Boot server. This can be configured in `extension/.env`.
 
-3. **FastAPI Configuration**:
+**FastAPI Configuration**:
 It is recommended to use a virtual environment before installing any dependencies using this feature, which can be done using the following commands:
 ```bash
 python -m venv ./venv
