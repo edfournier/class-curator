@@ -123,10 +123,15 @@ npm test
 ```
 ![alt text](./docs/assets/extension-coverage.png)
 
-3. **FastAPI Tests**: The pytest test for the recommendation feature is provided in `test_recommendations.py`. To run the suite:
+3. **FastAPI Tests**: The pytest test for the recommendation feature is provided in `test_recommendations.py`. To run the test:
 ```bash
 cd ./fast-api
-
+python3.11 -m pytest
+```
+To run the test with a code coverage report:
+```bash
+cd ./fast-api
+python3.11 -m pytest --cov recommendations test_recommendations.py
 ```
 
 
