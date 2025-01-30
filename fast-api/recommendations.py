@@ -49,7 +49,3 @@ async def get_recommendations(user_id):
     recommendations = recommend_courses(tags, courses)
     print(recommendations)
     return {"recommended_courses": recommendations}
-
-if __name__ == "__main__":
-    user = {"tags": ["Machine Learning", "Artificial Intelligence"]}
-    print(recommend_courses(user["tags"], courses))

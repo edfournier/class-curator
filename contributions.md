@@ -30,9 +30,12 @@ This file details specific contributions of each member.
   - Implemented the Hugging Face Sentence Transformer Model to get course recommendation from user info.
   - Implemented tests for the course recommendation feature using pytest and FastAPI.
   - Contributed to the Spring server controllers to handle requests to the database.
+  - Implemented Jacoco tool to measure code coverage in Spring Boot tests.
+  - Contributed to the utility interface for the recommendation feature in the Spring Boot server.
 
 - **Documentation:**  
   - Documented the information about the Hugging Face Sentence Transformer used in the system.
+  - Documented how to run the FastAPI server and the installation process for the required dependencies.
   - Documented the FastAPI test instructions to the README.md.
 
 ## Eric Fournier
